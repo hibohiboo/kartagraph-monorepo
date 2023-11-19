@@ -1,0 +1,19 @@
+{
+  "name": "kartagraph-monorepo",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "turbo": "^1.10.16"
+  },
+  "packageManager": "npm@9.8.1",
+  "workspaces": [
+    "packages/*",
+    "app"
+  ]
+}
