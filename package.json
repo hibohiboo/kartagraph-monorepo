@@ -2,7 +2,10 @@
   "name": "kartagraph-monorepo",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "git config --local core.hooksPath .githooks && echo Changed hooks directory when npm install",
+    "build": "turbo build",
+    "ncu": "turbo ncu",
+    "dev": "turbo dev"
   },
   "author": "",
   "license": "MIT",
