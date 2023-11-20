@@ -5,9 +5,7 @@ import { PCStory, SPStory } from '../storybook';
 const meta = {
   title: 'Top',
   component: Component,
-  args: {
-    children: 'test',
-  },
+  args: {},
 } satisfies Meta<typeof Component>;
 export default meta;
 type Story = StoryObj<typeof meta>;
