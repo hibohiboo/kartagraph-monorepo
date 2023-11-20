@@ -4,11 +4,15 @@ interface CardProps {
   name: string;
   src: string;
   clickable?: boolean;
+  onClick?: () => void;
 }
 export default function Card(props: CardProps) {
   const containerClass = props.clickable ? styles.clickable : '';
   return (
-    <div className={`${styles.container} ${containerClass}`}>
+    <div
+      className={`${styles.container} ${containerClass}`}
+      onClick={props.onClick}
+    >
       <div className={styles.main}>
         <img
           className={styles.img}

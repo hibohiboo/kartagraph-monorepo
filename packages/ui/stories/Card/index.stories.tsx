@@ -17,5 +17,8 @@ export const BigImg: Story = {
 export const Clickable: Story = {
   args: {
     clickable: true,
+    onClick: () => {
+      console.log('click');
+    },
   },
 };
