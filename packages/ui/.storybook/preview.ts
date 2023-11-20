@@ -1,5 +1,10 @@
 import type { Preview } from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
+// import { MemoryRouter } from "react-router-dom";
+
+// export const BasicLayoutDecorator = (
+//   Story: PartialStoryFn<ReactRenderer, Args>,
+// ) => <MemoryRouter>{BasicLayout(<Story />)}</MemoryRouter>;
 
 const preview: Preview = {
   parameters: {

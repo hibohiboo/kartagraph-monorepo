@@ -26,6 +26,7 @@ html {
   /* //calc(1em + 1vw); // ビューポートの高さと幅に合わせてテキストサイズを調整。  */
   font-size: 1em; 
   background-color: var(--white);
+  height: 100%;
 }
 
 body {
@@ -36,6 +37,8 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, sans-serif;
   -webkit-text-size-adjust: 100%;
   margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 * {
