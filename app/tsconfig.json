@@ -1,5 +1,11 @@
 {
   "extends": "@kartagraph/tsconfig/react",
   "include": ["src"],
+  "compilerOptions": {
+    "paths": {
+      "@kartagraph-app/*": ["./src/*"],
+      "@kartagraph-ui/*": ["../packages/ui/src/*"],
+    }
+  },
   "references": [{ "path": "./tsconfig.node.json" }]
 }
