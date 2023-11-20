@@ -4,6 +4,6 @@ import Top from './components/Top/Top';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Top>test</Top>
+    <Top />
   </React.StrictMode>,
 );
