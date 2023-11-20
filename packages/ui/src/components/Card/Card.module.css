@@ -13,7 +13,7 @@
 .main {
   width: 100%;
   height: 100%;
-  background-color: #ddd;
+  background-color: #ccc;
   color: var(--black);
   position: relative;
 }
@@ -30,3 +30,15 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+/* マウスカーソルが載っているときのみCSSを適用 */
+.clickable:hover {
+  /* 背景色を変更 */
+  background-color: #fff;
+  /* ボーダーを変更 */
+  border: solid 1px #000;
+  /* ボックスシャドウを追加 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  /** 色を反転させる */
+  filter: invert(1);
+}
+

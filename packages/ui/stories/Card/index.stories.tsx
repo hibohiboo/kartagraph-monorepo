@@ -14,3 +14,8 @@ export const BigImg: Story = {
     src: '/images/adv_inn.png',
   },
 };
+export const Clickable: Story = {
+  args: {
+    clickable: true,
+  },
+};
