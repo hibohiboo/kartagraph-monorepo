@@ -6,7 +6,10 @@ export const useTransitionNavigate = () => {
   const transitionNavigate = useCallback(
     async (
       newRoute: string,
-      transitionClass: 'slide-to-left' | 'slide-to-right' = 'slide-to-left',
+      transitionClass:
+        | 'slide-to-left'
+        | 'slide-to-right'
+        | 'fade' = 'slide-to-left',
     ) => {
       if (!document.startViewTransition) {
         return navigate(newRoute);
@@ -14,7 +17,9 @@ export const useTransitionNavigate = () => {
 
       document.documentElement.classList.add(transitionClass);
 
+      // API はページの現在の状態をキャプチャ
       const transition = document.startViewTransition(() => {
+        // コールバックが呼び出され、ページの新しい状態をキャプチャする
         navigate(newRoute);
       });
 
