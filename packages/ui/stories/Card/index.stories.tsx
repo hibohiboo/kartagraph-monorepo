@@ -22,3 +22,9 @@ export const Clickable: Story = {
     },
   },
 };
+export const Hide: Story = {
+  args: {
+    clickable: true,
+    hide: false,
+  },
+};

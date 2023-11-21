@@ -9,6 +9,11 @@
   border: solid 1px #000;
   /* 選択不可にする */
   user-select: none;
+  transition: 0.3s ease; /* アニメーションの設定 */
+
+}
+.container.hide {
+  transform: rotate3d(0,1,0,90deg); /* 奥に90度回転して要素を隠す */
 }
 .main {
   width: 100%;
@@ -23,6 +28,8 @@
   font-weight: 900;
   top: 2px;
   left: 5px;
+  /* アニメーションで縮むときに折り返さないようにする */
+  white-space: nowrap;
 }
 .img {
   position: absolute;
