@@ -28,3 +28,8 @@ export const Hide: Story = {
     hide: false,
   },
 };
+export const Chara: Story = {
+  args: {
+    src: '/images/characters/koko.png',
+  },
+};
