@@ -1,2 +1,3 @@
 import Top from './components/Top/Top';
-export { Top };
+import BaseWrapper from './components/atoms/BaseWrapper';
+export { Top, BaseWrapper };

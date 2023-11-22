@@ -1,3 +1,9 @@
+import { BaseWrapper } from '@kartagraph-ui/index';
+
 export default function TutorialPage() {
-  return <div>チュートリアル</div>;
+  return (
+    <BaseWrapper>
+      <div>チュートリアル</div>
+    </BaseWrapper>
+  );
 }
