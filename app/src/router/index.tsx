@@ -1,3 +1,4 @@
+import Layout from '@kartagraph-app/components/templates/Layout';
 import TopPage from '@kartagraph-app/pages/TopPage';
 import TutorialPage from '@kartagraph-app/pages/TutorialPage';
 import { createBrowserRouter } from 'react-router-dom';
@@ -7,11 +8,17 @@ export const router = createBrowserRouter(
   [
     {
       path: '/',
-      element: <TopPage />,
-    },
-    {
-      path: '/tutorial',
-      element: <TutorialPage />,
+      element: <Layout />,
+      children: [
+        {
+          index: true,
+          element: <TopPage />,
+        },
+        {
+          path: 'tutorial',
+          element: <TutorialPage />,
+        },
+      ],
     },
   ],
   {
