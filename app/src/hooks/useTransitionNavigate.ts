@@ -6,10 +6,7 @@ export const useTransitionNavigate = () => {
   const transitionNavigate = useCallback(
     async (
       newRoute: string,
-      transitionClass:
-        | 'slide-to-left'
-        | 'slide-to-right'
-        | 'fade' = 'slide-to-left',
+      transitionClass: 'slide-to-left' | 'slide-to-right' | 'fade' = 'fade',
     ) => {
       if (!document.startViewTransition) {
         return navigate(newRoute);

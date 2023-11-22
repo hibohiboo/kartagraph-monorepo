@@ -30,7 +30,7 @@
     "@storybook/react": "^7.5.3",
     "@storybook/react-vite": "^7.5.3",
     "@storybook/testing-library": "^0.2.2",
-    "@types/sanitize-html": "^2.9.4",
+    "@types/sanitize-html": "^2.9.5",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "storybook": "^7.5.3"
   },
