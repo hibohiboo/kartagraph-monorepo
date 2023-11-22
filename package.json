@@ -5,7 +5,8 @@
     "prepare": "git config --local core.hooksPath .githooks && echo Changed hooks directory when npm install",
     "build": "turbo build",
     "ncu": "turbo ncu",
-    "dev": "turbo dev"
+    "dev": "turbo dev",
+    "deploy": "cd infrastructure && npm run deploy"
   },
   "author": "",
   "license": "MIT",
