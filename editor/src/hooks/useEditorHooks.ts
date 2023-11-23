@@ -4,12 +4,15 @@ import {
 } from '@kartagraph-editor/domain/fileSystem';
 import { getSrc } from '@kartagraph-editor/domain/images/getSrc';
 import { fsNodeAtom } from '@kartagraph-editor/store/fileSystem/atoms';
+import { sceneAtom } from '@kartagraph-editor/store/scenario/game';
 import { useAtom } from 'jotai';
 export const useEditorHooks = () => {
   const [fsNodes, setObj] = useAtom(fsNodeAtom);
+  const [scene] = useAtom(sceneAtom);
 
   const readRootDirectory = async () => {
     const handle = await getRootDirectoryHandle();
+
     const ls = await readDirectory(handle, '');
     setObj(
       ls.map((item) => ({
@@ -20,19 +23,10 @@ export const useEditorHooks = () => {
       })),
     );
   };
-  const frameArgs = {
-    message: {
-      text: `「おはよう！
-今日も一日がんばろー」`,
-      image: getSrc('/images/characters/recept/laugh.png'),
-    },
-    background: {
-      src: getSrc('/images/backgrounds/adv_inn_2.png'),
-    },
-  };
+
   return {
     previewData: {
-      frame: frameArgs,
+      frame: scene,
       cards: [
         {
           name: '宿の娘',
