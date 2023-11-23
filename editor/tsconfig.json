@@ -1,6 +1,6 @@
 {
   "extends": "@kartagraph/tsconfig/react",
-  "include": ["src"],
+  "include": ["src", "tests","./jest"],
   "compilerOptions": {
     "paths": {
       "@kartagraph-editor/*": ["./src/*"],

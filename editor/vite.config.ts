@@ -32,7 +32,11 @@ export default defineConfig({
           // udon: ['file-saver', 'jszip'],
           // canvas: ['html2canvas'],
           jotai: ['jotai'],
-          primereact: ['primereact/splitter'],
+          primereact: [
+            'primereact/splitter',
+            'primereact/button',
+            'primereact/tree',
+          ],
         },
       },
     },
