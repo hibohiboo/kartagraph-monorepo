@@ -12,13 +12,21 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const PC: Story = { ...PCStory };
 export const SP: Story = { ...SPStory };
+const exArgs = {
+  message: {
+    text: `「おはよう！
+  今日も一日がんばろー」`,
+    image: '/images/characters/koko.png',
+  },
+  background: {
+    src: '/images/backgrounds/adv_inn_2.png',
+  },
+};
 export const SPWithImage: Story = {
   ...SPStory,
-  args: {
-    message: {
-      text: `「おはよう！
-    今日も一日がんばろー」`,
-      image: '/images/characters/koko.png',
-    },
-  },
+  args: { ...exArgs, onClickMessage: () => console.log('onClickMessage') },
+};
+export const PCWithImage: Story = {
+  ...PCStory,
+  args: { ...exArgs },
 };
