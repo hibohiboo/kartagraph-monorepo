@@ -23,4 +23,5 @@ xxl ≥1400px
   background-color: #000;
   color: var(--white);
   position: relative;
+  padding: 1px; /* paddingがないと、子要素のmarginが親要素を突き抜ける現象が発生する */
 }
