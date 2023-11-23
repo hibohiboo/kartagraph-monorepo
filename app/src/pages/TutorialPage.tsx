@@ -11,6 +11,7 @@ function* messagGenerator() {
 const messageGen = messagGenerator();
 const first = messageGen.next().value;
 export default function TutorialPage() {
+  const [gen, setGen] = useState(messageGen);
   const [message, setMessage] = useState(first);
   const exArgs = {
     message:
@@ -23,7 +24,7 @@ export default function TutorialPage() {
       src: getSrc('/images/backgrounds/adv_inn_2.png'),
     },
     onClickMessage: () => {
-      setMessage(messageGen.next().value);
+      setMessage(gen.next().value);
     },
   };
   return (
@@ -32,6 +33,11 @@ export default function TutorialPage() {
         name="宿の娘"
         src={getSrc('/images/characters/recept/laugh.png')}
         style={{ position: 'absolute', top: '50px', left: '100px' }}
+        onClick={() => {
+          const g = messagGenerator();
+          setMessage(g.next().value);
+          setGen(g);
+        }}
       />
     </GameFrame>
   );
