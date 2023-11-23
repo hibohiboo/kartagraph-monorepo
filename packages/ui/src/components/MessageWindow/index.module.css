@@ -3,8 +3,11 @@
   height: 114px;
   background-color: rgba(0,0,255, 0.6);
   border-color: #000;
+  position: relative;
 }
 
 .text {
-  padding: 5px;
+  padding-left: 1rem;
+  display: flex;
+  height: 100%;
 }
