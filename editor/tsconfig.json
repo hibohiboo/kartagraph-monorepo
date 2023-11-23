@@ -5,7 +5,8 @@
     "paths": {
       "@kartagraph-editor/*": ["./src/*"],
       "@kartagraph-ui/*": ["../packages/ui/src/*"],
-    }
+    },
+    "esModuleInterop": true,
   },
   "references": [{ "path": "./tsconfig.node.json" }]
 }

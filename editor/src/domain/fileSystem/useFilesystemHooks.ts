@@ -1,9 +1,6 @@
 import { fileNodeStateToTreeNodeInfo } from '@kartagraph-editor/domain/fileSystem/conveter';
 import { updateClickFileNodeState } from '@kartagraph-editor/domain/fileTree/click';
-import {
-  updateCollapseFileNodeState,
-  updateCollapseFileNodesState,
-} from '@kartagraph-editor/domain/fileTree/collapse';
+import { updateCollapseFileNodesState } from '@kartagraph-editor/domain/fileTree/collapse';
 import { updateFileNodeState } from '@kartagraph-editor/domain/fileTree/expand';
 import { useAtom } from 'jotai';
 import React from 'react';

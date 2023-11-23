@@ -10,7 +10,6 @@ export const fileNodeStateToTreeNodeInfo = (state: FileNodeState): TreeNode => {
     icon: `pi pi-fw pi-${getIcon(state.kind, state.isExpanded)}`,
     label: state.name,
     expanded: state.isExpanded,
-    // isSelected: state.isSelected,
     data: state,
     children: state.children?.map(fileNodeStateToTreeNodeInfo),
   };

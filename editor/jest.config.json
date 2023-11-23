@@ -18,9 +18,13 @@
   "moduleNameMapper": {
     "\\.(css|less|scss)$": "identity-obj-proxy",
     "^@kartagraph-editor/(.*)$": "<rootDir>/src/$1",
+    "^@kartagraph-ui/(.*)$": "<rootDir>/../packages/ui/src/$1",
     "\\.(gif|ttf|eot|svg)$": "<rootDir>/tests/jest.fileMock.js"
   },
   "setupFilesAfterEnv": [
     "./tests/jest.setup.ts"
-  ]
+  ],
+  "globals": {
+    "VITE_DEFINE_BASE_PATH": "editor"
+  }
 }
