@@ -33,7 +33,17 @@ export const useEditorHooks = () => {
   return {
     previewData: {
       frame: frameArgs,
-      cards: [],
+      cards: [
+        {
+          name: '宿の娘',
+          src: getSrc('/images/characters/recept/laugh.png'),
+          x: 100,
+          y: 50,
+          onClick: () => {
+            console.log('click');
+          },
+        },
+      ],
     },
     readRootDirectory,
     treeJson: JSON.stringify(fsNodes, null, 2),

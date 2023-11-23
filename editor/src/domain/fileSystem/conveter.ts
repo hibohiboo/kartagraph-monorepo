@@ -4,6 +4,7 @@ import { FileNodeState } from './types';
 export const fileNodeStateToTreeNodeInfo = (state: FileNodeState): TreeNode => {
   return {
     id: state.id,
+    key: state.id,
     leaf: state.kind !== 'directory',
     //  pi-fwはアイコンがフィットするように適切な幅に設定されるスタイル
     icon: `pi pi-fw pi-${getIcon(state.kind, state.isExpanded)}`,

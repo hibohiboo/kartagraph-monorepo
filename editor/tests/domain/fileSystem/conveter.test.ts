@@ -16,8 +16,9 @@ describe('fileNodeStateToTreeNodeInfo', () => {
     const result = fileNodeStateToTreeNodeInfo(state);
     expect(result).toEqual({
       id: 'test',
+      key: 'test',
       leaf: false,
-      icon: 'pi-folder',
+      icon: 'pi pi-fw pi-folder',
       label: 'test',
       expanded: false,
       data: state,
@@ -39,7 +40,7 @@ describe('fileNodeStateToTreeNodeInfo', () => {
   describe('iconの設定が正しいこと', () => {
     it('ディレクトリが閉じている場合、iconがfolder-closeになる', () => {
       const result = fileNodeStateToTreeNodeInfo(state);
-      expect(result.icon).toBe('pi-folder');
+      expect(result.icon).toBe('pi pi-fw pi-folder');
     });
 
     it('ディレクトリが開いている場合、iconがfolder-openになる', () => {
@@ -47,11 +48,11 @@ describe('fileNodeStateToTreeNodeInfo', () => {
         ...state,
         isExpanded: true,
       });
-      expect(result.icon).toBe('pi-folder-open');
+      expect(result.icon).toBe('pi pi-fw pi-folder-open');
     });
     it('ファイルの場合、iconがdocumentになる', () => {
       const result = fileNodeStateToTreeNodeInfo({ ...state, kind: 'file' });
-      expect(result.icon).toBe('pi-file');
+      expect(result.icon).toBe('pi pi-fw pi-file');
     });
   });
   describe('子要素が存在する場合、再帰的に解釈される', () => {

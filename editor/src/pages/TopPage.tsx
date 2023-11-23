@@ -5,6 +5,7 @@ import { Splitter, SplitterPanel } from 'primereact/splitter';
 import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePreviewer';
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
+import Card from '@kartagraph-ui/components/Card/Card';
 
 function App() {
   const vm = useEditorHooks();
@@ -19,7 +20,20 @@ function App() {
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>
-          <ScenarioPreviewer {...vm.previewData} />
+          <ScenarioPreviewer
+            frame={vm.previewData.frame}
+            cards={vm.previewData.cards.map((card, i) => (
+              <Card
+                key={i}
+                {...card}
+                style={{
+                  position: 'absolute',
+                  top: `${card.y}px`,
+                  left: `${card.y}px`,
+                }}
+              />
+            ))}
+          />
         </SplitterPanel>
         <SplitterPanel size={20}>
           <FilePreviewer />
