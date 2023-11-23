@@ -39,7 +39,6 @@ export function useFileSystem() {
   );
   const handleNodeClick = React.useCallback(
     async (event: TreeEventNodeEvent) => {
-      console.log('click', event);
       const node = event.node;
       const data = node.data as FileNodeState;
       if (data.kind === 'file') {

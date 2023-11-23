@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import BaseWrapper from '../../atoms/BaseWrapper';
 import MessageWindow from '@kartagraph-ui/components/MessageWindow';
-interface GameFrameProps {
+export interface GameFrameProps {
   children?: React.ReactNode;
   message?: {
     text: string;

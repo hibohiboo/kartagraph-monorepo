@@ -1,1 +1,1 @@
-export { GameFrame } from './GameFrame';
+export * from './GameFrame';
