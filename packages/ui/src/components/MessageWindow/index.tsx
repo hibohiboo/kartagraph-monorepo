@@ -13,6 +13,7 @@ interface MessageWindowProps {
   style?: React.CSSProperties;
   className?: string;
   textVerticalAlign?: AlignItems;
+  imageSrc?: string;
 }
 export default function MessageWindow({
   text,
@@ -20,9 +21,20 @@ export default function MessageWindow({
   fontSize = '14px',
   style,
   className,
+  imageSrc,
 }: MessageWindowProps) {
   return (
     <div className={`${styles.window} ${className}`} style={style}>
+      {imageSrc && (
+        <figure className={styles.image}>
+          <img
+            className={styles.img}
+            src={imageSrc}
+            alt={'message image'}
+            width={74}
+          />
+        </figure>
+      )}
       <div
         className={styles.text}
         style={{ fontSize, alignItems: textVerticalAlign }}
