@@ -5,7 +5,8 @@ export const fileNodeStateToTreeNodeInfo = (state: FileNodeState): TreeNode => {
   return {
     id: state.id,
     leaf: state.kind !== 'directory',
-    icon: getIcon(state.kind, state.isExpanded),
+    //  pi-fwはアイコンがフィットするように適切な幅に設定されるスタイル
+    icon: `pi pi-fw pi-${getIcon(state.kind, state.isExpanded)}`,
     label: state.name,
     expanded: state.isExpanded,
     // isSelected: state.isSelected,
@@ -16,7 +17,7 @@ export const fileNodeStateToTreeNodeInfo = (state: FileNodeState): TreeNode => {
 
 function getIcon(kind: string, isExpanded: boolean) {
   if (kind === 'directory') {
-    return isExpanded ? 'folder-open' : 'folder-close';
+    return isExpanded ? 'folder-open' : 'folder';
   }
-  return 'document';
+  return 'file';
 }
