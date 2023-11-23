@@ -2,11 +2,16 @@ import { getSrc } from '@kartagraph-app/domain/images/getSrc';
 import Card from '@kartagraph-ui/components/Card/Card';
 import { GameFrame } from '@kartagraph-ui/index';
 import { useState } from 'react';
-
-export default function TutorialPage() {
-  const [message, setMessage] = useState(`「はい！ いらっしゃいませ！
+function* messagGenerator() {
+  yield `「はい！ いらっしゃいませ！
   初めて見る顔ですね！
-  冒険者の方ですか？」`);
+  冒険者の方ですか？」`;
+  yield `「そうですか！」`;
+}
+const messageGen = messagGenerator();
+const first = messageGen.next().value;
+export default function TutorialPage() {
+  const [message, setMessage] = useState(first);
   const exArgs = {
     message:
       (message && {
@@ -18,7 +23,7 @@ export default function TutorialPage() {
       src: getSrc('/images/backgrounds/adv_inn_2.png'),
     },
     onClickMessage: () => {
-      setMessage(`「そうですか！」`);
+      setMessage(messageGen.next().value);
     },
   };
   return (
