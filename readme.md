@@ -1,8 +1,7 @@
 ## カルタグラフ
-
+https://github.com/hibohiboo/kartagraph-monorepo/issues
 https://github.com/users/hibohiboo/projects/3/views/1
-
- https://d39tlgyf23zo7h.cloudfront.net/app/
+https://d39tlgyf23zo7h.cloudfront.net/app/
 
 project-root/
 │

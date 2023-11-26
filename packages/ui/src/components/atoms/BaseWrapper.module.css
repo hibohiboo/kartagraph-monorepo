@@ -11,7 +11,7 @@ xxl ≥1400px
 */
 
 .container {
-  max-width: 576px;
+  max-width: 640px;
   margin: 0 auto;
   position: relative;
   height: 100vh;
