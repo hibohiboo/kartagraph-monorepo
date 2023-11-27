@@ -7,14 +7,16 @@
 .selectItemsWrapper {
   position: relative;
   display: flex;
-  width: 520px;
+  justify-content: center;
+  max-height: 210px;
   flex-direction: row;
   /* flex内の要素はお互いの間に10pxの余白を開ける */
   gap: 0 20px;
   /**折り返す*/
   flex-wrap: wrap;
   padding: 5px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 .selectItemWrapper {
   padding-top: 30px;

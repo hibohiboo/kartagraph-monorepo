@@ -30,3 +30,25 @@ export const PCWithImage: Story = {
   ...PCStory,
   args: { ...args },
 };
+export const ManyQuestion: Story = {
+  ...SPStory,
+  args: {
+    ...args,
+    onClickMessage: () => console.log('onClickMessage'),
+    selectItems: [
+      '逃げる',
+      '戦う',
+      'じゅもん',
+      'おうえんさせろ',
+      'ガンガンガン',
+    ],
+  },
+};
+export const SingleQuestion: Story = {
+  ...SPStory,
+  args: {
+    ...args,
+    onClickMessage: () => console.log('onClickMessage'),
+    selectItems: ['逃げる'],
+  },
+};
