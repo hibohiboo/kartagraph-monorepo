@@ -1,5 +1,5 @@
+import { SelectCards } from '@kartagraph-ui/components/SelectCards';
 import { GameFrame, GameFrameProps } from '../GameFrame';
-import { SelectCarousel } from '@kartagraph-ui/components/SelectCarousel';
 
 export type GameViewerProps = GameFrameProps & {
   selectItems?: string[];
@@ -20,7 +20,7 @@ export function GameViewer(props: GameViewerProps) {
       messageDisabled={selectItems.length > 0}
       layerOverMessage={
         selectItems.length === 0 ? undefined : (
-          <SelectCarousel selectItems={selectItems} />
+          <SelectCards selectItems={selectItems} />
         )
       }
     />

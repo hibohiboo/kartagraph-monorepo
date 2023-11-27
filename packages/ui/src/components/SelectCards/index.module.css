@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+  background-color: #333;
+  display: flex;
+  justify-content: center;
+}
+.selectItemsWrapper {
+  position: relative;
+  display: flex;
+  width: 520px;
+  flex-direction: row;
+  /* flex内の要素はお互いの間に10pxの余白を開ける */
+  gap: 0 20px;
+  /**折り返す*/
+  flex-wrap: wrap;
+  padding: 5px;
+  overflow: hidden;
+}
+.selectItemWrapper {
+  padding-top: 30px;
+  height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.selectItemWrapper:hover {
+  padding-top: 10px;
+}
