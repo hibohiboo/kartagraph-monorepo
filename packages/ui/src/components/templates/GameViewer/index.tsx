@@ -1,6 +1,5 @@
-import QuestionCard from '@kartagraph-ui/components/LargeCard/QuestionCard';
 import { GameFrame, GameFrameProps } from '../GameFrame';
-import styles from './index.module.css';
+import { SelectCarousel } from '@kartagraph-ui/components/SelectCarousel';
 
 export type GameViewerProps = GameFrameProps & {
   selectItems?: string[];
@@ -21,11 +20,7 @@ export function GameViewer(props: GameViewerProps) {
       messageDisabled={selectItems.length > 0}
       layerOverMessage={
         selectItems.length === 0 ? undefined : (
-          <div className={styles.selectItemsWrapper}>
-            {selectItems.map((item, i) => (
-              <QuestionCard title={item} key={i} />
-            ))}
-          </div>
+          <SelectCarousel selectItems={selectItems} />
         )
       }
     />

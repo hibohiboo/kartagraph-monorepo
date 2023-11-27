@@ -5,7 +5,7 @@ import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 // export const BasicLayoutDecorator = (
 //   Story: PartialStoryFn<ReactRenderer, Args>,
 // ) => <MemoryRouter>{BasicLayout(<Story />)}</MemoryRouter>;
-
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },

@@ -1,0 +1,12 @@
+.selectItemsWrapper {
+  position: relative;
+  background-color: #fff;
+}
+.selectItemWrapper {
+  padding-top: 30px;
+  height: 100px;
+  overflow: hidden;
+}
+.selectItemWrapper:hover {
+  padding-top: 10px;
+}
