@@ -27,7 +27,7 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom', 'react/jsx-runtime'],
           reactFamily: ['react-router-dom'],
-          others: ['lodash'],
+          // others: ['lodash'],
           // others: ['date-fns', 'papaparse'],
           // udon: ['file-saver', 'jszip'],
           // canvas: ['html2canvas'],
