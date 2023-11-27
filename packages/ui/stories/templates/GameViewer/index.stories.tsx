@@ -4,13 +4,13 @@ import { PCStory, SPStory } from '../../storybook';
 
 const args = {
   message: {
-    text: `「おはよう！
-  今日も一日がんばろー」`,
+    text: `「どうする？」`,
     image: '/images/characters/koko.png',
   },
   background: {
     src: '/images/backgrounds/adv_inn_2.png',
   },
+  selectItems: ['逃げる', '戦う', 'じゅもん'],
 };
 
 const meta = {

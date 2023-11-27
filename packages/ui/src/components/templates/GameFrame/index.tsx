@@ -25,6 +25,11 @@ export interface GameFrameProps {
     src: string;
   };
   onClickMessage?: () => void;
+  messageDisabled?: boolean;
+  layerUnderBackGround?: React.ReactNode;
+  layerOverBackGround?: React.ReactNode;
+  layerUnderMessage?: React.ReactNode;
+  layerOverMessage?: React.ReactNode;
 }
 
 export function GameFrame(props: GameFrameProps) {
@@ -33,14 +38,14 @@ export function GameFrame(props: GameFrameProps) {
   const { getElementProperty } =
     useGetElementProperty<HTMLDivElement>(targetRef);
   useEffect(() => {
-    console.log('height', getElementProperty('height'));
-    console.log('width', getElementProperty('width'));
-    console.log('x', getElementProperty('x'));
-    console.log('y', getElementProperty('y'));
-    console.log('top', getElementProperty('top'));
-    console.log('right', getElementProperty('right'));
-    console.log('bottom', getElementProperty('bottom'));
-    console.log('left', getElementProperty('left'));
+    // console.log('height', getElementProperty('height'));
+    // console.log('width', getElementProperty('width'));
+    // console.log('x', getElementProperty('x'));
+    // console.log('y', getElementProperty('y'));
+    // console.log('top', getElementProperty('top'));
+    // console.log('right', getElementProperty('right'));
+    // console.log('bottom', getElementProperty('bottom'));
+    // console.log('left', getElementProperty('left'));
     setScale(getElementProperty('width') / 640);
   }, []);
 
@@ -50,15 +55,18 @@ export function GameFrame(props: GameFrameProps) {
         className={styles.container}
         style={{ transform: `scale(${scale})` }}
       >
+        {props.layerUnderBackGround}
         {props.background && (
           <img src={props.background.src} className={styles.background} />
         )}
+        {props.layerOverBackGround}
         <div
           className={styles.cardArea}
           inert={!!props.message?.text ? 'inert' : undefined}
         >
           {props.children}
         </div>
+        {props.layerUnderMessage}
         {props.message && (
           <>
             <MessageWindow
@@ -67,11 +75,13 @@ export function GameFrame(props: GameFrameProps) {
               imageSrc={props.message?.image ?? ''}
             />
             <div
+              inert={props.messageDisabled ? 'inert' : undefined}
               className={styles.messageAreaOverlay}
               onClick={props.onClickMessage}
             />
           </>
         )}
+        {props.layerOverMessage}
       </div>
     </BaseWrapper>
   );
