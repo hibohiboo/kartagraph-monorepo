@@ -7,7 +7,7 @@ interface QuestionCardProps {
 export default function QuestionCard(props: QuestionCardProps) {
   return (
     <CardWrapper>
-      <CardName>{props.title}</CardName>
+      <CardName text={props.title} />
     </CardWrapper>
   );
 }
