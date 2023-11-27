@@ -3,6 +3,18 @@ import BaseWrapper from '../../atoms/BaseWrapper';
 import MessageWindow from '@kartagraph-ui/components/MessageWindow';
 import { useGetElementProperty } from './useGetElementProperty';
 import { useEffect, useRef, useState } from 'react';
+
+// https://camchenry.com/blog/how-to-disable-ui-and-control-focus-with-the-inert-attribute
+declare module 'react' {
+  interface HTMLAttributes<T> {
+    /**
+     * Prevents focus from moving to any element inside this DOM element and ignores user events.
+     * https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inert
+     */
+    inert?: 'inert';
+  }
+}
+
 export interface GameFrameProps {
   children?: React.ReactNode;
   message?: {
@@ -31,6 +43,7 @@ export function GameFrame(props: GameFrameProps) {
     console.log('left', getElementProperty('left'));
     setScale(getElementProperty('width') / 640);
   }, []);
+
   return (
     <BaseWrapper ref={targetRef}>
       <div
@@ -40,7 +53,12 @@ export function GameFrame(props: GameFrameProps) {
         {props.background && (
           <img src={props.background.src} className={styles.background} />
         )}
-        <div className={styles.cardArea}>{props.children}</div>
+        <div
+          className={styles.cardArea}
+          inert={!!props.message?.text ? 'inert' : undefined}
+        >
+          {props.children}
+        </div>
         {props.message && (
           <>
             <MessageWindow
