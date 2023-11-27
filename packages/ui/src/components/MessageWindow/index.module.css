@@ -1,17 +1,15 @@
 .window {
-  width: 300px;
-  height: 114px;
+  width: 500px;
+  height: 214px;
   background-color: rgba(0,0,200, 0.6);
   border-color: #000;
   position: relative;
   display: flex;
-
 }
 
 .text {
   padding-left: 1rem;
   display: flex;
-  height: 100%;
   white-space: pre-wrap;
 }
 .image {
@@ -19,7 +17,6 @@
   padding-left: 1rem;
   align-self: center;
   width: fit-content;
-
 }
 .image::after {
 	position: absolute;

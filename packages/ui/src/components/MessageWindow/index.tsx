@@ -18,7 +18,7 @@ interface MessageWindowProps {
 export default function MessageWindow({
   text,
   textVerticalAlign = 'center',
-  fontSize = '14px',
+  fontSize = '18px',
   style,
   className,
   imageSrc,
