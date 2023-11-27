@@ -1,0 +1,14 @@
+.card {
+  width: 242px;
+  height: 342px;
+  border: #000 solid 1px;
+  border-radius: 0.8em;
+  padding: 5px;
+  font-size: 14px;
+  position: relative;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0; /* 親要素がflexで並べた時に縮まないようにする */
+}
+

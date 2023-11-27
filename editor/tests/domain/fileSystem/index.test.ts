@@ -1,5 +1,5 @@
-import { getDirectoryHandle } from '@kaminiten-editor/domain/fileSystem';
-import { MyFileSystemDirectoryHandle } from '@kaminiten-editor/domain/fileSystem/types';
+import { getDirectoryHandle } from '@kartagraph-editor/domain/fileSystem';
+import { MyFileSystemDirectoryHandle } from '@kartagraph-editor/domain/fileSystem/types';
 
 /**
  * getDirectoryHandleのユニットテスト

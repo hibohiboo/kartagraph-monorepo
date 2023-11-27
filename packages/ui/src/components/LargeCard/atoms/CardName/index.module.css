@@ -1,0 +1,15 @@
+
+.cardName {
+  padding: 10px;
+  background-color: #000;
+  color: #ccc;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 20px;
+  line-height: 1.5;
+  white-space: nowrap;
+  width: 220px;
+  border-radius: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
