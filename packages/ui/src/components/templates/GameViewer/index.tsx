@@ -1,9 +1,8 @@
 import { SelectCards } from '@kartagraph-ui/components/SelectCards';
 import { GameFrame, GameFrameProps } from '../GameFrame';
+import { SelectCardsProps } from '@kartagraph-ui/components/SelectCards/types';
 
-export type GameViewerProps = GameFrameProps & {
-  selectItems?: string[];
-};
+export type GameViewerProps = GameFrameProps & SelectCardsProps;
 
 export function GameViewer(props: GameViewerProps) {
   const {
@@ -12,6 +11,7 @@ export function GameViewer(props: GameViewerProps) {
     background,
     onClickMessage,
     selectItems = [],
+    onSelected,
   } = props;
   const gameFrameProps = { children, message, background, onClickMessage };
   return (
@@ -20,7 +20,7 @@ export function GameViewer(props: GameViewerProps) {
       messageDisabled={selectItems.length > 0}
       layerOverMessage={
         selectItems.length === 0 ? undefined : (
-          <SelectCards selectItems={selectItems} />
+          <SelectCards selectItems={selectItems} onSelected={onSelected} />
         )
       }
     />
