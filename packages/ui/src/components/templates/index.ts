@@ -1,1 +1,1 @@
-export * from './GameFrame';
+export * from './GameViewer';

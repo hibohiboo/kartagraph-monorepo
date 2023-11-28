@@ -1,11 +1,11 @@
-import { GameFrame } from '@kartagraph-ui/index';
-import type { GameFrameProps } from '@kartagraph-ui/index';
+import { GameViewer } from '@kartagraph-ui/index';
+import type { GameViewerProps } from '@kartagraph-ui/index';
 
 function ScenarioPreviewer(props: {
-  frame: GameFrameProps;
+  frame: GameViewerProps;
   cards: React.ReactNode[];
 }) {
-  return <GameFrame {...props.frame}>{props.cards}</GameFrame>;
+  return <GameViewer {...props.frame}>{props.cards}</GameViewer>;
 }
 
 export default ScenarioPreviewer;
