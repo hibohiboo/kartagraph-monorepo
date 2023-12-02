@@ -8,6 +8,8 @@ import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import Card from '@kartagraph-ui/components/Card/Card';
 import tryWorker from '../worker/try.worker?worker'; // ?workerをつける
 import { useEffect, useRef } from 'react';
+import { broadAtom } from '@kartagraph-editor/store/worker/test';
+import { useAtom } from 'jotai';
 function App() {
   const vm = useEditorHooks();
 
@@ -30,6 +32,9 @@ function App() {
       workerRef.current.postMessage('開始');
     }
   };
+
+  const [count, setCount] = useAtom(broadAtom);
+
   return (
     <div>
       <Splitter>
@@ -38,6 +43,8 @@ function App() {
             <Button onClick={vm.readRootDirectory}>クリックで読み込み</Button>
             <FileTree /> <pre>{vm.treeJson}</pre>
             <button onClick={handleClick}>重い処理を開始</button>
+            {count}
+            <button onClick={() => setCount(count + 1)}>+1</button>
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>
