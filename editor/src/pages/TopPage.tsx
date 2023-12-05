@@ -6,12 +6,17 @@ import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePrevi
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import Card from '@kartagraph-ui/components/Card/Card';
-import { broadAtom } from '@kartagraph-editor/store/worker/test';
+import { coreAtom } from '@kartagraph-editor/store/worker/gameCore';
 import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+
 function App() {
   const vm = useEditorHooks();
 
-  const [count, setCount] = useAtom(broadAtom);
+  const [ret, setMessage] = useAtom(coreAtom);
+  useEffect(() => {
+    setMessage('init');
+  }, []);
 
   return (
     <div>
@@ -20,8 +25,7 @@ function App() {
           <div style={{ height: '100vh', overflowY: 'auto' }}>
             <Button onClick={vm.readRootDirectory}>クリックで読み込み</Button>
             <FileTree /> <pre>{vm.treeJson}</pre>
-            {count}
-            <button onClick={() => setCount('next')}>next</button>
+            {ret}
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>
