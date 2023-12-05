@@ -26,7 +26,10 @@ new KartaGraphFrontCdkStack(app, `${processEnv.PROJECT_ID}-FrontCdkStack`, {
   functionName: `${processEnv.PROJECT_ID}-lambda-edge-ogp`,
   distributionName: `${processEnv.PROJECT_ID}-distribution-cloudfront`,
   projectNameTag: processEnv.TAG_PROJECT_NAME,
-  subDirectoryPath: [{ path: '../app/dist', alias: 'app' }],
+  subDirectoryPath: [
+    { path: '../app/dist', alias: 'app' },
+    { path: '../editor/dist', alias: 'editor' },
+  ],
   env,
   crossRegionReferences: true,
 });
