@@ -8,11 +8,12 @@ module.exports = {
   ],
   plugins: ["react-refresh", "import", "unused-imports"],
   rules: {
+    '@typescript-eslint/no-unused-vars': 'warn',
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },
     ],
-    "import/extensions":["off"]
+    "import/extensions":["off"],
     // ["error", "ignorePackages", { "js":"never","ts":"never","tsx":"never" }],
   },
 };
