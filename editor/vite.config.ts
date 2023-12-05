@@ -18,6 +18,10 @@ export default defineConfig({
         find: '@kartagraph-ui',
         replacement: path.join(__dirname, '../packages/ui/src'),
       },
+      {
+        find: '@kartagraph-worker',
+        replacement: path.join(__dirname, '../packages/worker/src'),
+      },
     ],
   },
   build: {

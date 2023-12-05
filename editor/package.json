@@ -24,6 +24,7 @@
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
+    "@kartagraph/worker": "*",
     "@types/jest": "^29.5.10",
     "@types/react": "^18.2.42",
     "@types/react-dom": "^18.2.17",

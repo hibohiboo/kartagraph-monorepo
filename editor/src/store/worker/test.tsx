@@ -1,5 +1,5 @@
 import { atom, createStore } from 'jotai';
-import tryWorker from '../../worker/try.worker?worker'; // ?workerをつける
+import tryWorker from '@kartagraph-worker/try.worker?worker'; // ?workerをつける
 export const myStore = createStore();
 export function atomWithBroadcast<Value>(initialValue: Value) {
   const baseAtom = atom(initialValue);

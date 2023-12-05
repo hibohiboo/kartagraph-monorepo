@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@kartagraph-worker/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "stories/**/*"],
+  "references": [{ "path": "./tsconfig.node.json" }],
+  "extends": "@kartagraph/tsconfig/react",
+}
