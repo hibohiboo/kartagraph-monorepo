@@ -17,6 +17,9 @@ export interface InitCommannd {
   command: 'init';
   payload: string;
 }
+export interface NextCommannd {
+  command: 'next';
+}
 type EventId = string;
 type SceneId = string;
 type CardId = string;

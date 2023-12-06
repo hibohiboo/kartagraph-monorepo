@@ -11,6 +11,12 @@ const scenario = {
           id: 'event1',
           type: 'message',
           data: { text: 'text1', image: 'image1' },
+          next: 'event2',
+        },
+        {
+          id: 'event2',
+          type: 'message',
+          data: { text: 'text2', image: 'image1' },
         },
       ],
       cards: [],
@@ -40,9 +46,7 @@ describe('createResult', () => {
     const ret = createResult({ command: 'next' });
     expect(ret).toEqual({
       command: 'message',
-      payload: {
-        message: { text: 'text2', image: 'image1' },
-      },
+      payload: { text: 'text2', image: 'image1' },
     });
   });
 });
