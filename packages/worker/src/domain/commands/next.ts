@@ -1,5 +1,5 @@
 import { selectEvent } from '../core';
-import { getCurrentEvent, getCurrentScene } from '../store';
+import { getCurrentEvent, getCurrentScene, setCurrentEvent } from '../store';
 
 export const next = () => {
   const currentScene = getCurrentScene();
@@ -8,6 +8,8 @@ export const next = () => {
   if (currentEvent == null || currentEvent.next == null)
     return { command: 'wait' };
   const nextEvent = selectEvent(currentEvent.next, currentScene.events);
+  setCurrentEvent(nextEvent);
   if (nextEvent == null) return { command: 'wait' };
+
   return { command: nextEvent.type, payload: nextEvent.data };
 };
