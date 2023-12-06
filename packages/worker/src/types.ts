@@ -1,3 +1,4 @@
+export type { NextResult } from './domain/commands/next';
 export interface Scene {
   message?: {
     text: string;

@@ -6,18 +6,11 @@ import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePrevi
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import Card from '@kartagraph-ui/components/Card/Card';
-import { coreAtom } from '@kartagraph-editor/store/worker/gameCore';
-import { useAtom } from 'jotai';
-import { useEffect } from 'react';
-import json from '../data/scenario.json';
+import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
+
 function App() {
   const vm = useEditorHooks();
-
-  const [ret, setMessage] = useAtom(coreAtom);
-  useEffect(() => {
-    setMessage({ command: 'init', payload: JSON.stringify(json) });
-  }, []);
-
+  const core = useGameCoreHooks();
   return (
     <div>
       <Splitter>

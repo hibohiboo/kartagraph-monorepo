@@ -9,7 +9,8 @@
         {
           "id": "event1",
           "type": "message",
-          "data": { "text": "「おはよう！\n今日もがんばろー」", "image": "/images/characters/recept/laugh.png" }
+          "data": { "text": "「おはよう！\n今日もがんばろー」", "image": "/images/characters/recept/laugh.png" },
+          "next": "event2"
         },
         {
           "id": "event2",

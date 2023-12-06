@@ -37,7 +37,7 @@ describe('createResult', () => {
       },
     });
   });
-  test('nextコマンドの場合、次のイベントを呼び出す', () => {
+  test('nextコマンドの場合、次のイベントを呼び出す(message)', () => {
     // シナリオ読み込み
     createResult({
       command: 'init',

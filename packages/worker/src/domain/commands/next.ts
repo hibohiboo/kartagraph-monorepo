@@ -13,3 +13,4 @@ export const next = () => {
 
   return { command: nextEvent.type, payload: nextEvent.data };
 };
+export type NextResult = ReturnType<typeof next>;
