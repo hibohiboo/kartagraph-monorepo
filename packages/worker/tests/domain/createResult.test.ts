@@ -1,33 +1,47 @@
 import { createResult } from '@kartagraph-worker/domain/createResult';
-
+const scenario = {
+  firstSceneId: 'scene1',
+  scenes: [
+    {
+      id: 'scene1',
+      backgroundImage: 'bg1',
+      eventId: 'event1',
+      events: [
+        {
+          id: 'event1',
+          type: 'message',
+          data: { text: 'text1', image: 'image1' },
+        },
+      ],
+      cards: [],
+    },
+  ],
+};
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
     const ret = createResult({
       command: 'init',
-      payload: JSON.stringify({
-        firstSceneId: 'scene1',
-        scenes: [
-          {
-            id: 'scene1',
-            backgroundImage: 'bg1',
-            eventId: 'event1',
-            events: [
-              {
-                id: 'event1',
-                type: 'message',
-                data: { text: 'text1', image: 'image1' },
-              },
-            ],
-            cards: [],
-          },
-        ],
-      }),
+      payload: JSON.stringify(scenario),
     });
     expect(ret).toEqual({
       command: 'init',
       payload: {
         background: { src: 'bg1' },
         message: { text: 'text1', image: 'image1' },
+      },
+    });
+  });
+  test('nextコマンドの場合、次のイベントを呼び出す', () => {
+    // シナリオ読み込み
+    createResult({
+      command: 'init',
+      payload: JSON.stringify(scenario),
+    });
+    const ret = createResult({ command: 'next' });
+    expect(ret).toEqual({
+      command: 'message',
+      payload: {
+        message: { text: 'text2', image: 'image1' },
       },
     });
   });

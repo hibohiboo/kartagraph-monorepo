@@ -9,8 +9,8 @@ export interface Scene {
 }
 
 export interface GameCoreWorkerMessage {
-  command: 'init';
-  payload: unknown;
+  command: 'init' | 'next';
+  payload?: unknown;
 }
 
 export interface InitCommannd {
