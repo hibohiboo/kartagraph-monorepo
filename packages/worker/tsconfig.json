@@ -5,7 +5,7 @@
       "@kartagraph-worker/*": ["./src/*"]
     }
   },
-  "include": ["src", "stories/**/*"],
+  "include": ["src", "tests"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "extends": "@kartagraph/tsconfig/react",
+  "extends": "@kartagraph/tsconfig",
 }

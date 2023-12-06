@@ -1,0 +1,18 @@
+{
+  "firstSceneId": "scene1",
+  "scenes": [
+    {
+      "id": "scene1",
+      "backgroundImage": "/images/backgrounds/adv_inn_2.png",
+      "eventId": "event1",
+      "events": [
+        {
+          "id": "event1",
+          "type": "message",
+          "data": { "text": "「おはよう！\n今日もがんばろー」", "image": "/images/characters/recept/laugh.png" }
+        }
+      ],
+      "cards": []
+    }
+  ]
+}

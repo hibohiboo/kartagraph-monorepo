@@ -16,6 +16,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,  // trueは厳しすぎる
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* jest */
+    "esModuleInterop": true, // https://kinosuke.hatenablog.jp/entry/2021/07/25/160300
   }
 }

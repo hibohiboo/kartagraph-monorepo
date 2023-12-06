@@ -9,13 +9,13 @@ import Card from '@kartagraph-ui/components/Card/Card';
 import { coreAtom } from '@kartagraph-editor/store/worker/gameCore';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
-
+import json from '../data/scenario.json';
 function App() {
   const vm = useEditorHooks();
 
   const [ret, setMessage] = useAtom(coreAtom);
   useEffect(() => {
-    setMessage('init');
+    setMessage({ command: 'init', payload: JSON.stringify(json) });
   }, []);
 
   return (
@@ -25,7 +25,6 @@ function App() {
           <div style={{ height: '100vh', overflowY: 'auto' }}>
             <Button onClick={vm.readRootDirectory}>クリックで読み込み</Button>
             <FileTree /> <pre>{vm.treeJson}</pre>
-            {ret}
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>
