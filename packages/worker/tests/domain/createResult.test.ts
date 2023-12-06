@@ -24,8 +24,11 @@ describe('createResult', () => {
       }),
     });
     expect(ret).toEqual({
-      background: { src: 'bg1' },
-      message: { text: 'text1', image: 'image1' },
+      command: 'init',
+      payload: {
+        background: { src: 'bg1' },
+        message: { text: 'text1', image: 'image1' },
+      },
     });
   });
 });

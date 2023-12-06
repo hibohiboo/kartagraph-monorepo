@@ -10,6 +10,11 @@
           "id": "event1",
           "type": "message",
           "data": { "text": "「おはよう！\n今日もがんばろー」", "image": "/images/characters/recept/laugh.png" }
+        },
+        {
+          "id": "event2",
+          "type": "message",
+          "data": { "text": "「つぎのセリフ」", "image": "/images/characters/recept/laugh.png" }
         }
       ],
       "cards": []

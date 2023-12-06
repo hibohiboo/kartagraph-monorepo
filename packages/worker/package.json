@@ -8,6 +8,7 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "clean": "rm -rf .turbo",
     "test": "jest --config ./jest.config.json",
+    "watch": "jest --config ./jest.config.json --watch",
     "mv-jest-reports": "cp ./public/mockServiceWorker.js ../../docs/astro/public/ && mv ./__reports__ ../../docs/astro/public/jest-reports-components",
     "ncu": "ncu -u"
   },

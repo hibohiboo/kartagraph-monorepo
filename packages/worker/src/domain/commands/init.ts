@@ -10,10 +10,14 @@ export const init = (scenario: Scenario) => {
     : undefined;
   const message =
     currentEvent?.data?.text == null ? undefined : currentEvent.data;
-  return {
+  const payload = {
     message,
     background: {
       src: currentScene.backgroundImage,
     },
+  };
+  return {
+    command: 'init',
+    payload,
   };
 };
