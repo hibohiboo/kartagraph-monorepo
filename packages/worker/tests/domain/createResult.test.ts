@@ -49,4 +49,14 @@ describe('createResult', () => {
       payload: { text: 'text2', image: 'image1' },
     });
   });
+  test('nextコマンドで次のコマンドがない場合、waitが返る', () => {
+    // シナリオ読み込み
+    createResult({
+      command: 'init',
+      payload: JSON.stringify(scenario),
+    });
+    createResult({ command: 'next' });
+    const ret = createResult({ command: 'next' });
+    expect(ret).toEqual({ command: 'wait' });
+  });
 });
