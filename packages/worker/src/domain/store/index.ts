@@ -15,3 +15,16 @@ export const setCurrentEvent = (newCurrentEvent: any) => {
 export const getScenario = () => scenario;
 export const getCurrentScene = () => currentScene;
 export const getCurrentEvent = () => currentEvent;
+const selectEventFromScene = (eventId: string, events: SceneEvent[]) => {
+  return events.find((event) => {
+    return event.id === eventId;
+  });
+};
+
+export const selectEvent = (eventId: string) => {
+  const currentScene = getCurrentScene();
+  if (currentScene == null) throw new Error('currentScene is null');
+  const nextEvent = selectEventFromScene(eventId, currentScene.events);
+  setCurrentEvent(nextEvent);
+  return nextEvent;
+};

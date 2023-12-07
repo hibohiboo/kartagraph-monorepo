@@ -34,12 +34,15 @@ export const sceneAtom = atom((get) => {
     cards: scene.cards.map((card) => ({
       ...card,
       src: getSrc(card.src),
-      onClick: () => {
-        gameCoreStore.set(coreAtom, {
-          command: 'trigger',
-          payload: card.clickEventId,
-        });
-      },
+      clickable: !!card.clickEventId,
+      onClick: !card.clickEventId
+        ? undefined
+        : () => {
+            gameCoreStore.set(coreAtom, {
+              command: 'trigger',
+              payload: card.clickEventId,
+            });
+          },
     })),
     onClickMessage: () => {
       gameCoreStore.set(coreAtom, { command: 'next' });

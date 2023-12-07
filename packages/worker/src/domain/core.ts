@@ -5,8 +5,3 @@ export const selectFirstScene = (scenario: Scenario) => {
     return scene.id === scenario.firstSceneId;
   });
 };
-export const selectEvent = (eventId: string, events: SceneEvent[]) => {
-  return events.find((event) => {
-    return event.id === eventId;
-  });
-};
