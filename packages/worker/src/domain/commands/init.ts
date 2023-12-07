@@ -17,6 +17,7 @@ export const init = (scenario: Scenario) => {
     background: {
       src: currentScene.backgroundImage,
     },
+    cards: currentScene.cards ?? [],
   };
   return {
     command: 'init',

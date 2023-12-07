@@ -1,4 +1,11 @@
 export type { NextResult } from './domain/commands/next';
+type Card = {
+  name: string;
+  src: string;
+  x: number;
+  y: number;
+  clickEventId: string;
+};
 export interface Scene {
   message?: {
     text: string;
@@ -7,6 +14,7 @@ export interface Scene {
   background?: {
     src: string;
   };
+  cards: Card[];
 }
 
 export interface GameCoreWorkerMessage {

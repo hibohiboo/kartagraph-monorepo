@@ -3,7 +3,9 @@ import { atom } from 'jotai';
 import { NextResult, Scene } from '@kartagraph-worker/types';
 import { coreAtom, gameCoreStore } from '../worker/gameCore';
 
-export const sceneDataAtom = atom<Scene>({});
+export const sceneDataAtom = atom<Scene>({
+  cards: [],
+});
 export const updateNextAtom = atom(null, (get, set, update: NextResult) => {
   const beforeState = get(sceneDataAtom);
   if (update.command === 'wait') {
@@ -29,6 +31,13 @@ export const sceneAtom = atom((get) => {
   return {
     message,
     background,
+    cards: scene.cards.map((card) => ({
+      ...card,
+      src: getSrc(card.src),
+      onClick: () => {
+        console.log(card.clickEventId);
+      },
+    })),
     onClickMessage: () => {
       gameCoreStore.set(coreAtom, { command: 'next' });
     },

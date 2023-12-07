@@ -27,17 +27,7 @@ export const useEditorHooks = () => {
   return {
     previewData: {
       frame: scene,
-      cards: [
-        {
-          name: '宿の娘',
-          src: getSrc('/images/characters/recept/laugh.png'),
-          x: 100,
-          y: 50,
-          onClick: () => {
-            console.log('click');
-          },
-        },
-      ],
+      cards: scene.cards,
     },
     readRootDirectory,
     treeJson: JSON.stringify(fsNodes, null, 2),

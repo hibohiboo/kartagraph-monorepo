@@ -9,21 +9,38 @@
         {
           "id": "event1",
           "type": "message",
-          "data": { "text": "「おはよう！\n今日もがんばろー」", "image": "/images/characters/recept/laugh.png" },
+          "data": {
+            "text": "「おはよう！\n今日もがんばろー」",
+            "image": "/images/characters/recept/laugh.png"
+          },
           "next": "event2"
         },
         {
           "id": "event2",
           "type": "message",
-          "data": { "text": "「つぎのセリフ」", "image": "/images/characters/recept/laugh.png" }
+          "data": {
+            "text": "「つぎのセリフ」",
+            "image": "/images/characters/recept/laugh.png"
+          }
         },
         {
           "id": "click1",
           "type": "message",
-          "data": { "text": "「クリックしたときのセリフ」", "image": "/images/characters/recept/laugh.png" }
+          "data": {
+            "text": "「クリックしたときのセリフ」",
+            "image": "/images/characters/recept/laugh.png"
+          }
         }
       ],
-      "cards": []
+      "cards": [
+        {
+          "name": "宿の娘",
+          "src": "/images/characters/recept/laugh.png",
+          "x": 100,
+          "y": 50,
+          "clickEventId": "click1"
+        }
+      ]
     }
   ]
 }

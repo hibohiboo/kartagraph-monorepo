@@ -19,7 +19,15 @@ const scenario = {
           data: { text: 'text2', image: 'image1' },
         },
       ],
-      cards: [],
+      cards: [
+        {
+          name: 'cardName',
+          src: '/cardImage.png',
+          x: 100,
+          y: 50,
+          clickEventId: 'event2',
+        },
+      ],
     },
   ],
 };
@@ -34,6 +42,15 @@ describe('createResult', () => {
       payload: {
         background: { src: 'bg1' },
         message: { text: 'text1', image: 'image1' },
+        cards: [
+          {
+            name: 'cardName',
+            src: '/cardImage.png',
+            x: 100,
+            y: 50,
+            clickEventId: 'event2',
+          },
+        ],
       },
     });
   });

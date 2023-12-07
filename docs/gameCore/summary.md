@@ -23,6 +23,8 @@ jsonPath|説明
 .scenes[].cards[].id|カードID
 .scenes[].cards[].name|カード名
 .scenes[].cards[].image|カード画像
+.scenes[].cards[].x|カード表示位置横方向
+.scenes[].cards[].y|カード表示位置縦方向
 .scenes[].cards[].clickEventId|カードクリック時のイベント
 
 ## イベントデータ
