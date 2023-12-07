@@ -3,14 +3,12 @@ import {
   updateNextAtom,
 } from '@kartagraph-editor/store/scenario/game';
 import { createStore } from 'jotai';
+import { defaultScene } from './template/defaultScene';
 
 describe('updateNextAtom', () => {
   test('messageコマンドでmessageのみ更新できること', () => {
     const store = createStore();
-    store.set(sceneDataAtom, {
-      message: { text: `1`, image: '/A.png' },
-      background: { src: '/BG2.png' },
-    });
+    store.set(sceneDataAtom, defaultScene);
     store.set(updateNextAtom, {
       command: 'message',
       payload: { text: `2`, image: '/B.png' },
@@ -21,10 +19,7 @@ describe('updateNextAtom', () => {
   });
   test('waitコマンドでmessageがundefinedになること', () => {
     const store = createStore();
-    store.set(sceneDataAtom, {
-      message: { text: `1`, image: '/A.png' },
-      background: { src: '/BG2.png' },
-    });
+    store.set(sceneDataAtom, defaultScene);
     store.set(updateNextAtom, {
       command: 'wait',
     });

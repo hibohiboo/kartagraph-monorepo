@@ -14,6 +14,7 @@ test('ベースパスを付与できること', () => {
     background: {
       src: '/images/backgrounds/adv_inn_2.png',
     },
+    cards: [],
   }); // 初期値を設定
   const scene = store.get(sceneAtom);
 
