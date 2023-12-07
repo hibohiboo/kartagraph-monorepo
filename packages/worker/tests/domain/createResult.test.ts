@@ -34,11 +34,11 @@ const scenario = {
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
     const ret = createResult({
-      command: 'init',
+      command: 'initScenario',
       payload: JSON.stringify(scenario),
     });
     expect(ret).toEqual({
-      command: 'init',
+      command: 'initScenario',
       payload: {
         background: { src: 'bg1' },
         message: { text: 'text1', image: 'image1' },
@@ -59,7 +59,7 @@ describe('createResult', () => {
     test('nextコマンドの場合、次のイベントを呼び出す(message)', () => {
       // シナリオ読み込み
       createResult({
-        command: 'init',
+        command: 'initScenario',
         payload: JSON.stringify(scenario),
       });
       const ret = createResult({ command: 'next' });
@@ -71,7 +71,7 @@ describe('createResult', () => {
     test('nextコマンドで次のコマンドがない場合、waitが返る', () => {
       // シナリオ読み込み
       createResult({
-        command: 'init',
+        command: 'initScenario',
         payload: JSON.stringify(scenario),
       });
       createResult({ command: 'next' });
@@ -81,7 +81,7 @@ describe('createResult', () => {
   });
   test('triggerコマンドの場合、指定されたイベントを呼び出す', () => {
     createResult({
-      command: 'init',
+      command: 'initScenario',
       payload: JSON.stringify(scenario),
     });
     const ret = createResult({ command: 'trigger', payload: 'event2' });

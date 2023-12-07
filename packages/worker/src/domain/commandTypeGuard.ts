@@ -1,14 +1,14 @@
 import {
   GameCoreWorkerMessage,
-  InitCommannd,
+  InitScenarioCommannd,
   NextCommannd,
   TriggerCommannd,
 } from '@kartagraph-worker/types';
 
-export const isInitCommand = (
+export const isInitScenarioCommand = (
   message: GameCoreWorkerMessage,
-): message is InitCommannd => {
-  return message.command === 'init';
+): message is InitScenarioCommannd => {
+  return message.command === 'initScenario';
 };
 export const isNextCommand = (
   message: GameCoreWorkerMessage,

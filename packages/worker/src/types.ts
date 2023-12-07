@@ -18,12 +18,12 @@ export interface Scene {
 }
 
 export interface GameCoreWorkerMessage {
-  command: 'init' | 'next' | 'trigger';
+  command: 'initScenario' | 'next' | 'trigger';
   payload?: unknown;
 }
 
-export interface InitCommannd {
-  command: 'init';
+export interface InitScenarioCommannd {
+  command: 'initScenario';
   payload: string;
 }
 export interface NextCommannd {

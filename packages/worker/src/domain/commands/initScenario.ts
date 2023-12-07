@@ -7,7 +7,7 @@ import {
   setScenario,
 } from '../store';
 
-export const init = (scenarioJson: string) => {
+export const initScenario = (scenarioJson: string) => {
   const scenario: Scenario = JSON.parse(scenarioJson);
   setScenario(scenario);
   const currentScene = selectFirstScene(scenario);
@@ -27,7 +27,7 @@ export const init = (scenarioJson: string) => {
     cards: currentScene.cards ?? [],
   };
   return {
-    command: 'init',
+    command: 'initScenario',
     payload,
   };
 };

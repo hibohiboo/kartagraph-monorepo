@@ -6,7 +6,7 @@ import json from '../data/scenario.json';
 export const useGameCoreHooks = () => {
   const [, setMessage] = useAtom(coreAtom);
   useEffect(() => {
-    setMessage({ command: 'init', payload: JSON.stringify(json) });
+    setMessage({ command: 'initScenario', payload: JSON.stringify(json) });
   }, []);
   return {};
 };

@@ -9,7 +9,7 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   const worker = new GameCoreWorker(); // worker読み込み
   worker.onmessage = (event) => {
     const data = event.data;
-    if (data.command === 'init') {
+    if (data.command === 'initScenario') {
       gameCoreStore.set(sceneDataAtom, data.payload);
       return;
     }
