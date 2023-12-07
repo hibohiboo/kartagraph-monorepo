@@ -18,7 +18,7 @@ export interface Scene {
 }
 
 export interface GameCoreWorkerMessage {
-  command: 'init' | 'next';
+  command: 'init' | 'next' | 'trigger';
   payload?: unknown;
 }
 
@@ -29,7 +29,11 @@ export interface InitCommannd {
 export interface NextCommannd {
   command: 'next';
 }
-type EventId = string;
+export interface TriggerCommannd {
+  command: 'trigger';
+  payload: EventId;
+}
+export type EventId = string;
 type SceneId = string;
 type CardId = string;
 type ImageSrc = string;

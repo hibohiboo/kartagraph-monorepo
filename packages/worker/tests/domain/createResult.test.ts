@@ -54,26 +54,40 @@ describe('createResult', () => {
       },
     });
   });
-  test('nextコマンドの場合、次のイベントを呼び出す(message)', () => {
-    // シナリオ読み込み
+
+  describe('next', () => {
+    test('nextコマンドの場合、次のイベントを呼び出す(message)', () => {
+      // シナリオ読み込み
+      createResult({
+        command: 'init',
+        payload: JSON.stringify(scenario),
+      });
+      const ret = createResult({ command: 'next' });
+      expect(ret).toEqual({
+        command: 'message',
+        payload: { text: 'text2', image: 'image1' },
+      });
+    });
+    test('nextコマンドで次のコマンドがない場合、waitが返る', () => {
+      // シナリオ読み込み
+      createResult({
+        command: 'init',
+        payload: JSON.stringify(scenario),
+      });
+      createResult({ command: 'next' });
+      const ret = createResult({ command: 'next' });
+      expect(ret).toEqual({ command: 'wait' });
+    });
+  });
+  test('triggerコマンドの場合、指定されたイベントを呼び出す', () => {
     createResult({
       command: 'init',
       payload: JSON.stringify(scenario),
     });
-    const ret = createResult({ command: 'next' });
+    const ret = createResult({ command: 'trigger', payload: 'event2' });
     expect(ret).toEqual({
       command: 'message',
       payload: { text: 'text2', image: 'image1' },
     });
-  });
-  test('nextコマンドで次のコマンドがない場合、waitが返る', () => {
-    // シナリオ読み込み
-    createResult({
-      command: 'init',
-      payload: JSON.stringify(scenario),
-    });
-    createResult({ command: 'next' });
-    const ret = createResult({ command: 'next' });
-    expect(ret).toEqual({ command: 'wait' });
   });
 });

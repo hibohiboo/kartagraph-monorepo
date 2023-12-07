@@ -35,7 +35,10 @@ export const sceneAtom = atom((get) => {
       ...card,
       src: getSrc(card.src),
       onClick: () => {
-        console.log(card.clickEventId);
+        gameCoreStore.set(coreAtom, {
+          command: 'trigger',
+          payload: card.clickEventId,
+        });
       },
     })),
     onClickMessage: () => {

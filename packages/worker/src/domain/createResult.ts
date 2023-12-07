@@ -1,8 +1,13 @@
 import { GameCoreWorkerMessage } from '@kartagraph-worker/types';
-import { isInitCommand, isNextCommand } from './commandTypeGuard';
+import {
+  isInitCommand,
+  isNextCommand,
+  isTriggerCommannd,
+} from './commandTypeGuard';
 import { setScenario } from './store';
 import { init } from './commands/init';
 import { next } from './commands/next';
+import { trigger } from './commands/trigger';
 
 export const createResult = (workerMessage: GameCoreWorkerMessage) => {
   if (isInitCommand(workerMessage)) {
@@ -12,5 +17,8 @@ export const createResult = (workerMessage: GameCoreWorkerMessage) => {
   }
   if (isNextCommand(workerMessage)) {
     return next();
+  }
+  if (isTriggerCommannd(workerMessage)) {
+    return trigger(workerMessage.payload);
   }
 };
