@@ -10,7 +10,7 @@ import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
 
 function App() {
   const vm = useEditorHooks();
-  const core = useGameCoreHooks();
+  useGameCoreHooks();
   return (
     <div>
       <Splitter>

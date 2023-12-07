@@ -25,6 +25,7 @@
   "setupFilesAfterEnv": [
     "./tests/jest.setup.ts"
   ],
+  "resolver": "<rootDir>/tests/jest.resolver.jsm",
   "globals": {
     "VITE_DEFINE_BASE_PATH": "editor"
   }
