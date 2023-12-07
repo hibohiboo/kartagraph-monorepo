@@ -1,8 +1,15 @@
 import { Scenario } from '@kartagraph-worker/types';
 import { selectFirstScene } from '../core';
-import { selectEvent, setCurrentEvent, setCurrentScene } from '../store';
+import {
+  selectEvent,
+  setCurrentEvent,
+  setCurrentScene,
+  setScenario,
+} from '../store';
 
-export const init = (scenario: Scenario) => {
+export const init = (scenarioJson: string) => {
+  const scenario: Scenario = JSON.parse(scenarioJson);
+  setScenario(scenario);
   const currentScene = selectFirstScene(scenario);
   if (currentScene == null) throw new Error('currentScene is null');
   setCurrentScene(currentScene);
