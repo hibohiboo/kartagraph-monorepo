@@ -16,6 +16,11 @@
           "id": "event2",
           "type": "message",
           "data": { "text": "「つぎのセリフ」", "image": "/images/characters/recept/laugh.png" }
+        },
+        {
+          "id": "click1",
+          "type": "message",
+          "data": { "text": "「クリックしたときのセリフ」", "image": "/images/characters/recept/laugh.png" }
         }
       ],
       "cards": []

@@ -35,6 +35,5 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   );
   return returnedAtom;
 }
-export const coreAtom = atomWithGameCoreWorker<GameCoreWorkerMessage | null>(
-  null,
-);
+type NullableMessage = GameCoreWorkerMessage | null;
+export const coreAtom = atomWithGameCoreWorker<NullableMessage>(null);
