@@ -6,6 +6,5 @@
     }
   },
   "include": ["src", "tests"],
-  "references": [{ "path": "./tsconfig.node.json" }],
   "extends": "@kartagraph/tsconfig",
 }
