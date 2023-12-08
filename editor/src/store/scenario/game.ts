@@ -13,10 +13,11 @@ export const updateNextAtom = atom(null, (get, set, update: NextResult) => {
     return;
   }
   if (update.command === 'message') {
+    const { text, image, select } = update.payload;
     set(sceneDataAtom, {
       ...beforeState,
-      message: update.payload,
-      select: update.payload.select,
+      message: { text, image },
+      select,
     });
     return;
   }
