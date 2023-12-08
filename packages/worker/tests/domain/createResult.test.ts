@@ -1,5 +1,5 @@
 import { createResult } from '@kartagraph-worker/domain/createResult';
-import { scenario, scenarioMessages } from './testData/scenario';
+import { scenario, scenarioMessages, scenarioTags } from './testData/scenario';
 
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
@@ -71,5 +71,14 @@ describe('createResult', () => {
       command: 'message',
       payload: { text: 'text2', image: 'image1' },
     });
+  });
+  test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
+    createResult({
+      command: 'initScenario',
+      payload: JSON.stringify(scenarioTags),
+    });
+    const ret = createResult({ command: 'next' });
+    expect(ret?.command).toBe('message');
+    expect(ret?.payload.text).toBe('c');
   });
 });

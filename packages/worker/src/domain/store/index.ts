@@ -28,3 +28,7 @@ export const selectEvent = (eventId: string) => {
   setCurrentEvent(nextEvent);
   return nextEvent;
 };
+const tags = [];
+export const setTag = (tag: string) => {
+  tags.push(tag);
+};

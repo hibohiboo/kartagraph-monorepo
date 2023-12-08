@@ -22,7 +22,7 @@ export interface Scene {
 }
 
 export interface GameCoreWorkerMessage {
-  command: 'initScenario' | 'next' | 'trigger';
+  command: 'initScenario' | 'next' | 'trigger' | 'addTag';
   payload?: unknown;
 }
 
@@ -41,7 +41,7 @@ export type EventId = string;
 type SceneId = string;
 type CardId = string;
 type ImageSrc = string;
-export type ResponseEventType = 'message' | 'select' | 'wait';
+export type ResponseEventType = 'message' | 'select' | 'wait' | 'addTag';
 export type SceneEvent = {
   id: EventId;
   type: ResponseEventType;
