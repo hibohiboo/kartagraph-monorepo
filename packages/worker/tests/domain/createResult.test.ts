@@ -72,13 +72,25 @@ describe('createResult', () => {
       payload: { text: 'text2', image: 'image1' },
     });
   });
-  test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
-    createResult({
-      command: 'initScenario',
-      payload: JSON.stringify(scenarioTags),
+  describe('Tag', () => {
+    test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
+      createResult({
+        command: 'initScenario',
+        payload: JSON.stringify(scenarioTags),
+      });
+      const ret = createResult({ command: 'next' });
+      expect(ret?.command).toBe('message');
+      expect(ret?.payload.text).toBe('c');
     });
-    const ret = createResult({ command: 'next' });
-    expect(ret?.command).toBe('message');
-    expect(ret?.payload.text).toBe('c');
+    test('tagを持っていた場合の分岐ができること', () => {
+      createResult({
+        command: 'initScenario',
+        payload: JSON.stringify(scenarioTags),
+      });
+      createResult({ command: 'next' });
+      const ret = createResult({ command: 'next' });
+      expect(ret?.command).toBe('message');
+      expect(ret?.payload.text).toBe('d');
+    });
   });
 });
