@@ -28,14 +28,7 @@
           "type": "message",
           "data": {
             "text": "「お風呂？ご飯？」",
-            "image": "/images/characters/recept/laugh.png"
-          },
-          "next": "select1"
-        },
-        {
-          "id": "select1",
-          "type": "select",
-          "data":{
+            "image": "/images/characters/recept/laugh.png",
             "select": [
               {
                 "label": "お風呂",
@@ -46,7 +39,8 @@
                 "next": "gohan"
               }
             ]
-          } 
+          },
+          "next": "select1"
         },
         {
           "id": "huro",
