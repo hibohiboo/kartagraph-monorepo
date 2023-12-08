@@ -99,11 +99,17 @@ export const scenarioTags = {
           id: 'event4',
           type: 'branch',
           data: { condition: 'hasTag', tag: 'キーコード', next: 'event5' },
+          next: 'event6',
         },
         {
           id: 'event5',
           type: 'message',
           data: { text: 'd', image: 'image2' },
+        },
+        {
+          id: 'event6',
+          type: 'message',
+          data: { text: 'e', image: 'image2' },
         },
       ],
       cards: [

@@ -82,15 +82,17 @@ describe('createResult', () => {
       expect(ret?.command).toBe('message');
       expect(ret?.payload.text).toBe('c');
     });
-    test('tagを持っていた場合の分岐ができること', () => {
-      createResult({
-        command: 'initScenario',
-        payload: JSON.stringify(scenarioTags),
+    describe('分岐', () => {
+      test('tagを持っていた場合の分岐ができること', () => {
+        createResult({
+          command: 'initScenario',
+          payload: JSON.stringify(scenarioTags),
+        });
+        createResult({ command: 'next' });
+        const ret = createResult({ command: 'next' });
+        expect(ret?.command).toBe('message');
+        expect(ret?.payload.text).toBe('d');
       });
-      createResult({ command: 'next' });
-      const ret = createResult({ command: 'next' });
-      expect(ret?.command).toBe('message');
-      expect(ret?.payload.text).toBe('d');
     });
   });
 });
