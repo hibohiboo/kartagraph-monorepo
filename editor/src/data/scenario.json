@@ -19,12 +19,48 @@
           "id": "event2",
           "type": "messages",
           "data": {
-            "texts": ["「つぎのセリフ」","「もうひとつ」"],
+            "texts": ["「あなたもお仕事ご苦労様です」", "「行ってらっしゃい！」"],
             "image": "/images/characters/recept/laugh.png"
           }
         },
         {
           "id": "click1",
+          "type": "branch",
+          "data": {
+            "condition": "hasTag",
+            "tag": "風呂",
+            "next": "お風呂どうだった"
+          },
+          "next": "mesicheck"
+        },
+        {
+          "id": "お風呂どうだった",
+          "type": "message",
+          "data": {
+            "text": "「お湯加減いかがでしたか」",
+            "image": "/images/characters/recept/laugh.png"
+          }
+        },
+        {
+          "id": "mesicheck",
+          "type": "branch",
+          "data": {
+            "condition": "hasTag",
+            "tag": "ご飯",
+            "next": "ご飯どうだった"
+          },
+          "next": "huromeshi"
+        },
+        {
+          "id": "ご飯どうだった",
+          "type": "message",
+          "data": {
+            "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
+            "image": "/images/characters/recept/laugh.png"
+          }
+        },
+        {
+          "id": "huromeshi",
           "type": "message",
           "data": {
             "text": "「お風呂？ご飯？」",
@@ -48,6 +84,14 @@
           "data": {
             "text": "「はい、バスタオル！」",
             "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "addHuroTag"
+        },
+        {
+          "id": "addHuroTag",
+          "type": "addTag",
+          "data": {
+            "name": "風呂"
           }
         },
         {
@@ -56,6 +100,14 @@
           "data": {
             "text": "「今日は揚げじゃがだよ！」",
             "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "addGohanTag"
+        },
+        {
+          "id": "addGohanTag",
+          "type": "addTag",
+          "data": {
+            "name": "ご飯"
           }
         }
       ],
