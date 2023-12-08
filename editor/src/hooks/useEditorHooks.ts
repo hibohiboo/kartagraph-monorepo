@@ -2,7 +2,6 @@ import {
   getRootDirectoryHandle,
   readDirectory,
 } from '@kartagraph-editor/domain/fileSystem';
-import { getSrc } from '@kartagraph-editor/domain/images/getSrc';
 import { fsNodeAtom } from '@kartagraph-editor/store/fileSystem/atoms';
 import { sceneAtom } from '@kartagraph-editor/store/scenario/game';
 import { useAtom } from 'jotai';

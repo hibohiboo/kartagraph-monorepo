@@ -1,7 +1,7 @@
+import GameCoreWorker from '@kartagraph-worker/gameCore.worker?worker'; // ?workerをつける
+import { GameCoreWorkerMessage } from '@kartagraph-worker/types';
 import { atom, createStore } from 'jotai';
 import { sceneDataAtom, updateNextAtom } from '../scenario/game';
-import { GameCoreWorkerMessage } from '@kartagraph-worker/types';
-import GameCoreWorker from '@kartagraph-worker/gameCore.worker?worker'; // ?workerをつける
 export const gameCoreStore = createStore();
 export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   const baseAtom = atom(initialValue);

@@ -1,7 +1,7 @@
+import { Provider } from 'jotai';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RoutesApp } from './router/RoutesApp';
-import { Provider } from 'jotai';
 import { gameCoreStore } from './store/worker/gameCore';
 
 import './index.css';

@@ -1,6 +1,6 @@
 import { getSrc } from '@kartagraph-editor/domain/images/getSrc';
-import { atom } from 'jotai';
 import { NextResult, Scene } from '@kartagraph-worker/types';
+import { atom } from 'jotai';
 import { coreAtom, gameCoreStore } from '../worker/gameCore';
 
 export const sceneDataAtom = atom<Scene>({
