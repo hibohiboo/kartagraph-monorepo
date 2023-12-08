@@ -3,6 +3,7 @@
   background-color: #333;
   display: flex;
   justify-content: center;
+  user-select: none;
 }
 .selectItemsWrapper {
   position: relative;
