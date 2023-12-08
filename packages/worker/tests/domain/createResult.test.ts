@@ -1,36 +1,6 @@
 import { createResult } from '@kartagraph-worker/domain/createResult';
-const scenario = {
-  firstSceneId: 'scene1',
-  scenes: [
-    {
-      id: 'scene1',
-      backgroundImage: 'bg1',
-      eventId: 'event1',
-      events: [
-        {
-          id: 'event1',
-          type: 'message',
-          data: { text: 'text1', image: 'image1' },
-          next: 'event2',
-        },
-        {
-          id: 'event2',
-          type: 'message',
-          data: { text: 'text2', image: 'image1' },
-        },
-      ],
-      cards: [
-        {
-          name: 'cardName',
-          src: '/cardImage.png',
-          x: 100,
-          y: 50,
-          clickEventId: 'event2',
-        },
-      ],
-    },
-  ],
-};
+import { scenario, scenarioMessages } from './testData/scenario';
+
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
     const ret = createResult({
@@ -77,6 +47,18 @@ describe('createResult', () => {
       createResult({ command: 'next' });
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({ command: 'wait' });
+    });
+    test('nextコマンドがmessagesの場合、messageをすべて流し終わってから次のイベントに遷移する', () => {
+      // シナリオ読み込み
+      createResult({
+        command: 'initScenario',
+        payload: JSON.stringify(scenarioMessages),
+      });
+      const ret = createResult({ command: 'next' });
+      expect(ret).toEqual({
+        command: 'message',
+        payload: { text: 'b', image: 'image1' },
+      });
     });
   });
   test('triggerコマンドの場合、指定されたイベントを呼び出す', () => {

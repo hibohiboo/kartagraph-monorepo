@@ -17,9 +17,9 @@
         },
         {
           "id": "event2",
-          "type": "message",
+          "type": "messages",
           "data": {
-            "text": "「つぎのセリフ」",
+            "texts": ["「つぎのセリフ」","「もうひとつ」"],
             "image": "/images/characters/recept/laugh.png"
           }
         },

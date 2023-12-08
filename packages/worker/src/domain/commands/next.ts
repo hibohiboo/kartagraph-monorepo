@@ -1,4 +1,4 @@
-import { getCurrentEvent, getCurrentScene, selectEvent } from '../store';
+import { getCurrentEvent, selectEvent } from '../store';
 
 export const next = () => {
   const currentEvent = getCurrentEvent();
