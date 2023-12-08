@@ -1,8 +1,8 @@
 import { EventId } from '@kartagraph-worker/types';
-import { getCurrentScene, selectEvent, setCurrentEvent } from '../store';
+import { setCurrentEvent } from '../store';
+import { next } from './next';
 
 export const trigger = (eventId: EventId) => {
-  const nextEvent = selectEvent(eventId);
-  if (nextEvent == null) return { command: 'wait' };
-  return { command: nextEvent.type, payload: nextEvent.data };
+  setCurrentEvent({ next: eventId });
+  return next();
 };

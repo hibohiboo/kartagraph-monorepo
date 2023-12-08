@@ -28,7 +28,8 @@ export const selectEvent = (eventId: string) => {
   setCurrentEvent(nextEvent);
   return nextEvent;
 };
-const tags = [];
+const tags: string[] = [];
 export const setTag = (tag: string) => {
   tags.push(tag);
 };
+export const getTags = () => tags;

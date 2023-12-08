@@ -41,7 +41,12 @@ export type EventId = string;
 type SceneId = string;
 type CardId = string;
 type ImageSrc = string;
-export type ResponseEventType = 'message' | 'select' | 'wait' | 'addTag';
+export type ResponseEventType =
+  | 'message'
+  | 'select'
+  | 'wait'
+  | 'addTag'
+  | 'branch';
 export type SceneEvent = {
   id: EventId;
   type: ResponseEventType;
