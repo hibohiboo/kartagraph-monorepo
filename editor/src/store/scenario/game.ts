@@ -16,6 +16,10 @@ export const updateNextAtom = atom(null, (get, set, update: NextResult) => {
     set(sceneDataAtom, { ...beforeState, message: update.payload });
     return;
   }
+  if (update.command === 'select') {
+    set(sceneDataAtom, { ...beforeState, select: update.payload.select });
+    return;
+  }
 });
 export const sceneAtom = atom((get) => {
   const scene = get(sceneDataAtom);
@@ -47,5 +51,22 @@ export const sceneAtom = atom((get) => {
     onClickMessage: () => {
       gameCoreStore.set(coreAtom, { command: 'next' });
     },
+    selectItems: scene.select?.map((select) => (select ? select.label : '')),
+    onSelected: createOnSelect(scene),
   };
 });
+function createOnSelect(scene: Scene) {
+  if (scene.select == null) return undefined;
+
+  const onSelect = (selectedLabel: string) => {
+    const selected = scene.select?.find((s) => s.label === selectedLabel);
+    if (!selected) return undefined;
+    const beforeState = gameCoreStore.get(sceneDataAtom);
+    gameCoreStore.set(sceneDataAtom, { ...beforeState, select: undefined });
+    gameCoreStore.set(coreAtom, {
+      command: 'trigger',
+      payload: selected.next,
+    });
+  };
+  return onSelect;
+}

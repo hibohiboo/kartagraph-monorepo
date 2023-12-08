@@ -85,5 +85,5 @@ jsonPath|説明
 --|--
 .type|select
 .data.select[].label|選択肢名
-.data.select[].id|イベントID
+.data.select[].next|イベントID
 

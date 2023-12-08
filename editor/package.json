@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "ncu": "ncu -u",
     "test": "jest -c jest.config.json",
-    "watch-test": "jest -c jest.config.json --watch"
+    "watch": "jest -c jest.config.json --watch"
   },
   "dependencies": {
     "jotai": "^2.6.0",

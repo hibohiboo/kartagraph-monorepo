@@ -15,6 +15,10 @@ export interface Scene {
     src: string;
   };
   cards: Card[];
+  select?: {
+    label: string;
+    next: string;
+  }[];
 }
 
 export interface GameCoreWorkerMessage {
@@ -37,10 +41,10 @@ export type EventId = string;
 type SceneId = string;
 type CardId = string;
 type ImageSrc = string;
-type EventType = 'message' | 'messages';
+export type ResponseEventType = 'message' | 'select' | 'wait';
 export type SceneEvent = {
   id: EventId;
-  type: EventType;
+  type: ResponseEventType;
   data: any;
   next?: EventId;
 };
@@ -61,17 +65,3 @@ export interface Scenario {
   firstSceneId: SceneId;
   scenes: ScenarioScene[];
 }
-type MessageEvent = {
-  type: 'message';
-  data: {
-    text: string;
-    image?: ImageSrc;
-  };
-};
-type MessagesEvent = {
-  type: 'message';
-  data: {
-    texts: string[];
-    image?: ImageSrc;
-  };
-};

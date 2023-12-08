@@ -27,7 +27,40 @@
           "id": "click1",
           "type": "message",
           "data": {
-            "text": "「クリックしたときのセリフ」",
+            "text": "「お風呂？ご飯？」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "select1"
+        },
+        {
+          "id": "select1",
+          "type": "select",
+          "data":{
+            "select": [
+              {
+                "label": "お風呂",
+                "next": "huro"
+              },
+              {
+                "label": "ご飯",
+                "next": "gohan"
+              }
+            ]
+          } 
+        },
+        {
+          "id": "huro",
+          "type": "message",
+          "data": {
+            "text": "「はい、バスタオル！」",
+            "image": "/images/characters/recept/laugh.png"
+          }
+        },
+        {
+          "id": "gohan",
+          "type": "message",
+          "data": {
+            "text": "「今日は揚げじゃがだよ！」",
             "image": "/images/characters/recept/laugh.png"
           }
         }

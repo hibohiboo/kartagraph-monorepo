@@ -1,6 +1,7 @@
+import { ResponseEventType } from '@kartagraph-worker/types';
 import { getCurrentEvent, selectEvent } from '../store';
 
-export const next = () => {
+export const next = (): { command: ResponseEventType; payload?: any } => {
   const currentEvent = getCurrentEvent();
   if (currentEvent?.next == null) return { command: 'wait' };
   const nextEvent = selectEvent(currentEvent.next);
