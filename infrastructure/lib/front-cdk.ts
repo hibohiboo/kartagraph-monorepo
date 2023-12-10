@@ -14,8 +14,10 @@ import {
   Function,
   FunctionCode,
   FunctionEventType,
+  BehaviorOptions,
+  IOrigin,
 } from 'aws-cdk-lib/aws-cloudfront';
-import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { HttpOrigin, S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import {
   CanonicalUserPrincipal,
   Effect,
@@ -23,8 +25,9 @@ import {
 } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
-
+import { Fn } from 'aws-cdk-lib';
 interface DeployPaths {
   path: string;
   alias: string;
@@ -38,6 +41,9 @@ interface Props extends cdk.StackProps {
   distributionName: string;
   projectNameTag: string;
   subDirectoryPath: DeployPaths[];
+  ssmAPIGWUrlKey: string;
+  apiVersion: string;
+  xAPIKey: string;
 }
 const defaultPolicyOptionComment = 'カルタグラフ デフォルトポリシー';
 const dataPolicyOptionComment = 'カルタグラフ データ部用ポリシー';
@@ -124,11 +130,7 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
   private createCloudFront(
     bucket: Bucket,
     identity: OriginAccessIdentity,
-    props: {
-      defaultCachePolicyName: string;
-      distributionName: string;
-      functionName: string;
-    },
+    props: Props,
   ) {
     const { defaultCachePolicyName, distributionName } = props;
     const defaultPolicyOption = {
@@ -154,24 +156,7 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     });
 
     const responseHeadersPolicy = this.createResponseHeadersPolicy();
-    const additionalBehaviors = {
-      'data/*': {
-        origin,
-        allowedMethods: AllowedMethods.ALLOW_ALL,
-        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        cachePolicy: new CachePolicy(
-          this,
-          `${distributionName}-data-cache-policy`,
-          {
-            cachePolicyName: `${distributionName}-data-cache-cache-policy`,
-            comment: dataPolicyOptionComment,
-            defaultTtl: cdk.Duration.seconds(0),
-            maxTtl: cdk.Duration.seconds(10),
-            headerBehavior: CacheHeaderBehavior.allowList('content-type'),
-          },
-        ),
-      },
-    };
+    const additionalBehaviors = this.createAdditionalBehaviors(origin, props);
     const d = new Distribution(this, distributionName, {
       comment: distributionComment,
       defaultRootObject: '/index.html',
@@ -251,6 +236,73 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       },
     );
     return responseHeadersPolicy;
+  }
+  private createAdditionalBehaviors(
+    origin: IOrigin,
+    props: Props,
+  ): Record<string, BehaviorOptions> {
+    const additionalBehaviors = {
+      [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
+      'data/*': this.createAdditionBehaviorForData(origin, props),
+    };
+    return additionalBehaviors;
+  }
+  private createAdditionBehaviorForData(
+    origin: IOrigin,
+    props: Props,
+  ): BehaviorOptions {
+    return {
+      origin,
+      allowedMethods: AllowedMethods.ALLOW_ALL,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      cachePolicy: new CachePolicy(
+        this,
+        `${props.distributionName}-data-cache-policy`,
+        {
+          cachePolicyName: `${props.distributionName}-data-cache-cache-policy`,
+          comment: dataPolicyOptionComment,
+          // defaultTtl: cdk.Duration.seconds(0),
+          // maxTtl: cdk.Duration.seconds(10),
+          headerBehavior: CacheHeaderBehavior.allowList('content-type'),
+        },
+      ),
+    };
+  }
+  private createAdditionBehaviorForAPIGW(props: Props): BehaviorOptions {
+    const restApiUrl = StringParameter.valueForStringParameter(
+      this,
+      props.ssmAPIGWUrlKey,
+    );
+    const apiEndPointUrlWithoutProtocol = Fn.select(
+      1,
+      Fn.split('://', restApiUrl),
+    );
+    const apiEndPointDomainName = Fn.select(
+      0,
+      Fn.split('/', apiEndPointUrlWithoutProtocol),
+    );
+    // accessControlAllowOrigins
+    const ret: BehaviorOptions = {
+      origin: new HttpOrigin(apiEndPointDomainName, {
+        customHeaders: { 'x-api-key': props.xAPIKey },
+      }),
+      allowedMethods: AllowedMethods.ALLOW_ALL,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+
+      cachePolicy: new CachePolicy(
+        this,
+        `${props.distributionName}-rest-api-cache-policy`,
+        {
+          cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
+          comment: 'CloudFront + ApiGateway用ポリシー',
+          headerBehavior: CacheHeaderBehavior.allowList(
+            'x-api-key',
+            'content-type',
+          ),
+        },
+      ),
+    };
+    return ret;
   }
 
   private deployS3(
