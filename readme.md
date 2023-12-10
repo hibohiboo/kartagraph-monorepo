@@ -1,3 +1,5 @@
+<div><img src="./docs/astro/public/main.png" /></div>
+
 ## カルタグラフ
 https://github.com/hibohiboo/kartagraph-monorepo/issues
 https://github.com/users/hibohiboo/projects/3/views/1
@@ -6,20 +8,18 @@ https://d39tlgyf23zo7h.cloudfront.net/app/
 project-root/
 │
 ├── backend/              (バックエンドアプリケーションのソースコード)
-├── frontend/             (フロントエンドアプリケーションのソースコード)
-│   ├── src/              (フロントエンドのソースコード)
+├── app/                  (フロントエンドアプリケーションのソースコード)
+
 ├── infrastructure/       (AWSインフラストラクチャコード)
 │   ├── lib/    (AWS CloudFormationテンプレート)
 │   ├── bin/           (デプロイスクリプトやAWS CLIコマンド)
 │   ├── package.json   (デプロイ用npm scripts)
 │
 ├── docs/                  (プロジェクト全体のドキュメント)
-│     ├── contents 
-│       ├── backend-api.md    (バックエンドAPIの仕様)
-│       ├── frontend-doc.md   (フロントエンドの仕様)
-│       ├── deployment.md     (AWSデプロイの手順)
-│       ├── overall-doc.md    (プロジェクト全体の説明とガイド)
-│
+│     ├── gamecore 
+│       ├── summary.md      (フロントエンドゲームロジックの仕様)
+│     ├── frontend.md       (フロントエンドの仕様)
+│     ├── backend.md        (バックエンドAPIの仕様)│
 ├── README.md             (プロジェクト全体の説明と導入ガイド)
 ├── package.json          (ルートの依存関係と設定)
 ├── packages
