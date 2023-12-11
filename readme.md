@@ -1,22 +1,28 @@
-<div><img src="./docs/astro/public/main.png" /></div>
+<div><img src="./docs/assets/images/demo.png" /></div>
 
 ## カルタグラフ
-https://github.com/hibohiboo/kartagraph-monorepo/issues
-https://github.com/users/hibohiboo/projects/3/views/1
-https://d39tlgyf23zo7h.cloudfront.net/app/
+[カルタグラフ - app](https://d39tlgyf23zo7h.cloudfront.net/app/)  
 
+[openapi backend](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-openapi/)  
+[jest-report packages/worker](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-worker/jest.html)  
+[storybook packages/ui](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-components/)  
+
+[wiki](https://github.com/hibohiboo/kartagraph-monorepo/wiki/%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E3%82%A8%E3%83%B3%E3%83%89)  
+[Backlogs](https://github.com/hibohiboo/kartagraph-monorepo/issues)  
+[Projects](https://github.com/users/hibohiboo/projects/3/views/1)  
+
+```
 project-root/
 │
 ├── backend/              (バックエンドアプリケーションのソースコード)
 ├── app/                  (フロントエンドアプリケーションのソースコード)
-
 ├── infrastructure/       (AWSインフラストラクチャコード)
 │   ├── lib/    (AWS CloudFormationテンプレート)
 │   ├── bin/           (デプロイスクリプトやAWS CLIコマンド)
 │   ├── package.json   (デプロイ用npm scripts)
 │
 ├── docs/                  (プロジェクト全体のドキュメント)
-│     ├── gamecore 
+│     ├── gameCore 
 │       ├── summary.md      (フロントエンドゲームロジックの仕様)
 │     ├── frontend.md       (フロントエンドの仕様)
 │     ├── backend.md        (バックエンドAPIの仕様)│
@@ -24,6 +30,8 @@ project-root/
 ├── package.json          (ルートの依存関係と設定)
 ├── packages
 
+
+```
 # プロジェクト情報
 
 - **名前**: kartagraph-monorepo
