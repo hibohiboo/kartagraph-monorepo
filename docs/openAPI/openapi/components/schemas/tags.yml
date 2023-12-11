@@ -1,0 +1,15 @@
+type: object
+properties:
+  id:
+    type: string
+    description: シナリオID(UUID)
+    example: "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+  userId:
+    type: string
+    description: ユーザID(Firebase Authのuid)
+    example: "33fCzdRoHwgB2BXX5ttxbEJPYtM2"
+  tags:
+    type: array
+    description: タグリスト
+    items:
+      $ref: ./tag.yml

@@ -1,0 +1,12 @@
+type: object
+properties:
+  tagName:
+    type: string
+    description: タグ名
+    example: "シナリオ開始"
+  userCount:
+    type: number
+    description: タグを取得したユーザの人数
+    example: 10
+
+

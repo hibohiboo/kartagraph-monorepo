@@ -1,0 +1,27 @@
+openapi: 3.1.0
+info:
+  version: 0.0.1
+  title: カルタグラフ
+  description: カルタグラフ用API
+
+  contact:
+    name: hibohiboo
+    url: https://twitter.com/hibohiboo
+
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+
+paths:
+  /v1/api/tags:
+    $ref: paths/tags.yml
+  /v1/api/scenario/{scenarioId}/tags:
+    $ref: paths/scenario.yml
+
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: components/schemas/apiKey.yml
+

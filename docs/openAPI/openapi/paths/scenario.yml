@@ -1,0 +1,23 @@
+get:
+  operationId: getScenarioTags
+  summary: シナリオタグサマリー取得
+  description: >-
+    シナリオタグの集計結果を取得します。
+    ただし、tag_typeがsecretのタグは集計対象外です。
+  security:
+    - ApiKeyAuth: [ ]
+  parameters:
+    - in: path
+      name: scenarioId
+      schema:
+        type: string
+        example: 7d8bb386-0f86-4dff-be34-86bb2f55b366
+  responses:
+    200:
+      description: シナリオタグサマリー取得
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/scenario-tags-response.yml

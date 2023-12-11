@@ -1,0 +1,13 @@
+type: object
+properties:
+  name:
+    type: string
+    description: タグ名
+    example: "シナリオ開始"
+  type:
+    type: string
+    description: タグ種別
+    example:
+      - scenario
+      - global
+      - secret

@@ -1,0 +1,15 @@
+put:
+  operationId: tags
+  summary: タグ情報送信
+  description: >-
+    ユーザが獲得したタグを送付し、DBに保存します。
+  security:
+    - ApiKeyAuth: [ ]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/tags.yml
+  responses:
+    200:
+      description: タグ履歴作成/更新

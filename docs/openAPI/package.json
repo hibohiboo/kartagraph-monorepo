@@ -1,0 +1,14 @@
+{
+  "name": "kartagraph-api",
+  "version": "0.0.1",
+  "dependencies": {
+    "@redocly/cli": "1.5.0"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "redocly preview-docs",
+    "test": "redocly lint",
+    "bundle": "redocly bundle -o dist/bundle.yaml",
+    "build": "redocly build-docs core@v1 --disableGoogleFont -o ../../dist/public/kartagraph-openapi/index.html"
+  }
+}
