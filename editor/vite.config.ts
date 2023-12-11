@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite';
+/* eslint-disable turbo/no-undeclared-env-vars */
+import path from 'path';
 import react from '@vitejs/plugin-react-swc';
 import dotenv from 'dotenv';
-import path from 'path';
+import { defineConfig } from 'vite';
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: './.env.local' });
 
 export default defineConfig({
   plugins: [react()],
