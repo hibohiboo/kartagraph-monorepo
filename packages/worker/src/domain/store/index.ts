@@ -1,15 +1,25 @@
-import { Scenario, ScenarioScene, SceneEvent } from '@kartagraph-worker/types';
+import {
+  BaseEvent,
+  Scenario,
+  ScenarioScene,
+  SceneEvent,
+} from '@kartagraph-worker/types';
 
 let scenario: Scenario | null = null;
 let currentScene: ScenarioScene | null = null;
-let currentEvent: SceneEvent | null | undefined = null;
+let currentEvent: BaseEvent | SceneEvent | null | undefined = null;
+let currentUserId: string | null = null;
+export const setCurrentUserId = (newCurrentUserId: string) => {
+  currentUserId = newCurrentUserId;
+};
+export const getCurrentUserId = () => currentUserId;
 export const setScenario = (newScenario: Scenario) => {
   scenario = newScenario;
 };
-export const setCurrentScene = (newCurrentScene: any) => {
+export const setCurrentScene = (newCurrentScene: ScenarioScene) => {
   currentScene = newCurrentScene;
 };
-export const setCurrentEvent = (newCurrentEvent: any) => {
+export const setCurrentEvent = (newCurrentEvent: BaseEvent | undefined) => {
   currentEvent = newCurrentEvent;
 };
 export const getScenario = () => scenario;

@@ -28,7 +28,10 @@ export interface GameCoreWorkerMessage {
 
 export interface InitScenarioCommannd {
   command: 'initScenario';
-  payload: string;
+  payload: {
+    scenarioJson: string;
+    userId: string;
+  };
 }
 export interface NextCommannd {
   command: 'next';
@@ -46,13 +49,15 @@ export type ResponseEventType =
   | 'select'
   | 'wait'
   | 'addTag'
-  | 'branch';
+  | 'branch'
+  | 'endScenario';
+export type BaseEvent = { next?: EventId };
 export type SceneEvent = {
   id: EventId;
   type: ResponseEventType;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
-  next?: EventId;
-};
+} & BaseEvent;
 export type ScenarioScene = {
   id: SceneId;
   eventId?: EventId;
@@ -66,6 +71,7 @@ export type ScenarioScene = {
   };
 };
 export interface Scenario {
+  id: string;
   title: string;
   firstSceneId: SceneId;
   scenes: ScenarioScene[];

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@kartagraph-backend/*": ["./src/*"],
+      "@kartagraph-types/*": ["../types/src/*"]
+    }
+  },
+  "include": ["src", "tests","../types"],
+  "extends": "@kartagraph/tsconfig",
+}

@@ -19,6 +19,8 @@
   "workspaces": [
     "packages/*",
     "app",
-    "editor"
+    "editor",
+    "types",
+    "backend"
   ]
 }

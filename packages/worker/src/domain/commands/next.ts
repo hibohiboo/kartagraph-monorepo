@@ -1,7 +1,15 @@
 import { ResponseEventType } from '@kartagraph-worker/types';
-import { getCurrentEvent, getTags, selectEvent, setTag } from '../store';
+import {
+  getCurrentEvent,
+  getCurrentUserId,
+  getScenario,
+  getTags,
+  selectEvent,
+  setTag,
+} from '../store';
 import { trigger } from './trigger';
-
+import type { TagHistory } from '@kartagraph-types/index';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const next = (): { command: ResponseEventType; payload?: any } => {
   const currentEvent = getCurrentEvent();
   if (currentEvent?.next == null) return { command: 'wait' };
@@ -22,6 +30,21 @@ export const next = (): { command: ResponseEventType; payload?: any } => {
     }
     return next();
   }
+  if (nextEvent.type === 'endScenario') {
+    const scenarioId = getScenario()!.id;
+    const userId = getCurrentUserId()!;
+    const tagHistory: TagHistory = {
+      scenarioId,
+      tags: getTags().map((tag) => ({ tagName: tag, tagType: 'scenario' })),
+      userId,
+    };
+    fetch(`/v1/api/scenario/${scenarioId}/tags`, {
+      method: 'PUT',
+      body: JSON.stringify(tagHistory),
+    });
+    return { command: 'endScenario' };
+  }
+
   return { command: nextEvent.type, payload: nextEvent.data };
 };
 export type NextResult = ReturnType<typeof next>;

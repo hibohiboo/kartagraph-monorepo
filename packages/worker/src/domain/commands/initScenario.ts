@@ -1,20 +1,23 @@
-import { Scenario } from '@kartagraph-worker/types';
+import { InitScenarioCommannd, Scenario } from '@kartagraph-worker/types';
 import { selectFirstScene } from '../core';
 import {
   selectEvent,
   setCurrentEvent,
   setCurrentScene,
+  setCurrentUserId,
   setScenario,
 } from '../store';
 
 const createScenario = (json: string) => {
-  const scenario = JSON.parse(json);
+  const scenario = JSON.parse(json) as Scenario;
   return {
     ...scenario,
-    scenes: scenario.scenes.map((scene: any) => ({
+    scenes: scenario.scenes.map((scene) => ({
       ...scene,
-      events: scene.events.flatMap((event: any) => {
-        if (event.type === 'messages') {
+      events: scene.events.flatMap((event) => {
+        // TODO: リファクタしたい
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        if ((event.type as any) === 'messages') {
           const textsLastIndex = event.data.texts.length - 1;
           return event.data.texts.map((text: string, i: number) => ({
             id: i === 0 ? event.id : `${event.id}-${i}`,
@@ -29,7 +32,11 @@ const createScenario = (json: string) => {
   };
 };
 
-export const initScenario = (scenarioJson: string) => {
+export const initScenario = (
+  commandPayload: InitScenarioCommannd['payload'],
+) => {
+  setCurrentUserId(commandPayload.userId);
+  const scenarioJson = commandPayload.scenarioJson;
   const scenario: Scenario = createScenario(scenarioJson);
   setScenario(scenario);
   const currentScene = selectFirstScene(scenario);

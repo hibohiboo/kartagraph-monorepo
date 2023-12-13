@@ -1,4 +1,4 @@
-import { Scenario, SceneEvent } from '@kartagraph-worker/types';
+import { Scenario } from '@kartagraph-worker/types';
 
 export const selectFirstScene = (scenario: Scenario) => {
   return scenario.scenes.find((scene) => {

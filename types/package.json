@@ -1,0 +1,6 @@
+{
+  "name": "@types/kartagraph",
+  "version": "0.0.0",
+  "types":"src/index.d.ts",
+  "private":true
+}
