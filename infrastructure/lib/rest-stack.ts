@@ -12,6 +12,7 @@ interface Props extends core.StackProps {
   ssmAPIGWUrlKey: string;
   apiVersion: string;
   neonEndpoint: string;
+  cloundFrontDomain: string;
 }
 const HANDLER_DIR = '../backend/src/handlers/api';
 export class KartaGraphRESTAPIStack extends core.Stack {
@@ -25,10 +26,13 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       'method.request.header.Content-Type': true,
     });
 
-    const dbEnv = { DATABASE_URL: props.neonEndpoint }; // NEONへのアクセスを行うConnection String
+    const commonEnv = {
+      DATABASE_URL: props.neonEndpoint,
+      CLOUND_FRONT_DOMAIN: props.cloundFrontDomain,
+    }; // NEONへのアクセスを行うConnection String
     const defaultLambdaProps = this.createLambdaProps({
       ssmKeyForLambdaLayerArn: props.ssmLambdaLayerKey,
-      environment: { ...dbEnv },
+      environment: { ...commonEnv },
       timeoutSec: 30, // 外部エンドポイントを経由してJSONを処理するため3秒では足りない
     });
 

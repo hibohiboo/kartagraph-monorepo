@@ -12,6 +12,7 @@ const envList = [
   'SSM_PARAM_KEY_API_URL',
   'NEON_ENDPOINT',
   'REST_API_VERSION',
+  'CLOUND_FRONT_DOMAIN',
 ] as const;
 for (const key of envList) {
   if (!process.env[key]) throw new Error(`please add ${key} to .env`);
@@ -34,5 +35,6 @@ new KartaGraphRESTAPIStack(
     neonEndpoint: processEnv.NEON_ENDPOINT,
     projectId: processEnv.PROJECT_ID,
     apiVersion: processEnv.REST_API_VERSION,
+    cloundFrontDomain: processEnv.CLOUND_FRONT_DOMAIN,
   },
 );

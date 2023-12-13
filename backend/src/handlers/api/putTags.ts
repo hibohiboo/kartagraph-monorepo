@@ -9,6 +9,12 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
       body: JSON.stringify('body is requrired'),
     };
   }
+  if (event.headers.origin !== process.env.CLOUND_FRONT_DOMAIN) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify('access denied'),
+    };
+  }
   const tagHistory = JSON.parse(event.body) as TagHistory;
   const values = tagHistory.tags
     .map(
