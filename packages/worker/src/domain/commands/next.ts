@@ -38,7 +38,7 @@ export const next = (): { command: ResponseEventType; payload?: any } => {
       tags: getTags().map((tag) => ({ tagName: tag, tagType: 'scenario' })),
       userId,
     };
-    fetch(`/v1/api/scenario/${scenarioId}/tags`, {
+    fetch(`/v1/api/tags`, {
       method: 'PUT',
       body: JSON.stringify(tagHistory),
     });
