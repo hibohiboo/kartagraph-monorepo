@@ -1,11 +1,11 @@
 import { createResult } from '@kartagraph-worker/domain/createResult';
 import { scenario, scenarioMessages, scenarioTags } from './testData/scenario';
-
+const payload = { scenarioJson: JSON.stringify(scenario), userId: 'userId' };
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
     const ret = createResult({
       command: 'initScenario',
-      payload: JSON.stringify(scenario),
+      payload,
     });
     expect(ret).toEqual({
       command: 'initScenario',
@@ -30,7 +30,7 @@ describe('createResult', () => {
       // シナリオ読み込み
       createResult({
         command: 'initScenario',
-        payload: JSON.stringify(scenario),
+        payload,
       });
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({
@@ -42,7 +42,7 @@ describe('createResult', () => {
       // シナリオ読み込み
       createResult({
         command: 'initScenario',
-        payload: JSON.stringify(scenario),
+        payload: payload,
       });
       createResult({ command: 'next' });
       const ret = createResult({ command: 'next' });
@@ -52,7 +52,10 @@ describe('createResult', () => {
       // シナリオ読み込み
       createResult({
         command: 'initScenario',
-        payload: JSON.stringify(scenarioMessages),
+        payload: {
+          scenarioJson: JSON.stringify(scenarioMessages),
+          userId: 'userId',
+        },
       });
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({
@@ -64,7 +67,7 @@ describe('createResult', () => {
   test('triggerコマンドの場合、指定されたイベントを呼び出す', () => {
     createResult({
       command: 'initScenario',
-      payload: JSON.stringify(scenario),
+      payload,
     });
     const ret = createResult({ command: 'trigger', payload: 'event2' });
     expect(ret).toEqual({
@@ -76,7 +79,10 @@ describe('createResult', () => {
     test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
       createResult({
         command: 'initScenario',
-        payload: JSON.stringify(scenarioTags),
+        payload: {
+          scenarioJson: JSON.stringify(scenarioTags),
+          userId: 'userId',
+        },
       });
       const ret = createResult({ command: 'next' });
       expect(ret?.command).toBe('message');
@@ -86,7 +92,10 @@ describe('createResult', () => {
       test('tagを持っていた場合の分岐ができること', () => {
         createResult({
           command: 'initScenario',
-          payload: JSON.stringify(scenarioTags),
+          payload: {
+            scenarioJson: JSON.stringify(scenarioTags),
+            userId: 'userId',
+          },
         });
         createResult({ command: 'next' });
         const ret = createResult({ command: 'next' });
