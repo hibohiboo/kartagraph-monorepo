@@ -1,12 +1,11 @@
-import { Button } from 'primereact/button';
-import FileTree from '@kartagraph-editor/components/FileSystem/FileTree';
-import { Splitter, SplitterPanel } from 'primereact/splitter';
-
 import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePreviewer';
+import FileTree from '@kartagraph-editor/components/FileSystem/FileTree';
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
-import Card from '@kartagraph-ui/components/Card/Card';
 import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
+import Card from '@kartagraph-ui/components/Card/Card';
+import { Button } from 'primereact/button';
+import { Splitter, SplitterPanel } from 'primereact/splitter';
 
 function App() {
   const vm = useEditorHooks();
