@@ -7,5 +7,5 @@
     }
   },
   "include": ["src", "tests"],
-  "extends": "@kartagraph/tsconfig",
+  "extends": ["@kartagraph/tsconfig"]
 }

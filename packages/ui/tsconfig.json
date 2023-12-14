@@ -8,5 +8,5 @@
   },
   "include": ["src", "stories/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }],
-  "extends": "@kartagraph/tsconfig/react",
+  "extends": ["@kartagraph/tsconfig/react"],
 }

@@ -1,5 +1,5 @@
 {
-  "extends": "@kartagraph/tsconfig/react",
+  "extends": ["@kartagraph/tsconfig/react"],
   "include": ["src"],
   "compilerOptions": {
     "paths": {

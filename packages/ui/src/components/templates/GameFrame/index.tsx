@@ -1,8 +1,8 @@
-import styles from './index.module.css';
-import BaseWrapper from '../../atoms/BaseWrapper';
 import MessageWindow from '@kartagraph-ui/components/MessageWindow';
-import { useGetElementProperty } from './useGetElementProperty';
 import { useEffect, useRef, useState } from 'react';
+import BaseWrapper from '../../atoms/BaseWrapper';
+import styles from './index.module.css';
+import { useGetElementProperty } from './useGetElementProperty';
 
 // https://camchenry.com/blog/how-to-disable-ui-and-control-focus-with-the-inert-attribute
 declare module 'react' {
@@ -62,7 +62,7 @@ export function GameFrame(props: GameFrameProps) {
         {props.layerOverBackGround}
         <div
           className={styles.cardArea}
-          inert={!!props.message?.text ? 'inert' : undefined}
+          inert={props.message?.text ? 'inert' : undefined}
         >
           {props.children}
         </div>
