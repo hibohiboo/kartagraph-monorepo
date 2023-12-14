@@ -1,5 +1,5 @@
-import styles from './Top.module.css';
 import BaseWrapper from '../atoms/BaseWrapper';
+import styles from './Top.module.css';
 
 export default function Top({ children }: { children?: React.ReactNode }) {
   return (

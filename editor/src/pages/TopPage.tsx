@@ -6,6 +6,7 @@ import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
 import Card from '@kartagraph-ui/components/Card/Card';
 import { Button } from 'primereact/button';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
+import { Link } from 'react-router-dom';
 
 function App() {
   const vm = useEditorHooks();
@@ -34,6 +35,15 @@ function App() {
               />
             ))}
           />
+          <footer style={{ fontSize: '1rem', background: '#000' }}>
+            <Link to="/agreement" style={{ color: '#fff' }}>
+              利用規約
+            </Link>
+            &nbsp;&nbsp;
+            <Link to="/privacy-policy" style={{ color: '#fff' }}>
+              プライバシーポリシー
+            </Link>
+          </footer>
         </SplitterPanel>
         <SplitterPanel size={20}>
           <FilePreviewer />
