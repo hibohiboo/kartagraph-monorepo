@@ -42,7 +42,8 @@ export const next = (): { command: ResponseEventType; payload?: any } => {
       method: 'PUT',
       body: JSON.stringify(tagHistory),
     });
-    return { command: 'endScenario' };
+    const payload = { scenarioId };
+    return { command: 'endScenario', payload };
   }
 
   return { command: nextEvent.type, payload: nextEvent.data };

@@ -14,6 +14,21 @@ export const router = createBrowserRouter(
           path: '/',
           element: <TopPage />,
         },
+        {
+          path: '/scenario/:scenarioId/result',
+          loader: async ({ params }) => {
+            const data = await fetch(
+              `/v1/api/scenario/${params.scenarioId}/tags`,
+            );
+            const json = await data.json();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            return json.map((tag: any) => ({
+              tagName: tag.tag_name,
+              count: tag.count,
+            }));
+          },
+          element: <TopPage />,
+        },
       ],
       element: <RootLayout />,
     },

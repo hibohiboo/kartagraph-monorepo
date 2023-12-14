@@ -3,6 +3,8 @@ import { GameCoreWorkerMessage } from '@kartagraph-worker/types';
 import { atom, createStore } from 'jotai';
 import { sceneDataAtom, updateNextAtom } from '../scenario/game';
 export const gameCoreStore = createStore();
+export const scenarioStateAtom = atom<string>('init');
+export const scenarioIdAtom = atom<string>('');
 export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   const baseAtom = atom(initialValue);
 
@@ -11,6 +13,11 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
     const data = event.data;
     if (data.command === 'initScenario') {
       gameCoreStore.set(sceneDataAtom, data.payload);
+      return;
+    }
+    if (data.command === 'endScenario') {
+      gameCoreStore.set(scenarioStateAtom, 'endScenario');
+      gameCoreStore.set(scenarioIdAtom, data.payload.scenarioId);
       return;
     }
     gameCoreStore.set(updateNextAtom, data);
