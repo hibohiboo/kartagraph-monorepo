@@ -1,0 +1,16 @@
+.itemsWrapper {
+  margin-left: 20px;
+}
+.tagIcon {
+  margin-right: 0.5rem;
+}
+.tag {
+  display: flex;
+  align-items: center; 
+}
+.assertion{
+  margin-top: 5rem;
+}
+.assertion a {
+  color: white;
+}
