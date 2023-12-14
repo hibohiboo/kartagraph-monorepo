@@ -1,4 +1,5 @@
 import TopPage from '@kartagraph-editor/pages/TopPage';
+import ScenarioResultPage from '@kartagraph-editor/pages/scenario/ScenarioResultPage';
 import { PrivacyPolicy } from '@kartagraph-ui/components/static/PrivacyPolicy';
 import { Agreement } from '@kartagraph-ui/index';
 import { createBrowserRouter } from 'react-router-dom';
@@ -18,7 +19,7 @@ export const router = createBrowserRouter(
           path: '/scenario/:scenarioId/result',
           loader: async ({ params }) => {
             const data = await fetch(
-              `/v1/api/scenario/${params.scenarioId}/tags`,
+              `https://d39tlgyf23zo7h.cloudfront.net/v1/api/scenario/${params.scenarioId}/tags`,
             );
             const json = await data.json();
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +28,7 @@ export const router = createBrowserRouter(
               count: tag.count,
             }));
           },
-          element: <TopPage />,
+          element: <ScenarioResultPage />,
         },
       ],
       element: <RootLayout />,
