@@ -1,0 +1,131 @@
+{
+  "id":"sample",
+  "firstSceneId": "scene1",
+  "scenes": [
+    {
+      "id": "scene1",
+      "backgroundImage": "/images/backgrounds/adv_inn_2.png",
+      "eventId": "event1",
+      "events": [
+        {
+          "id": "event1",
+          "type": "message",
+          "data": {
+            "text": "「おはよう！\n今日もがんばろー」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "event2"
+        },
+        {
+          "id": "event2",
+          "type": "messages",
+          "data": {
+            "texts": ["「あなたもお仕事ご苦労様です」", "「行ってらっしゃい！」"],
+            "image": "/images/characters/recept/laugh.png"
+          }
+        },
+        {
+          "id": "click1",
+          "type": "branch",
+          "data": {
+            "condition": "hasTag",
+            "tag": "風呂",
+            "next": "お風呂どうだった"
+          },
+          "next": "mesicheck"
+        },
+        {
+          "id": "お風呂どうだった",
+          "type": "message",
+          "data": {
+            "text": "「お湯加減いかがでしたか」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next":"end"
+        },
+        {
+          "id": "mesicheck",
+          "type": "branch",
+          "data": {
+            "condition": "hasTag",
+            "tag": "ご飯",
+            "next": "ご飯どうだった"
+          },
+          "next": "huromeshi"
+        },
+        {
+          "id": "ご飯どうだった",
+          "type": "message",
+          "data": {
+            "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
+            "image": "/images/characters/recept/laugh.png"
+          },"next":"end"
+        },
+        {
+          "id": "huromeshi",
+          "type": "message",
+          "data": {
+            "text": "「お風呂？ご飯？」",
+            "image": "/images/characters/recept/laugh.png",
+            "select": [
+              {
+                "label": "お風呂",
+                "next": "huro"
+              },
+              {
+                "label": "ご飯",
+                "next": "gohan"
+              }
+            ]
+          },
+          "next": "select1"
+        },
+        {
+          "id": "huro",
+          "type": "message",
+          "data": {
+            "text": "「はい、バスタオル！」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "addHuroTag"
+        },
+        {
+          "id": "addHuroTag",
+          "type": "addTag",
+          "data": {
+            "name": "風呂"
+          }
+        },
+        {
+          "id": "gohan",
+          "type": "message",
+          "data": {
+            "text": "「今日は揚げじゃがだよ！」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "addGohanTag"
+        },
+        {
+          "id": "addGohanTag",
+          "type": "addTag",
+          "data": {
+            "name": "ご飯"
+          }
+        },
+        {
+          "id": "end",
+          "type": "endScenario"
+        }
+      ],
+      "cards": [
+        {
+          "name": "宿の娘",
+          "src": "/images/characters/recept/laugh.png",
+          "x": 100,
+          "y": 50,
+          "clickEventId": "click1"
+        }
+      ]
+    }
+  ]
+}
