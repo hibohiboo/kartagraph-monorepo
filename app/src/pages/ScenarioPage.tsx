@@ -5,16 +5,13 @@ import {
   scenarioStateAtom,
 } from '@kartagraph-app/store/worker/gameCore';
 import Card from '@kartagraph-ui/components/Card/Card';
-import { GameViewer } from '@kartagraph-ui/index';
+import { GameViewer, ToGithub } from '@kartagraph-ui/index';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 
 function ScenarioPage() {
-  console.log('ScenarioPage');
   const json = useLoaderData() as string;
-
-  console.log('json', json);
   useGameCoreHooks(json);
   const navigate = useNavigate();
   const [scenarioState] = useAtom(scenarioStateAtom);
@@ -32,13 +29,13 @@ function ScenarioPage() {
       style={{
         position: 'absolute',
         top: `${card.y}px`,
-        left: `${card.y}px`,
+        left: `${card.x}px`,
       }}
     />
   ));
   return (
     <div>
-      <GameViewer {...frame} {...cards}></GameViewer>
+      <GameViewer {...frame}>{cards}</GameViewer>
       <footer
         style={{
           position: 'absolute',
@@ -54,6 +51,7 @@ function ScenarioPage() {
         <Link to="/privacy-policy" style={{ color: '#fff' }}>
           プライバシーポリシー
         </Link>
+        <ToGithub />
       </footer>
     </div>
   );

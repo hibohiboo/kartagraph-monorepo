@@ -45,7 +45,7 @@ function App() {
                 style={{
                   position: 'absolute',
                   top: `${card.y}px`,
-                  left: `${card.y}px`,
+                  left: `${card.x}px`,
                 }}
               />
             ))}

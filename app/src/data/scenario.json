@@ -1,5 +1,5 @@
 {
-  "id":"sample",
+  "id":"doYouKnowCardWirth",
   "firstSceneId": "scene1",
   "scenes": [
     {
@@ -11,106 +11,177 @@
           "id": "event1",
           "type": "message",
           "data": {
-            "text": "「おはよう！\n今日もがんばろー」",
+            "text": "「いらっしゃいませ！」",
             "image": "/images/characters/recept/laugh.png"
           },
-          "next": "event2"
+          "next":"event2"
         },
         {
           "id": "event2",
-          "type": "messages",
-          "data": {
-            "texts": ["「あなたもお仕事ご苦労様です」", "「行ってらっしゃい！」"],
-            "image": "/images/characters/recept/laugh.png"
-          }
-        },
-        {
-          "id": "click1",
-          "type": "branch",
-          "data": {
-            "condition": "hasTag",
-            "tag": "風呂",
-            "next": "お風呂どうだった"
-          },
-          "next": "mesicheck"
-        },
-        {
-          "id": "お風呂どうだった",
           "type": "message",
           "data": {
-            "text": "「お湯加減いかがでしたか」",
-            "image": "/images/characters/recept/laugh.png"
-          },
-          "next":"end"
-        },
-        {
-          "id": "mesicheck",
-          "type": "branch",
-          "data": {
-            "condition": "hasTag",
-            "tag": "ご飯",
-            "next": "ご飯どうだった"
-          },
-          "next": "huromeshi"
-        },
-        {
-          "id": "ご飯どうだった",
-          "type": "message",
-          "data": {
-            "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
-            "image": "/images/characters/recept/laugh.png"
-          },"next":"end"
-        },
-        {
-          "id": "huromeshi",
-          "type": "message",
-          "data": {
-            "text": "「お風呂？ご飯？」",
+            "text": "「質問を3つさせてください。\n\nひとつめ、カードワースを知っていますか？」",
             "image": "/images/characters/recept/laugh.png",
             "select": [
               {
-                "label": "お風呂",
-                "next": "huro"
+                "label": "知っている",
+                "next": "カードワースを知っている"
               },
               {
-                "label": "ご飯",
-                "next": "gohan"
+                "label": "知らない",
+                "next": "カードワースを知らない"
               }
             ]
-          },
-          "next": "select1"
-        },
-        {
-          "id": "huro",
-          "type": "message",
-          "data": {
-            "text": "「はい、バスタオル！」",
-            "image": "/images/characters/recept/laugh.png"
-          },
-          "next": "addHuroTag"
-        },
-        {
-          "id": "addHuroTag",
-          "type": "addTag",
-          "data": {
-            "name": "風呂"
           }
         },
         {
-          "id": "gohan",
-          "type": "message",
-          "data": {
-            "text": "「今日は揚げじゃがだよ！」",
-            "image": "/images/characters/recept/laugh.png"
-          },
-          "next": "addGohanTag"
-        },
-        {
-          "id": "addGohanTag",
+          "id": "カードワースを知っている",
           "type": "addTag",
           "data": {
-            "name": "ご飯"
+            "name": "かつてリューンの街を訪ねた"
+          },
+          "next":"カードワースのコメント"
+        },
+        {
+          "id": "カードワースのコメント",
+          "type": "message",
+          "data": {
+            "text": "「いくつもの張り紙の依頼をこなしてきた冒険者なんですね」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next":"q2"
+        },
+        {
+          "id": "カードワースを知らない",
+          "type": "addTag",
+          "data": {
+            "name": "カードワースを知らない"
+          },
+          "next":"q2"
+        },
+        {
+          "id": "q2",
+          "type": "message",
+          "data": {
+            "text": "「2つ目の質問です。\nソロジャーナルを知っていますか？」",
+            "image": "/images/characters/recept/laugh.png",
+            "select": [
+              {
+                "label": "知っている",
+                "next": "ソロジャーナルを知っている"
+              },
+              {
+                "label": "なにそれ？",
+                "next": "ソロジャーナルを知らない"
+              }
+            ]
           }
+        },
+        {
+          "id": "ソロジャーナルを知っている",
+          "type": "addTag",
+          "data": {
+            "name": "ソロジャーナルを知っている"
+          },
+          "next":"ソロジャーナルを知っているコメント"
+        },
+        {
+          "id": "ソロジャーナルを知っているコメント",
+          "type": "message",
+          "data": {
+            "text": "「流行に敏感ですね」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "q3"
+        },
+        {
+          "id": "ソロジャーナルを知らない",
+          "type": "addTag",
+          "data": {
+            "name": "ソロジャーナルを知らない"
+          },
+          "next":"q3"
+        },
+        {
+          "id": "q3",
+          "type": "message",
+          "data": {
+            "text": "最後の質問です。\nこんな感じの紙芝居型ソロジャーナルはどうでしょう？",
+            "select": [
+              {
+                "label": "遊びたい",
+                "next": "遊びたい"
+              },
+              {
+                "label": "シナリオ書きたい",
+                "next": "シナリオ書きたい"
+              },
+              {
+                "label": "興味ないね",
+                "next": "興味ないね"
+              },
+              {
+                "label": "もうあるよ",
+                "next": "もうあるよ"
+              }
+            ]
+          }
+        },
+        {
+          "id": "遊びたい",
+          "type": "addTag",
+          "data": {
+            "name": "遊びたい"
+          },
+          "next":"お礼"
+        },
+        {
+          "id": "シナリオ書きたい",
+          "type": "addTag",
+          "data": {
+            "name": "シナリオ書きたい"
+          },
+          "next":"お礼"
+        },
+        {
+          "id": "興味ないね",
+          "type": "addTag",
+          "data": {
+            "name": "興味ないね"
+          },
+          "next":"お礼"
+        },
+        {
+          "id": "もうあるよ",
+          "type": "addTag",
+          "data": {
+            "name": "もうあるよ"
+          },
+          "next":"もうあるよコメント"
+        },
+        {
+          "id": "もうあるよコメント",
+          "type": "message",
+          "data": {
+            "text": "えっ。そのタイトル知りたいです"
+          },
+          "next": "お礼"
+        },
+        {
+          "id": "お礼",
+          "type": "message",
+          "data": {
+            "text": "「最後まで回答ありがとうございました\n\n扉の先で回答結果の割合を確認できます」"
+          }
+        },
+        {
+          "id": "goodbye",
+          "type": "message",
+          "data": {
+            "text": "「それでは、よい旅路を」",
+            "image": "/images/characters/recept/laugh.png"
+          },
+          "next":"end"
         },
         {
           "id": "end",
@@ -119,11 +190,11 @@
       ],
       "cards": [
         {
-          "name": "宿の娘",
-          "src": "/images/characters/recept/laugh.png",
-          "x": 100,
-          "y": 50,
-          "clickEventId": "click1"
+          "name": "扉",
+          "src": "/images/door.png",
+          "x": 400,
+          "y": 200,
+          "clickEventId": "goodbye"
         }
       ]
     }
