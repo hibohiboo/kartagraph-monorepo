@@ -16,6 +16,7 @@ export const handler: APIGatewayProxyHandlerV2 = async (event) => {
     };
   }
   const tagHistory = JSON.parse(event.body) as TagHistory;
+  console.log(tagHistory);
   const values = tagHistory.tags
     .map(
       (tag) =>

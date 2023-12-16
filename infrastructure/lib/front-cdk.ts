@@ -55,6 +55,8 @@ function handler(event) {
     return request;
   } else if(request.uri.startsWith('/app')) {
     request.uri = '/app/index.html';
+  } else if(request.uri.startsWith('/editor')) {
+    request.uri = '/editor/index.html';
   } else if (request.uri.endsWith('/')) {
     request.uri = request.uri + 'index.html';
   }
@@ -295,6 +297,8 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
         {
           cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
           comment: 'CloudFront + ApiGateway用ポリシー',
+          defaultTtl: cdk.Duration.seconds(0),
+          maxTtl: cdk.Duration.seconds(10),
           headerBehavior: CacheHeaderBehavior.allowList(
             'x-api-key',
             'content-type',

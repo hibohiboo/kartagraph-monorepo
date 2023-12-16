@@ -5,6 +5,7 @@
     "paths": {
       "@kartagraph-app/*": ["./src/*"],
       "@kartagraph-ui/*": ["../packages/ui/src/*"],
+      "@kartagraph-types/*": ["../types/src/*"],
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }]

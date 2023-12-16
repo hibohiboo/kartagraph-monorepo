@@ -14,8 +14,8 @@ export const handlers = [
     const { scenarioId } = params;
     return new HttpResponse(
       JSON.stringify([
-        { tag_name: '開始', count: 5 },
-        { tag_name: scenarioId, count: 1 },
+        { tagName: '開始', count: 5 },
+        { tagName: scenarioId, count: 1 },
       ]),
       {
         status: 200,

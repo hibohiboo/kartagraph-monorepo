@@ -1,14 +1,14 @@
+import { TagSummary } from '@kartagraph-types/index';
 import { ResultPage as Component } from '@kartagraph-ui/components/templates/ResultPage';
 import { SPStory } from '../../storybook';
 import type { Meta, StoryObj } from '@storybook/react';
 
-const args = {
-  tagResults: [
-    { tagName: '開始', count: 10 },
-    { tagName: 'タグ', count: 10 },
-    { tagName: 'やったぜ', count: 5 },
-  ],
-};
+const tagResults: TagSummary[] = [
+  { tagName: '開始', userCount: 10 },
+  { tagName: 'タグ', userCount: 10 },
+  { tagName: 'やったぜ', userCount: 5 },
+];
+const args = { tagResults };
 
 const meta = {
   title: 'ResultPage',

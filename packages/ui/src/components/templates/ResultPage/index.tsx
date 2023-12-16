@@ -1,3 +1,4 @@
+import { TagSummary } from '@kartagraph-types/index';
 import { BaseWrapper } from '@kartagraph-ui/index';
 import { FaTag, FaTwitter } from 'react-icons/fa6';
 import styles from './index.module.css';
@@ -6,9 +7,7 @@ const calcPercentage = (count: number, total: number) => {
   return Math.floor((count / total) * 100);
 };
 
-export function ResultPage(props: {
-  tagResults: { tagName: string; count: number }[];
-}) {
+export function ResultPage(props: { tagResults: TagSummary[] }) {
   const { tagResults } = props;
   const startTag = tagResults.find((tag) => tag.tagName === '開始');
   if (!startTag) {
@@ -25,7 +24,10 @@ export function ResultPage(props: {
         {otherTags.map((tag, i) => (
           <div className={styles.tag} key={i}>
             <FaTag className={styles.tagIcon} />
-            {tag.tagName + ':' + calcPercentage(tag.count, startTag.count)}%
+            {tag.tagName +
+              ':' +
+              calcPercentage(tag.userCount, startTag.userCount)}
+            %
           </div>
         ))}
       </div>
