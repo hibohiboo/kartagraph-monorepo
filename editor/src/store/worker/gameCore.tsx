@@ -11,7 +11,7 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   const worker = new GameCoreWorker(); // worker読み込み
   worker.onmessage = (event) => {
     const data = event.data;
-    if (data.command === 'initScenario') {
+    if (data.command === 'initScenario' || data.command === 'changeScene') {
       gameCoreStore.set(sceneDataAtom, data.payload.sceneData);
       if (event.data.payload.firstEvent) {
         worker.postMessage({

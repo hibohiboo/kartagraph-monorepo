@@ -1,5 +1,5 @@
 {
-  "id":"sample",
+  "id": "sample",
   "firstSceneId": "scene1",
   "scenes": [
     {
@@ -13,14 +13,16 @@
           "data": {
             "text": "「おはよう！\n今日もがんばろー」",
             "image": "/images/characters/recept/laugh.png"
-          },
-          "next": "event2"
+          }
         },
         {
           "id": "event2",
           "type": "messages",
           "data": {
-            "texts": ["「あなたもお仕事ご苦労様です」", "「行ってらっしゃい！」"],
+            "texts": [
+              "「あなたもお仕事ご苦労様です」",
+              "「行ってらっしゃい！」"
+            ],
             "image": "/images/characters/recept/laugh.png"
           }
         },
@@ -41,7 +43,7 @@
             "text": "「お湯加減いかがでしたか」",
             "image": "/images/characters/recept/laugh.png"
           },
-          "next":"end"
+          "next": "end"
         },
         {
           "id": "mesicheck",
@@ -59,7 +61,8 @@
           "data": {
             "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
             "image": "/images/characters/recept/laugh.png"
-          },"next":"end"
+          },
+          "next": "end"
         },
         {
           "id": "huromeshi",
@@ -115,6 +118,13 @@
         {
           "id": "end",
           "type": "endScenario"
+        },
+        {
+          "id": "goodbye",
+          "type": "changeScene",
+          "data": {
+            "sceneId": "scene2"
+          }
         }
       ],
       "cards": [
@@ -124,6 +134,36 @@
           "x": 100,
           "y": 50,
           "clickEventId": "click1"
+        },
+        {
+          "name": "扉",
+          "src": "/images/door.png",
+          "x": 400,
+          "y": 200,
+          "clickEventId": "goodbye"
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "backgroundImage": "/images/backgrounds/town.png",
+      "eventId": "event1",
+      "events": [
+        {
+          "id": "toInn",
+          "type": "changeScene",
+          "data": {
+            "sceneId": "scene1"
+          }
+        }
+      ],
+      "cards": [
+        {
+          "name": "冒険者の宿",
+          "src": "/images/adv_inn_74x94.png",
+          "x": 100,
+          "y": 50,
+          "clickEventId": "toInn"
         }
       ]
     }

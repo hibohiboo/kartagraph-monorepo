@@ -1,7 +1,7 @@
 import GameCoreWorker from '@kartagraph-worker/gameCore.worker?worker'; // ?workerをつける
 import { GameCoreWorkerMessage } from '@kartagraph-worker/types';
 import { atom, createStore } from 'jotai';
-import { updateNextAtom } from '../scenario/game';
+import { sceneDataAtom, updateNextAtom } from '../scenario/game';
 export const gameCoreStore = createStore();
 export const scenarioStateAtom = atom<string>('init');
 export const scenarioIdAtom = atom<string>('');
@@ -11,11 +11,15 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   const worker = new GameCoreWorker(); // worker読み込み
   worker.onmessage = (event) => {
     const data = event.data;
-    if (event.data.payload.firstEvent) {
-      worker.postMessage({
-        command: 'trigger',
-        payload: event.data.payload.firstEvent,
-      });
+    if (data.command === 'initScenario' || data.command === 'changeScene') {
+      gameCoreStore.set(sceneDataAtom, data.payload.sceneData);
+      if (event.data.payload.firstEvent) {
+        worker.postMessage({
+          command: 'trigger',
+          payload: event.data.payload.firstEvent,
+        });
+      }
+      return;
     }
     if (data.command === 'endScenario') {
       gameCoreStore.set(scenarioStateAtom, 'endScenario');
