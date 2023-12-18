@@ -12,7 +12,13 @@ export function atomWithGameCoreWorker<Value>(initialValue: Value) {
   worker.onmessage = (event) => {
     const data = event.data;
     if (data.command === 'initScenario') {
-      gameCoreStore.set(sceneDataAtom, data.payload);
+      gameCoreStore.set(sceneDataAtom, data.payload.sceneData);
+      if (event.data.payload.firstEvent) {
+        worker.postMessage({
+          command: 'trigger',
+          payload: event.data.payload.firstEvent,
+        });
+      }
       return;
     }
     if (data.command === 'endScenario') {

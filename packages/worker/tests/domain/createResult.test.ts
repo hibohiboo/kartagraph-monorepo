@@ -14,17 +14,19 @@ describe('createResult', () => {
       expect(ret).toEqual({
         command: 'initScenario',
         payload: {
-          background: { src: 'bg1' },
-          message: { text: 'text1', image: 'image1' },
-          cards: [
-            {
-              name: 'cardName',
-              src: '/cardImage.png',
-              x: 100,
-              y: 50,
-              clickEventId: 'event2',
-            },
-          ],
+          firstEvent: 'event1',
+          sceneData: {
+            background: { src: 'bg1' },
+            cards: [
+              {
+                name: 'cardName',
+                src: '/cardImage.png',
+                x: 100,
+                y: 50,
+                clickEventId: 'event2',
+              },
+            ],
+          },
         },
       });
       expect(global.fetch).toHaveBeenCalledWith('/v1/api/tags', {
@@ -36,71 +38,16 @@ describe('createResult', () => {
         }),
       });
     });
-    test('初期化コマンドで選択肢をだす', () => {
-      const [e1, ...rest] = scenario.scenes;
-      const e1dash = {
-        ...e1,
-        select: [
-          {
-            label: '選択肢1',
-            next: 'ea',
-          },
-          {
-            label: '選択肢2',
-            next: 'eb',
-          },
-        ],
-      };
-      const payload = {
-        scenarioJson: JSON.stringify({
-          ...scenario,
-          scenes: [e1dash, ...rest],
-        }),
-        userId: 'userId',
-      };
-      const ret = createResult({
-        command: 'initScenario',
-        payload,
-      });
-      expect(ret).toEqual({
-        command: 'initScenario',
-        payload: {
-          background: { src: 'bg1' },
-          message: {
-            text: 'text1',
-            image: 'image1',
-            select: [
-              {
-                label: '選択肢1',
-                next: 'ea',
-              },
-              {
-                label: '選択肢2',
-                next: 'eb',
-              },
-            ],
-          },
-          cards: [
-            {
-              name: 'cardName',
-              src: '/cardImage.png',
-              x: 100,
-              y: 50,
-              clickEventId: 'event2',
-            },
-          ],
-        },
-      });
-    });
   });
 
   describe('next', () => {
     test('nextコマンドの場合、次のイベントを呼び出す(message)', () => {
       // シナリオ読み込み
-      createResult({
+      const init = createResult({
         command: 'initScenario',
         payload,
       });
+      createResult({ command: 'trigger', payload: init?.payload.firstEvent });
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({
         command: 'message',
@@ -109,23 +56,26 @@ describe('createResult', () => {
     });
     test('nextコマンドで次のコマンドがない場合、waitが返る', () => {
       // シナリオ読み込み
-      createResult({
+      const init = createResult({
         command: 'initScenario',
-        payload: payload,
+        payload,
       });
+      createResult({ command: 'trigger', payload: init?.payload.firstEvent });
       createResult({ command: 'next' });
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({ command: 'wait' });
     });
     test('nextコマンドがmessagesの場合、messageをすべて流し終わってから次のイベントに遷移する', () => {
       // シナリオ読み込み
-      createResult({
+      const init = createResult({
         command: 'initScenario',
         payload: {
           scenarioJson: JSON.stringify(scenarioMessages),
           userId: 'userId',
         },
       });
+      createResult({ command: 'trigger', payload: init?.payload.firstEvent });
+
       const ret = createResult({ command: 'next' });
       expect(ret).toEqual({
         command: 'message',
@@ -134,10 +84,11 @@ describe('createResult', () => {
     });
   });
   test('triggerコマンドの場合、指定されたイベントを呼び出す', () => {
-    createResult({
+    const init = createResult({
       command: 'initScenario',
       payload,
     });
+    createResult({ command: 'trigger', payload: init?.payload.firstEvent });
     const ret = createResult({ command: 'trigger', payload: 'event2' });
     expect(ret).toEqual({
       command: 'message',
@@ -146,26 +97,29 @@ describe('createResult', () => {
   });
   describe('Tag', () => {
     test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
-      createResult({
+      const init = createResult({
         command: 'initScenario',
         payload: {
           scenarioJson: JSON.stringify(scenarioTags),
           userId: 'userId',
         },
       });
+
+      createResult({ command: 'trigger', payload: init?.payload.firstEvent });
       const ret = createResult({ command: 'next' });
       expect(ret?.command).toBe('message');
       expect(ret?.payload.text).toBe('c');
     });
     describe('分岐', () => {
       test('tagを持っていた場合の分岐ができること', () => {
-        createResult({
+        const init = createResult({
           command: 'initScenario',
           payload: {
             scenarioJson: JSON.stringify(scenarioTags),
             userId: 'userId',
           },
         });
+        createResult({ command: 'trigger', payload: init?.payload.firstEvent });
         createResult({ command: 'next' });
         const ret = createResult({ command: 'next' });
         expect(ret?.command).toBe('message');
