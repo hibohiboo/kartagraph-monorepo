@@ -1,7 +1,6 @@
 import { TagHistory } from '@kartagraph-types/index';
 import { InitScenarioCommannd, Scenario } from '@kartagraph-worker/types';
-import { selectFirstScene } from '../core';
-import { setCurrentScene, setCurrentUserId, setScenario } from '../store';
+import { selectTargetScene, setCurrentUserId, setScenario } from '../store';
 
 const createScenario = (json: string) => {
   const scenario = JSON.parse(json) as Scenario;
@@ -43,21 +42,10 @@ export const initScenario = (
     method: 'PUT',
     body: JSON.stringify(tagHistory),
   });
-  const currentScene = selectFirstScene(scenario);
-  if (currentScene == null) throw new Error('currentScene is null');
-  setCurrentScene(currentScene);
+  const payload = selectTargetScene(scenario.firstSceneId);
 
-  const sceneData = {
-    background: {
-      src: currentScene.backgroundImage,
-    },
-    cards: currentScene.cards ?? [],
-  };
   return {
     command: 'initScenario',
-    payload: {
-      sceneData,
-      firstEvent: currentScene.eventId,
-    },
+    payload,
   };
 };

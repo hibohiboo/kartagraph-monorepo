@@ -5,10 +5,12 @@ import {
   getScenario,
   getTags,
   selectEvent,
+  selectTargetScene,
   setTag,
 } from '../store';
 import { trigger } from './trigger';
 import type { TagHistory } from '@kartagraph-types/index';
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const next = (): { command: ResponseEventType; payload?: any } => {
   const currentEvent = getCurrentEvent();
@@ -29,6 +31,12 @@ export const next = (): { command: ResponseEventType; payload?: any } => {
       return trigger(nextEvent.data.next);
     }
     return next();
+  }
+  if (nextEvent.type === 'changeScene') {
+    return {
+      command: nextEvent.type,
+      payload: selectTargetScene(nextEvent.data.sceneId),
+    };
   }
   if (nextEvent.type === 'endScenario') {
     const scenarioId = getScenario()!.id;

@@ -50,7 +50,8 @@ export type ResponseEventType =
   | 'wait'
   | 'addTag'
   | 'branch'
-  | 'endScenario';
+  | 'endScenario'
+  | 'changeScene';
 export type BaseEvent = { next?: EventId };
 export type SceneEvent = {
   id: EventId;

@@ -43,3 +43,22 @@ export const setTag = (tag: string) => {
   tags.push(tag);
 };
 export const getTags = () => tags;
+export const selectTargetScene = (id: string) => {
+  const scenario = getScenario();
+  if (scenario == null) throw new Error('scenario is null');
+  const current = scenario.scenes.find((scene) => {
+    return scene.id === id;
+  });
+  if (current == null) throw new Error('scene is null');
+  setCurrentScene(current);
+  const sceneData = {
+    background: {
+      src: current.backgroundImage,
+    },
+    cards: current.cards ?? [],
+  };
+  return {
+    sceneData,
+    firstEvent: current.eventId,
+  };
+};

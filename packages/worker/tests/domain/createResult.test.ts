@@ -103,7 +103,9 @@ describe('createResult', () => {
         scenes: [
           {
             ...scene1,
-            events: [{ id: 'ce', type: 'changeScene', data: { id: 'scene2' } }],
+            events: [
+              { id: 'ce', type: 'changeScene', data: { sceneId: 'scene2' } },
+            ],
           },
           scene2,
         ],
