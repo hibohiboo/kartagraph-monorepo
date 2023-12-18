@@ -29,6 +29,12 @@ export const scenario = {
         },
       ],
     },
+    {
+      id: 'scene2',
+      backgroundImage: 'bg2',
+      events: [],
+      cards: [],
+    },
   ],
 };
 export const scenarioMessages = {

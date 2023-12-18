@@ -95,6 +95,38 @@ describe('createResult', () => {
       payload: { text: 'text2', image: 'image1' },
     });
   });
+  test('changeSceneコマンドの場合、指定されたシーンを準備する', () => {
+    const [scene1, scene2] = scenario.scenes;
+    const payload = {
+      scenarioJson: JSON.stringify({
+        ...scenario,
+        scenes: [
+          {
+            ...scene1,
+            events: [{ id: 'ce', type: 'changeScene', data: { id: 'scene2' } }],
+          },
+          scene2,
+        ],
+      }),
+      userId: 'userId',
+    };
+    createResult({
+      command: 'initScenario',
+      payload,
+    });
+    const ret = createResult({ command: 'trigger', payload: 'ce' });
+
+    expect(ret).toEqual({
+      command: 'changeScene',
+      payload: {
+        firstEvent: undefined,
+        sceneData: {
+          background: { src: 'bg2' },
+          cards: [],
+        },
+      },
+    });
+  });
   describe('Tag', () => {
     test('addTagコマンドの場合、タグを追加し次のコマンドを呼ぶこと', () => {
       const init = createResult({
