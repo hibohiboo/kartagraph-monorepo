@@ -1,6 +1,6 @@
 import { SelectCards } from '@kartagraph-ui/components/SelectCards';
-import { GameFrame, GameFrameProps } from '../GameFrame';
 import { SelectCardsProps } from '@kartagraph-ui/components/SelectCards/types';
+import { GameFrame, GameFrameProps } from '../GameFrame';
 
 export type GameViewerProps = GameFrameProps & SelectCardsProps;
 

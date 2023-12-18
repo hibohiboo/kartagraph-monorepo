@@ -1,4 +1,5 @@
 export const scenario = {
+  id: 'test',
   firstSceneId: 'scene1',
   scenes: [
     {

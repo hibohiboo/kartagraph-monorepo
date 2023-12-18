@@ -10,3 +10,8 @@ export type TagHistory = {
 };
 
 // https://zenn.dev/akineko/articles/a576f74356145c
+
+export type TagSummary = {
+  userCount: number;
+  tagName: string;
+};

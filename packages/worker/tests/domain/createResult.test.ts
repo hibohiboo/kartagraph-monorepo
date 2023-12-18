@@ -1,8 +1,11 @@
 import { createResult } from '@kartagraph-worker/domain/createResult';
 import { scenario, scenarioMessages, scenarioTags } from './testData/scenario';
 const payload = { scenarioJson: JSON.stringify(scenario), userId: 'userId' };
+global.fetch = jest.fn();
 describe('createResult', () => {
   test('初期化コマンドの場合、init関数を呼び出す', () => {
+    global.fetch = jest.fn();
+
     const ret = createResult({
       command: 'initScenario',
       payload,
@@ -22,6 +25,14 @@ describe('createResult', () => {
           },
         ],
       },
+    });
+    expect(global.fetch).toHaveBeenCalledWith('/v1/api/tags', {
+      method: 'PUT',
+      body: JSON.stringify({
+        scenarioId: 'test',
+        tags: [{ tagName: '開始', tagType: 'scenario' }],
+        userId: 'userId',
+      }),
     });
   });
 

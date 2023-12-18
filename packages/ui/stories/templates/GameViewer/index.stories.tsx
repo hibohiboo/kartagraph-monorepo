@@ -1,6 +1,6 @@
 import { GameViewer as Component } from '@kartagraph-ui/components/templates/GameViewer';
-import type { Meta, StoryObj } from '@storybook/react';
 import { PCStory, SPStory } from '../../storybook';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const args = {
   message: {

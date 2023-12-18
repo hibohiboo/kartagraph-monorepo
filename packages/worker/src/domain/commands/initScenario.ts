@@ -1,3 +1,4 @@
+import { TagHistory } from '@kartagraph-types/index';
 import { InitScenarioCommannd, Scenario } from '@kartagraph-worker/types';
 import { selectFirstScene } from '../core';
 import {
@@ -39,6 +40,15 @@ export const initScenario = (
   const scenarioJson = commandPayload.scenarioJson;
   const scenario: Scenario = createScenario(scenarioJson);
   setScenario(scenario);
+  const tagHistory: TagHistory = {
+    scenarioId: scenario.id,
+    tags: [{ tagName: '開始', tagType: 'scenario' }],
+    userId: commandPayload.userId,
+  };
+  fetch(`/v1/api/tags`, {
+    method: 'PUT',
+    body: JSON.stringify(tagHistory),
+  });
   const currentScene = selectFirstScene(scenario);
   if (currentScene == null) throw new Error('currentScene is null');
   setCurrentScene(currentScene);
