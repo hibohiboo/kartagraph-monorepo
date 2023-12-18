@@ -3,36 +3,94 @@ import { scenario, scenarioMessages, scenarioTags } from './testData/scenario';
 const payload = { scenarioJson: JSON.stringify(scenario), userId: 'userId' };
 global.fetch = jest.fn();
 describe('createResult', () => {
-  test('初期化コマンドの場合、init関数を呼び出す', () => {
-    global.fetch = jest.fn();
+  describe('initScenario', () => {
+    test('初期化コマンドの場合、init関数を呼び出す', () => {
+      global.fetch = jest.fn();
 
-    const ret = createResult({
-      command: 'initScenario',
-      payload,
+      const ret = createResult({
+        command: 'initScenario',
+        payload,
+      });
+      expect(ret).toEqual({
+        command: 'initScenario',
+        payload: {
+          background: { src: 'bg1' },
+          message: { text: 'text1', image: 'image1' },
+          cards: [
+            {
+              name: 'cardName',
+              src: '/cardImage.png',
+              x: 100,
+              y: 50,
+              clickEventId: 'event2',
+            },
+          ],
+        },
+      });
+      expect(global.fetch).toHaveBeenCalledWith('/v1/api/tags', {
+        method: 'PUT',
+        body: JSON.stringify({
+          scenarioId: 'test',
+          tags: [{ tagName: '開始', tagType: 'scenario' }],
+          userId: 'userId',
+        }),
+      });
     });
-    expect(ret).toEqual({
-      command: 'initScenario',
-      payload: {
-        background: { src: 'bg1' },
-        message: { text: 'text1', image: 'image1' },
-        cards: [
+    test('初期化コマンドで選択肢をだす', () => {
+      const [e1, ...rest] = scenario.scenes;
+      const e1dash = {
+        ...e1,
+        select: [
           {
-            name: 'cardName',
-            src: '/cardImage.png',
-            x: 100,
-            y: 50,
-            clickEventId: 'event2',
+            label: '選択肢1',
+            next: 'ea',
+          },
+          {
+            label: '選択肢2',
+            next: 'eb',
           },
         ],
-      },
-    });
-    expect(global.fetch).toHaveBeenCalledWith('/v1/api/tags', {
-      method: 'PUT',
-      body: JSON.stringify({
-        scenarioId: 'test',
-        tags: [{ tagName: '開始', tagType: 'scenario' }],
+      };
+      const payload = {
+        scenarioJson: JSON.stringify({
+          ...scenario,
+          scenes: [e1dash, ...rest],
+        }),
         userId: 'userId',
-      }),
+      };
+      const ret = createResult({
+        command: 'initScenario',
+        payload,
+      });
+      expect(ret).toEqual({
+        command: 'initScenario',
+        payload: {
+          background: { src: 'bg1' },
+          message: {
+            text: 'text1',
+            image: 'image1',
+            select: [
+              {
+                label: '選択肢1',
+                next: 'ea',
+              },
+              {
+                label: '選択肢2',
+                next: 'eb',
+              },
+            ],
+          },
+          cards: [
+            {
+              name: 'cardName',
+              src: '/cardImage.png',
+              x: 100,
+              y: 50,
+              clickEventId: 'event2',
+            },
+          ],
+        },
+      });
     });
   });
 
