@@ -4,14 +4,14 @@ import type { Meta, StoryObj } from '@storybook/react';
 const meta = {
   title: 'Card',
   component: Component,
-  args: { name: 'スタート', src: '/images/adv_inn_74x94.png' },
+  args: { name: 'スタート', src: 'images/adv_inn_74x94.png' },
 } satisfies Meta<typeof Component>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const BigImg: Story = {
   args: {
-    src: '/images/adv_inn.png',
+    src: 'images/adv_inn.png',
   },
 };
 export const Clickable: Story = {
@@ -30,6 +30,6 @@ export const Hide: Story = {
 };
 export const Chara: Story = {
   args: {
-    src: '/images/characters/koko.png',
+    src: 'images/characters/koko.png',
   },
 };
