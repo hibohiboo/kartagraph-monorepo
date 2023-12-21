@@ -16,13 +16,11 @@ import {
   FunctionEventType,
   BehaviorOptions,
   IOrigin,
+  CfnOriginAccessControl,
+  CfnDistribution,
 } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin, S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
-import {
-  CanonicalUserPrincipal,
-  Effect,
-  PolicyStatement,
-} from 'aws-cdk-lib/aws-iam';
+import { Effect, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
@@ -35,7 +33,7 @@ interface DeployPaths {
 
 interface Props extends cdk.StackProps {
   bucketName: string;
-  identityName: string;
+  oacName: string;
   defaultCachePolicyName: string;
   functionName: string;
   distributionName: string;
@@ -69,14 +67,14 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     // CloudFront オリジン用のS3バケットを作成
     const bucket = this.createS3(props.bucketName);
 
-    // CloudFront で設定する オリジンアクセスアイデンティティ を作成
-    const identity = this.createIdentity(bucket, props.identityName);
-
-    // S3バケットポリシーで、CloudFrontのオリジンアクセスアイデンティティを許可
-    this.createPolicy(bucket, identity);
+    // CloudFront で設定する オリジンアクセスコントロール を作成
+    const oac = this.createOAC(props.oacName);
 
     // CloudFrontディストリビューションを作成
-    const distribution = this.createCloudFront(bucket, identity, props);
+    const distribution = this.createCloudFront(bucket, oac, props);
+
+    // S3バケットポリシーで、CloudFrontのオリジンアクセスコントロールを許可
+    this.createPolicy(bucket, distribution);
 
     // // 指定したディレクトリをデプロイ
     for (const item of props.subDirectoryPath) {
@@ -110,28 +108,35 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     return bucket;
   }
 
-  private createIdentity(bucket: Bucket, identityName: string) {
-    const identity = new OriginAccessIdentity(this, identityName, {
-      comment: `${bucket.bucketName} access identity`,
+  private createOAC(name: string) {
+    const cfnOriginAccessControl = new CfnOriginAccessControl(this, name, {
+      originAccessControlConfig: {
+        name,
+        originAccessControlOriginType: 's3',
+        signingBehavior: 'always', // 推奨:CloudFront は S3 バケットオリジンに送信するすべてのリクエストに常に署名。
+        signingProtocol: 'sigv4', // オリジンアクセスコントロールの署名プロトコル。有効な値は sigv4 のみ
+        description: 'S3 Access Control',
+      },
     });
-    return identity;
+    return cfnOriginAccessControl;
   }
-  private createPolicy(bucket: Bucket, identity: OriginAccessIdentity) {
+  private createPolicy(bucket: Bucket, distribution: Distribution) {
     const myBucketPolicy = new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ['s3:GetObject', 's3:ListBucket'],
-      principals: [
-        new CanonicalUserPrincipal(
-          identity.cloudFrontOriginAccessIdentityS3CanonicalUserId,
-        ),
-      ],
+      principals: [new ServicePrincipal('cloudfront.amazonaws.com')],
       resources: [bucket.bucketArn + '/*', bucket.bucketArn],
     });
     bucket.addToResourcePolicy(myBucketPolicy);
+    myBucketPolicy.addCondition('StringEquals', {
+      'AWS:SourceArn': `arn:aws:cloudfront::${
+        cdk.Stack.of(this).account
+      }:distribution/${distribution.distributionId}`,
+    });
   }
   private createCloudFront(
     bucket: Bucket,
-    identity: OriginAccessIdentity,
+    oac: CfnOriginAccessControl,
     props: Props,
   ) {
     const { defaultCachePolicyName, distributionName } = props;
@@ -147,9 +152,7 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       defaultPolicyOption,
     );
 
-    const origin = new S3Origin(bucket, {
-      originAccessIdentity: identity,
-    });
+    const origin = new S3Origin(bucket);
 
     const spaRoutingFunction = new Function(this, 'SpaRoutingFunction', {
       functionName: props.functionName,
@@ -178,8 +181,40 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       additionalBehaviors,
     });
     cdk.Tags.of(d).add('Service', 'Cloud Front');
+    this.settindDestribution(d, bucket, oac);
 
     return d;
+  }
+
+  private settindDestribution(
+    d: Distribution,
+    bucket: Bucket,
+    oac: CfnOriginAccessControl,
+  ) {
+    // Additional settings for origin 0 (0:appBucket)
+    const cfnDistribution = d.node.defaultChild as CfnDistribution;
+    // Delete OAI
+    cfnDistribution.addOverride(
+      'Properties.DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity',
+      '',
+    );
+
+    // OAC does not require CustomOriginConfig
+    cfnDistribution.addPropertyDeletionOverride(
+      'DistributionConfig.Origins.0.CustomOriginConfig',
+    );
+
+    // By default, the s3 WebsiteURL is set and an error occurs, so set the S3 domain name
+    cfnDistribution.addPropertyOverride(
+      'DistributionConfig.Origins.0.DomainName',
+      bucket.bucketRegionalDomainName,
+    );
+
+    // OAC settings
+    cfnDistribution.addPropertyOverride(
+      'DistributionConfig.Origins.0.OriginAccessControlId',
+      oac.getAtt('Id'),
+    );
   }
 
   private createResponseHeadersPolicy() {
