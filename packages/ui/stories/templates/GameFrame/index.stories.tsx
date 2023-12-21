@@ -1,6 +1,6 @@
 import { GameFrame as Component } from '@kartagraph-ui/components/templates/GameFrame';
-import type { Meta, StoryObj } from '@storybook/react';
 import { PCStory, SPStory } from '../../storybook';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'GameFrame',
@@ -16,10 +16,10 @@ const exArgs = {
   message: {
     text: `「おはよう！
   今日も一日がんばろー」`,
-    image: '/images/characters/koko.png',
+    image: 'images/characters/koko.png',
   },
   background: {
-    src: '/images/backgrounds/adv_inn_2.png',
+    src: 'images/backgrounds/adv_inn_2.png',
   },
 };
 export const SPWithImage: Story = {

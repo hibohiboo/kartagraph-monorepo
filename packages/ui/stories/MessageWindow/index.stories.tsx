@@ -1,6 +1,6 @@
 import Component from '@kartagraph-ui/components/MessageWindow';
-import type { Meta, StoryObj } from '@storybook/react';
 import { BasicLayoutDecorator, PCStory, SPStory } from '../storybook';
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
   title: 'MessageWindow',

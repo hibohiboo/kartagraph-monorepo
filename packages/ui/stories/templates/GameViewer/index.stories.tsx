@@ -5,10 +5,10 @@ import type { Meta, StoryObj } from '@storybook/react';
 const args = {
   message: {
     text: `「どうする？」`,
-    image: '/images/characters/koko.png',
+    image: 'images/characters/koko.png',
   },
   background: {
-    src: '/images/backgrounds/adv_inn_2.png',
+    src: 'images/backgrounds/adv_inn_2.png',
   },
   selectItems: ['逃げる', '戦う', 'じゅもん'],
 };
