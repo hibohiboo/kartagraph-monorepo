@@ -1,11 +1,9 @@
 {
   "id": "sample",
   "firstSceneId": "scene1",
-  "title": "シナリオテスト",
   "scenes": [
     {
       "id": "scene1",
-      "title": "冒険者の宿",
       "backgroundImage": "/images/backgrounds/adv_inn_2.png",
       "eventId": "event1",
       "events": [
@@ -148,7 +146,6 @@
     },
     {
       "id": "scene2",
-      "title": "最初の街",
       "backgroundImage": "/images/backgrounds/town.png",
       "eventId": "event1",
       "events": [

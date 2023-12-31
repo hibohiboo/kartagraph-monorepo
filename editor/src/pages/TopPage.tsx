@@ -1,6 +1,7 @@
 import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePreviewer';
 import FileTree from '@kartagraph-editor/components/FileSystem/FileTree';
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
+import ScenarioTree from '@kartagraph-editor/domain/scenarioTree/components/ScenarioTree';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
 import {
@@ -16,7 +17,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 function App() {
   const vm = useEditorHooks();
-  useGameCoreHooks();
+  const { scenario } = useGameCoreHooks();
   const navigate = useNavigate();
   const [scenarioState] = useAtom(scenarioStateAtom);
   const [scenarioId] = useAtom(scenarioIdAtom);
@@ -29,10 +30,15 @@ function App() {
   return (
     <div>
       <Splitter>
-        <SplitterPanel size={20}>
+        <SplitterPanel size={5}>
           <div style={{ height: '100vh', overflowY: 'auto' }}>
             <Button onClick={vm.readRootDirectory}>クリックで読み込み</Button>
             <FileTree /> <pre>{vm.treeJson}</pre>
+          </div>
+        </SplitterPanel>
+        <SplitterPanel size={15}>
+          <div style={{ height: '100vh', overflowY: 'auto', width: '100%' }}>
+            <ScenarioTree scenario={scenario} />
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>

@@ -2,16 +2,16 @@ import { fileNodeStateToTreeNodeInfo } from '@kartagraph-editor/domain/fileSyste
 import { updateClickFileNodeState } from '@kartagraph-editor/domain/fileTree/click';
 import { updateCollapseFileNodesState } from '@kartagraph-editor/domain/fileTree/collapse';
 import { updateFileNodeState } from '@kartagraph-editor/domain/fileTree/expand';
-import { useAtom } from 'jotai';
-import React from 'react';
-import { getDirectoryHandle, getRootDirectoryHandle, readFile } from './index';
-import { TreeNode } from 'primereact/treenode';
-import { FileNodeState } from './types';
 import {
   fileAtom,
   fsNodeAtom,
 } from '@kartagraph-editor/store/fileSystem/atoms';
+import { useAtom } from 'jotai';
 import { TreeEventNodeEvent } from 'primereact/tree';
+import { TreeNode } from 'primereact/treenode';
+import React from 'react';
+import { FileNodeState } from './types';
+import { getDirectoryHandle, getRootDirectoryHandle, readFile } from './index';
 
 export function useFileSystem() {
   const [fsNodes, setObj] = useAtom(fsNodeAtom);

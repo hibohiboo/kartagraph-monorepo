@@ -33,7 +33,7 @@
     "@types/sanitize-html": "^2.9.5",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "storybook": "^7.6.6",
-    "vite": "^5.0.8"
+    "vite": "^5.0.10"
   },
   "exports": {
     ".": "./src/index.ts",

@@ -5,6 +5,7 @@ import {
 import { fsNodeAtom } from '@kartagraph-editor/store/fileSystem/atoms';
 import { sceneAtom } from '@kartagraph-editor/store/scenario/game';
 import { useAtom } from 'jotai';
+
 export const useEditorHooks = () => {
   const [fsNodes, setObj] = useAtom(fsNodeAtom);
   const [scene] = useAtom(sceneAtom);

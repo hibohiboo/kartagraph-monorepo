@@ -14,6 +14,6 @@ export const useGameCoreHooks = () => {
       payload: { scenarioJson: JSON.stringify(json), userId: userId! },
     };
     setMessage(initCommand);
-  }, []);
-  return {};
+  }, [setMessage, userId]);
+  return { scenario: json };
 };
