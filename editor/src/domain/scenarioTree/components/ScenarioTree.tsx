@@ -5,10 +5,10 @@ import { BiPurchaseTag } from 'react-icons/bi';
 import { BsFilePlay } from 'react-icons/bs';
 import { CgListTree } from 'react-icons/cg';
 import { FaImage } from 'react-icons/fa6';
+import { FaFileImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { GiCardboardBox } from 'react-icons/gi';
 import { TbCards } from 'react-icons/tb';
-
 interface Card {
   name: string;
 }
@@ -52,6 +52,12 @@ interface AddTagEvent extends SceneEventBase {
 }
 interface EndScenarioEvent extends SceneEventBase {
   type: 'endScenario';
+}
+interface ChangeScene extends SceneEventBase {
+  type: 'changeScene';
+  data: {
+    sceneId: string;
+  };
 }
 interface Scene {
   id: string;
@@ -137,6 +143,7 @@ const isMessagesEvent = isEventFactory<MessagesEvent>('messages');
 const isBranchEvent = isEventFactory<BranchEvent>('branch');
 const isAddTagsEvent = isEventFactory<AddTagEvent>('addTag');
 const isEndScenarioEvent = isEventFactory<EndScenarioEvent>('endScenario');
+const isChangeSceneEvent = isEventFactory<ChangeScene>('changeScene');
 function EventItem({ event }: { event: SceneEvent }) {
   if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
@@ -153,6 +160,8 @@ function EventItem({ event }: { event: SceneEvent }) {
     );
   } else if (isEndScenarioEvent(event)) {
     return <IconWithText icon={<GiStabbedNote />} text={event.type} />;
+  } else if (isChangeSceneEvent(event)) {
+    return <IconWithText icon={<FaFileImage />} text={event.type} />;
   }
   return <IconWithText icon={<BsFilePlay />} text={event.type} />;
 }
