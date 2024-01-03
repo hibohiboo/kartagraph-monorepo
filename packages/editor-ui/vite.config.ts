@@ -12,7 +12,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           react: ['react', 'react-dom', 'react/jsx-runtime'],
-          others: ['sanitize-html'],
         },
       },
     },
