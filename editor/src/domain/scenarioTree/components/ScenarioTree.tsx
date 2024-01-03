@@ -13,44 +13,43 @@ interface Card {
   name: string;
 }
 type EventId = string;
-interface MessageEvent {
+type EventType = 'message' | 'messages' | 'branch';
+interface SceneEvent {
   id: EventId;
+  type: string | EventType;
+  data?: unknown;
+  next?: EventId;
+}
+type SceneEventBase = Omit<SceneEvent, 'type' | 'data'>;
+interface MessageEvent extends SceneEventBase {
   type: 'message';
   data: {
     text: string;
     image?: string;
   };
-  next?: EventId;
 }
-interface MessagesEvent {
-  id: EventId;
+interface MessagesEvent extends SceneEventBase {
   type: 'message';
   data: {
     texts: string[];
     image?: string;
   };
-  next?: EventId;
 }
 
-interface BranchEvent {
-  id: string;
+interface BranchEvent extends SceneEventBase {
   type: 'branch';
   data: {
     condition: 'hasTag';
     tag: string;
     next: EventId;
   };
-  next?: EventId;
 }
-interface Event {
-  id: string;
-  type: 'message' | 'messages' | 'branch';
-}
+
 interface Scene {
   id: string;
   title: string;
   cards: Card[];
-  events: Event[];
+  events: SceneEvent[];
 }
 
 interface Scenario {
@@ -128,7 +127,7 @@ function isEventFactory<T extends { type: string }>(type: string) {
 const isMessageEvent = isEventFactory<MessageEvent>('message');
 const isMessagesEvent = isEventFactory<MessagesEvent>('messages');
 const isBranchEvent = isEventFactory<BranchEvent>('branch');
-function EventItem({ event }: { event: Event }) {
+function EventItem({ event }: { event: SceneEvent }) {
   if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
   } else if (isMessagesEvent(event)) {
