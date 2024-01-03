@@ -13,7 +13,7 @@ interface Card {
   name: string;
 }
 type EventId = string;
-type EventType = 'message' | 'messages' | 'branch';
+type EventType = 'message' | 'messages' | 'branch' | 'addTag' | 'endScenario';
 interface SceneEvent {
   id: EventId;
   type: string | EventType;
@@ -44,7 +44,15 @@ interface BranchEvent extends SceneEventBase {
     next: EventId;
   };
 }
-
+interface AddTagEvent extends SceneEventBase {
+  type: 'addTag';
+  data: {
+    name: string;
+  };
+}
+interface EndScenarioEvent extends SceneEventBase {
+  type: 'endScenario';
+}
 interface Scene {
   id: string;
   title: string;
@@ -127,6 +135,8 @@ function isEventFactory<T extends { type: string }>(type: string) {
 const isMessageEvent = isEventFactory<MessageEvent>('message');
 const isMessagesEvent = isEventFactory<MessagesEvent>('messages');
 const isBranchEvent = isEventFactory<BranchEvent>('branch');
+const isAddTagsEvent = isEventFactory<AddTagEvent>('addTag');
+const isEndScenarioEvent = isEventFactory<EndScenarioEvent>('endScenario');
 function EventItem({ event }: { event: SceneEvent }) {
   if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
@@ -134,6 +144,15 @@ function EventItem({ event }: { event: SceneEvent }) {
     return <MessagesEventItem event={event} />;
   } else if (isBranchEvent(event)) {
     return <BranchEventItem event={event} />;
+  } else if (isAddTagsEvent(event)) {
+    return (
+      <IconWithText
+        icon={<BiPurchaseTag />}
+        text={`【${event.data.name}】を追加`}
+      />
+    );
+  } else if (isEndScenarioEvent(event)) {
+    return <IconWithText icon={<GiStabbedNote />} text={event.type} />;
   }
   return <IconWithText icon={<BsFilePlay />} text={event.type} />;
 }
