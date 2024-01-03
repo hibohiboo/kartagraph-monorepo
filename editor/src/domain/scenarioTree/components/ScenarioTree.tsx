@@ -90,15 +90,34 @@ function MessageEventItem({ event }: { event: MessageEvent }) {
     </span>
   );
 }
+function MessagesEventItem({ event }: { event: MessagesEvent }) {
+  return (
+    <>
+      <IconWithText icon={<BiWindows />} text={event.type} />
+      <ul style={indentStyle}>
+        {event.data.texts.map((text, i) => (
+          <li key={`${text}-${i}`}>
+            <MessageEventItem
+              event={{
+                id: `${event.id}-${i}`,
+                type: 'message',
+                data: { text },
+              }}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 function BranchEventItem({ event }: { event: BranchEvent }) {
   return (
     <span style={{ display: 'inline-flex' }}>
-      <IconWithText icon={<CgListTree />} text={event.type} />
+      <IconWithText icon={<CgListTree />} text={'分岐'} />
       <IconWithText
         icon={<BiPurchaseTag title={event.data.condition} />}
-        text={' '}
+        text={`【${event.data.tag}】を所持`}
       />
-      <EllipsisText text={event.data.tag} />
     </span>
   );
 }
@@ -112,28 +131,9 @@ const isBranchEvent = isEventFactory<BranchEvent>('branch');
 function EventItem({ event }: { event: Event }) {
   if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
-  }
-  if (isMessagesEvent(event)) {
-    return (
-      <>
-        <IconWithText icon={<BiWindows />} text={event.type} />
-        <ul style={indentStyle}>
-          {event.data.texts.map((text, i) => (
-            <li key={`${text}-${i}`}>
-              <MessageEventItem
-                event={{
-                  id: `${event.id}-${i}`,
-                  type: 'message',
-                  data: { text },
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-      </>
-    );
-  }
-  if (isBranchEvent(event)) {
+  } else if (isMessagesEvent(event)) {
+    return <MessagesEventItem event={event} />;
+  } else if (isBranchEvent(event)) {
     return <BranchEventItem event={event} />;
   }
   return <IconWithText icon={<BsFilePlay />} text={event.type} />;
