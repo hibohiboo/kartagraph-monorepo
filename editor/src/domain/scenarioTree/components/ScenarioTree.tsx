@@ -1,7 +1,9 @@
 import { Tree } from 'primereact/tree';
 import { BiWindow } from 'react-icons/bi';
 import { BiWindows } from 'react-icons/bi';
+import { BiPurchaseTag } from 'react-icons/bi';
 import { BsFilePlay } from 'react-icons/bs';
+import { CgListTree } from 'react-icons/cg';
 import { FaImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { GiCardboardBox } from 'react-icons/gi';
@@ -10,23 +12,35 @@ import { TbCards } from 'react-icons/tb';
 interface Card {
   name: string;
 }
+type EventId = string;
 interface MessageEvent {
-  id: string;
+  id: EventId;
   type: 'message';
   data: {
     text: string;
     image?: string;
   };
-  next?: string;
+  next?: EventId;
 }
 interface MessagesEvent {
-  id: string;
+  id: EventId;
   type: 'message';
   data: {
     texts: string[];
     image?: string;
   };
-  next?: string;
+  next?: EventId;
+}
+
+interface BranchEvent {
+  id: string;
+  type: 'branch';
+  data: {
+    condition: 'hasTag';
+    tag: string;
+    next: EventId;
+  };
+  next?: EventId;
 }
 interface Event {
   id: string;
@@ -76,12 +90,30 @@ function MessageEventItem({ event }: { event: MessageEvent }) {
     </span>
   );
 }
+function BranchEventItem({ event }: { event: BranchEvent }) {
+  return (
+    <span style={{ display: 'inline-flex' }}>
+      <IconWithText icon={<CgListTree />} text={event.type} />
+      <IconWithText
+        icon={<BiPurchaseTag title={event.data.condition} />}
+        text={' '}
+      />
+      <EllipsisText text={event.data.tag} />
+    </span>
+  );
+}
 const indentStyle = { marginLeft: '1rem' };
+function isEventFactory<T extends { type: string }>(type: string) {
+  return (e: { type: string }): e is T => e.type === type;
+}
+const isMessageEvent = isEventFactory<MessageEvent>('message');
+const isMessagesEvent = isEventFactory<MessagesEvent>('messages');
+const isBranchEvent = isEventFactory<BranchEvent>('branch');
 function EventItem({ event }: { event: Event }) {
-  if (((e: Event): e is MessageEvent => event.type === 'message')(event)) {
+  if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
   }
-  if (((e: Event): e is MessagesEvent => event.type === 'messages')(event)) {
+  if (isMessagesEvent(event)) {
     return (
       <>
         <IconWithText icon={<BiWindows />} text={event.type} />
@@ -100,6 +132,9 @@ function EventItem({ event }: { event: Event }) {
         </ul>
       </>
     );
+  }
+  if (isBranchEvent(event)) {
+    return <BranchEventItem event={event} />;
   }
   return <IconWithText icon={<BsFilePlay />} text={event.type} />;
 }
