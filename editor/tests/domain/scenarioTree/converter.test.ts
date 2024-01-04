@@ -23,10 +23,20 @@ describe('convertScenario', () => {
           events: [],
           cards: [],
         },
+        {
+          id: 'scene2',
+          title: '街',
+          eventId: 'event2',
+          events: [],
+          cards: [],
+        },
       ],
     });
     expect(ret.scenes[0].id).toBe('scene1');
     expect(ret.scenes[0].title).toBe('冒険者の宿');
     expect(ret.scenes[0].isFirstScene).toBe(true);
+    expect(ret.scenes[1].id).toBe('scene2');
+    expect(ret.scenes[1].title).toBe('街');
+    expect(ret.scenes[1].isFirstScene).toBe(false);
   });
 });
