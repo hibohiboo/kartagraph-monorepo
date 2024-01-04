@@ -64,9 +64,9 @@ describe('convertScenario', () => {
       ],
     });
     const [scene1] = ret.scenes;
-    const [event1] = scene1.events;
-    expect(event1.id).toBe('event1');
-    expect(event1.type).toBe('message');
-    expect(event1.data.text).toBe('「おはよう！\n今日もがんばろー」');
+    const event1 = scene1.event;
+    expect(event1?.id).toBe('event1');
+    expect(event1?.type).toBe('message');
+    expect(event1?.data?.text).toBe('「おはよう！\n今日もがんばろー」');
   });
 });
