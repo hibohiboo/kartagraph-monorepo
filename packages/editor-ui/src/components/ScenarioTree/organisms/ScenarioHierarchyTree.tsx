@@ -16,12 +16,14 @@ interface Scene {
   title: string;
   cards: Card[];
   events: SceneEvent[];
+  eventId?: string;
 }
 
 export interface Scenario {
   id: string;
   title: string;
   scenes: Scene[];
+  firstSceneId: string;
 }
 
 function Scene({ scene }: { scene: Scene }) {
