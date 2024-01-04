@@ -94,4 +94,38 @@ describe('convertScenario', () => {
     const event1 = scene1.event;
     expect(event1).toBeUndefined();
   });
+  test('イベントをネストできること', () => {
+    const ret = convertScenario({
+      ...scenario,
+      firstSceneId: 'scene1',
+      scenes: [
+        {
+          id: 'scene1',
+          title: '冒険者の宿',
+          eventId: 'event1',
+          events: [
+            {
+              id: 'event1',
+              type: 'message',
+              data: { text: '「おはよう！」' },
+              next: 'event2',
+            },
+            {
+              id: 'event2',
+              type: 'message',
+              data: { text: '「今日もがんばろー」' },
+            },
+          ],
+          cards: [],
+        },
+      ],
+    });
+    const [scene1] = ret.scenes;
+    const event1 = scene1.event;
+    expect(event1?.id).toBe('event1');
+    expect(event1?.type).toBe('message');
+    expect(event1?.data?.text).toBe('「おはよう！」');
+    expect(event1?.next?.id).toBe('event2');
+    expect(event1?.next?.data.text).toBe('「今日もがんばろー」');
+  });
 });

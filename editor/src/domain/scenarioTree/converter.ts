@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Scenario } from '@kartagraph-editor-ui/index';
 
 export const convertScenario = (scenario: Scenario) => {
@@ -5,18 +6,7 @@ export const convertScenario = (scenario: Scenario) => {
     id: scenario.id,
     title: scenario.title,
     scenes: scenario.scenes.map((scene) => {
-      const firstEvent = scene.events.find(
-        (event) => event.id === scene.eventId,
-      );
-      const event =
-        firstEvent == null
-          ? undefined
-          : {
-              id: firstEvent.id,
-              type: firstEvent.type,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              data: firstEvent.data as any,
-            };
+      const event = createEvent(scene.eventId, scene.events);
       return {
         id: scene.id,
         title: scene.title,
@@ -26,3 +16,14 @@ export const convertScenario = (scenario: Scenario) => {
     }),
   };
 };
+
+function createEvent(eventId: string | undefined, events: any): any {
+  const event = events.find((event: any) => event.id === eventId);
+  if (event == null) return undefined;
+  return {
+    id: event.id,
+    type: event.type,
+    data: event.data as any,
+    next: createEvent(event.next, events),
+  };
+}
