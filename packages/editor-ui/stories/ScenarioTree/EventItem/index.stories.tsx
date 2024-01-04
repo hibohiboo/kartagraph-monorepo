@@ -20,6 +20,29 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Message: Story = {};
+export const Select: Story = {
+  args: {
+    event: {
+      id: 'huromeshi',
+      type: 'message',
+      data: {
+        text: '「お風呂？ご飯？」',
+        image: '/images/characters/recept/laugh.png',
+        select: [
+          {
+            label: 'お風呂',
+            next: 'huro',
+          },
+          {
+            label: 'ご飯',
+            next: 'gohan',
+          },
+        ],
+      },
+      next: 'select1',
+    },
+  },
+};
 
 export const Messages: Story = {
   args: {

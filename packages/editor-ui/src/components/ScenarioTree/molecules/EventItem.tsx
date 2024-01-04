@@ -5,6 +5,7 @@ import { BsFilePlay } from 'react-icons/bs';
 import { CgListTree } from 'react-icons/cg';
 import { FaFileImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
+import { TbArrowBigRightLinesFilled } from 'react-icons/tb';
 import { EllipsisText } from '../atoms/EllipsisText';
 import { IconWithText } from '../atoms/IconWithText';
 import { indentStyle } from '../constants';
@@ -22,6 +23,14 @@ interface MessageEvent extends SceneEventBase {
   data: {
     text: string;
     image?: string;
+  };
+}
+interface SelectEvent extends SceneEventBase {
+  type: 'message';
+  data: {
+    text: string;
+    image?: string;
+    select: { label: string; next: EventId }[];
   };
 }
 interface MessagesEvent extends SceneEventBase {
@@ -64,6 +73,9 @@ const isBranchEvent = isEventFactory<BranchEvent>('branch');
 const isAddTagsEvent = isEventFactory<AddTagEvent>('addTag');
 const isEndScenarioEvent = isEventFactory<EndScenarioEvent>('endScenario');
 const isChangeSceneEvent = isEventFactory<ChangeScene>('changeScene');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isSelectEvent = (e: any): e is SelectEvent => e.data?.select != null;
+
 function MessageEventItem({ event }: { event: MessageEvent }) {
   return (
     <span style={{ display: 'inline-flex' }}>
@@ -92,6 +104,24 @@ function MessagesEventItem({ event }: { event: MessagesEvent }) {
     </>
   );
 }
+function SelectEventItem({ event }: { event: SelectEvent }) {
+  return (
+    <>
+      <IconWithText icon={<BiWindow />} text={event.data.text} />
+      <ul style={indentStyle}>
+        {event.data.select.map(({ label }, i) => (
+          <li key={`${label}-${i}`}>
+            <IconWithText icon={<CgListTree />} text={'分岐'} />
+            <IconWithText
+              icon={<TbArrowBigRightLinesFilled title={label} />}
+              text={`【${label}】`}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 function BranchEventItem({ event }: { event: BranchEvent }) {
   return (
     <span style={{ display: 'inline-flex' }}>
@@ -104,7 +134,9 @@ function BranchEventItem({ event }: { event: BranchEvent }) {
   );
 }
 export function EventItem({ event }: { event: SceneEvent }) {
-  if (isMessageEvent(event)) {
+  if (isSelectEvent(event)) {
+    return <SelectEventItem event={event} />;
+  } else if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;
   } else if (isMessagesEvent(event)) {
     return <MessagesEventItem event={event} />;
