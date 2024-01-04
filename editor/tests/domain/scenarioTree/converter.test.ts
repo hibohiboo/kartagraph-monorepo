@@ -128,4 +128,83 @@ describe('convertScenario', () => {
     expect(event1?.next?.id).toBe('event2');
     expect(event1?.next?.data.text).toBe('「今日もがんばろー」');
   });
+  test('選択肢のイベントをネストできること', () => {
+    const ret = convertScenario({
+      ...scenario,
+      firstSceneId: 'scene1',
+      scenes: [
+        {
+          id: 'scene1',
+          title: '冒険者の宿',
+          eventId: 'event1',
+          events: [
+            {
+              id: 'event1',
+              type: 'message',
+              data: {
+                text: '「おはよう！」',
+                select: [
+                  {
+                    label: 'がんばろー',
+                    next: 'event2',
+                  },
+                  {
+                    label: 'ご飯',
+                    next: 'gohan',
+                  },
+                ],
+              },
+            },
+            {
+              id: 'event2',
+              type: 'message',
+              data: { text: '「今日もがんばろー」' },
+            },
+          ],
+          cards: [],
+        },
+      ],
+    });
+    const [scene1] = ret.scenes;
+    const event1 = scene1.event;
+    expect(event1?.id).toBe('event1');
+    expect(event1?.type).toBe('message');
+    expect(event1?.data?.text).toBe('「おはよう！」');
+    expect(event1?.data?.select[0].label).toBe('がんばろー');
+    expect(event1?.data?.select[0].next.data.text).toBe('「今日もがんばろー」');
+  });
+  test('シーン変更の場合次のシーンの名前が取得できること', () => {
+    const ret = convertScenario({
+      ...scenario,
+      firstSceneId: 'scene1',
+      scenes: [
+        {
+          id: 'scene1',
+          title: '冒険者の宿',
+          eventId: 'goodbye',
+          events: [
+            {
+              id: 'goodbye',
+              type: 'changeScene',
+              data: {
+                sceneId: 'scene2',
+              },
+            },
+          ],
+          cards: [],
+        },
+        {
+          id: 'scene2',
+          title: '街',
+          events: [],
+          cards: [],
+        },
+      ],
+    });
+    const [scene1] = ret.scenes;
+    const event1 = scene1.event;
+    expect(scene1.title).toBe('冒険者の宿');
+    expect(event1.data.sceneId).toBe('scene2');
+    expect(event1.data.title).toBe('街');
+  });
 });
