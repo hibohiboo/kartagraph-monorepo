@@ -69,4 +69,29 @@ describe('convertScenario', () => {
     expect(event1?.type).toBe('message');
     expect(event1?.data?.text).toBe('「おはよう！\n今日もがんばろー」');
   });
+  test('初期イベントがないときにイベントが紐づけられないこと', () => {
+    const ret = convertScenario({
+      ...scenario,
+      scenes: [
+        {
+          id: 'scene1',
+          title: '冒険者の宿',
+          events: [
+            {
+              id: 'event1',
+              type: 'message',
+              data: {
+                text: '「おはよう！\n今日もがんばろー」',
+                image: '/images/characters/recept/laugh.png',
+              },
+            },
+          ],
+          cards: [],
+        },
+      ],
+    });
+    const [scene1] = ret.scenes;
+    const event1 = scene1.event;
+    expect(event1).toBeUndefined();
+  });
 });
