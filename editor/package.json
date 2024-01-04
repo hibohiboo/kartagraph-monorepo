@@ -24,11 +24,12 @@
     "web-vitals": "^3.5.1"
   },
   "devDependencies": {
+    "@kartagraph/editor-ui": "*",
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
-    "@kartagraph/editor-ui": "*",
     "@kartagraph/worker": "*",
+    "@testing-library/jest-dom": "^6.2.0",
     "@types/jest": "^29.5.11",
     "@types/react": "^18.2.46",
     "@types/react-dom": "^18.2.18",
