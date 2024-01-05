@@ -31,7 +31,7 @@
     "@storybook/testing-library": "^0.2.2",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "storybook": "^7.6.7",
-    "vite": "^5.0.10"
+    "vite": "^5.0.11"
   },
   "exports": {
     ".": "./src/index.ts",

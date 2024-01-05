@@ -2,6 +2,7 @@ import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePrevi
 import FileTree from '@kartagraph-editor/components/FileSystem/FileTree';
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import ScenarioTree from '@kartagraph-editor/domain/scenarioTree/components/ScenarioTree';
+// import { convertScenario } from '@kartagraph-editor/domain/scenarioTree/converter';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
 import {
@@ -39,6 +40,7 @@ function App() {
         <SplitterPanel size={15}>
           <div style={{ height: '100vh', overflowY: 'auto', width: '100%' }}>
             <ScenarioTree scenario={scenario} />
+            {/* <pre>{JSON.stringify(convertScenario(scenario))}</pre> */}
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>
