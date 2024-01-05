@@ -1,3 +1,4 @@
+import { basePath } from '@kartagraph-editor/constants';
 import { initReport } from '@kartagraph-editor/domain/analytics/analyticsService';
 import TopPage from '@kartagraph-editor/pages/TopPage';
 import ScenarioResultPage from '@kartagraph-editor/pages/scenario/ScenarioResultPage';
@@ -9,8 +10,7 @@ import { Agreement } from '@kartagraph-ui/index';
 import { createBrowserRouter } from 'react-router-dom';
 import { initMSW } from '../../tests/msw/browser';
 import { RootLayout } from './components/RootLayout';
-declare let VITE_DEFINE_BASE_PATH: string;
-export const basePath = VITE_DEFINE_BASE_PATH;
+
 export const router = createBrowserRouter(
   [
     {
