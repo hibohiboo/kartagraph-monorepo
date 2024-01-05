@@ -9,6 +9,7 @@ export const initMSW = async () => {
       serviceWorker: {
         url: `/${basePath}/mockServiceWorker.js`,
       },
+      onUnhandledRequest: 'bypass',
     });
   }
 };
