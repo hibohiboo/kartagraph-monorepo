@@ -11,6 +11,21 @@ export default defineConfig({
   base: `/${process.env.SUB_DIR_PATH_BUILDER}/`,
   define: {
     VITE_DEFINE_BASE_PATH: JSON.stringify(process.env.SUB_DIR_PATH_BUILDER),
+    VITE_APP_FIREBASE_API_KEY: JSON.stringify(
+      process.env.VITE_APP_FIREBASE_API_KEY,
+    ),
+    VITE_APP_FIREBASE_AUTH_DOMAIN: JSON.stringify(
+      process.env.VITE_APP_FIREBASE_AUTH_DOMAIN,
+    ),
+    VITE_APP_FIREBASE_PROJECT_ID: JSON.stringify(
+      process.env.VITE_APP_FIREBASE_PROJECT_ID,
+    ),
+    VITE_APP_FIREBASE_APP_ID: JSON.stringify(
+      process.env.VITE_APP_FIREBASE_APP_ID,
+    ),
+    VITE_APP_FIREBASE_MEASUREMENT_ID: JSON.stringify(
+      process.env.VITE_APP_FIREBASE_MEASUREMENT_ID,
+    ),
   },
   resolve: {
     alias: [

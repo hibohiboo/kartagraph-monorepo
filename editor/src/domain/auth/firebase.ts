@@ -3,12 +3,19 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously } from 'firebase/auth';
 import type { Auth } from 'firebase/auth';
 export { logEvent } from 'firebase/analytics';
+
+// import.metaを使うとjestのテスト実行時にエラーになるため、定数で置き換える
+declare let VITE_APP_FIREBASE_API_KEY: string;
+declare let VITE_APP_FIREBASE_AUTH_DOMAIN: string;
+declare let VITE_APP_FIREBASE_PROJECT_ID: string;
+declare let VITE_APP_FIREBASE_APP_ID: string;
+declare let VITE_APP_FIREBASE_MEASUREMENT_ID: string;
 const firebaseConfig = {
-  apiKey: `${import.meta.env.VITE_APP_FIREBASE_API_KEY}`,
-  authDomain: `${import.meta.env.VITE_APP_FIREBASE_AUTH_DOMAIN}`,
-  projectId: `${import.meta.env.VITE_APP_FIREBASE_PROJECT_ID}`,
-  appId: `${import.meta.env.VITE_APP_FIREBASE_APP_ID}`,
-  measurementId: `${import.meta.env.VITE_APP_FIREBASE_MEASUREMENT_ID}`,
+  apiKey: `${VITE_APP_FIREBASE_API_KEY}`,
+  authDomain: `${VITE_APP_FIREBASE_AUTH_DOMAIN}`,
+  projectId: `${VITE_APP_FIREBASE_PROJECT_ID}`,
+  appId: `${VITE_APP_FIREBASE_APP_ID}`,
+  measurementId: `${VITE_APP_FIREBASE_MEASUREMENT_ID}`,
 };
 const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);

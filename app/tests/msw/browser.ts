@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-
-import { basePath } from '@kartagraph-app/router';
+import { basePath } from '@kartagraph-app/constants';
 import { setupWorker } from 'msw/browser';
 import { handlers } from './handlers';
 

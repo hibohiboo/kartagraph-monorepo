@@ -1,4 +1,4 @@
-import { basePath } from '@kartagraph-app/router';
+import { basePath } from '@kartagraph-app/constants';
 
 export const getSrc = (src: string) => {
   // if (import.meta.env.DEV) {

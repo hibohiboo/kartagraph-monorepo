@@ -13,6 +13,7 @@ const sendToGoogleAnalytics: ReportCallback = ({ name, delta, id }) => {
 };
 
 // 開発環境ではログに。本番環境ではグーグル アナリティクスに出力。
-const isDevevelopServe = import.meta.env.MODE === 'development'; // import.meta.env.DEV
+// const isDevevelopServe = import.meta.env.MODE === 'development'; // import.meta.env.DEV
+const isDevevelopServe = location.host.includes('localhost'); // Jestのテスト実行時にimport.meta.envが原因でエラーになるため、hostがローカルホストかで判断
 const reportTo = isDevevelopServe ? console.log : sendToGoogleAnalytics;
 export const initReport = () => reportWebVitals(reportTo);
