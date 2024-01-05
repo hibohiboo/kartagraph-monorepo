@@ -1,11 +1,12 @@
 {
-
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@kartagraph-editor-ui/*": ["./src/*"],
       "@kartagraph-types/*": ["../../types/src/*"],
-    }
+    },
+    "esModuleInterop": true,
+    "types": ["jest"],
   },
   "include": ["src", "stories/**/*"],
   "references": [{ "path": "./tsconfig.node.json" },

@@ -4,7 +4,7 @@
     "<rootDir>/src","<rootDir>/tests"
   ],
   "transform": {
-    "^.+\\.tsx?$": "ts-jest"
+    "^.+\\.tsx?$": ["ts-jest", {"useESM": true}]
   },
   "testMatch": [
     "**/__tests__/**/*.+(ts|tsx|js)",
@@ -19,6 +19,7 @@
     "\\.(css|less|scss)$": "identity-obj-proxy",
     "^@kartagraph-editor/(.*)$": "<rootDir>/src/$1",
     "^@kartagraph-ui/(.*)$": "<rootDir>/../packages/ui/src/$1",
+    "^@kartagraph-editor-ui/(.*)$": "<rootDir>/../packages/editor-ui/src/$1",
     "^@kartagraph-worker/(.*)$": "<rootDir>/../packages/worker/src/$1",
     "\\.(gif|ttf|eot|svg)$": "<rootDir>/tests/jest.fileMock.js"
   },
@@ -28,5 +29,7 @@
   "resolver": "<rootDir>/tests/jest.resolver.jsm",
   "globals": {
     "VITE_DEFINE_BASE_PATH": "editor"
-  }
+  },
+  "extensionsToTreatAsEsm": [".ts"],
+  "preset": "ts-jest/presets/default-esm"
 }

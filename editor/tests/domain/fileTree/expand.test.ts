@@ -1,14 +1,33 @@
+// esmでは下の記法はサポート外 https://jestjs.io/ja/docs/ecmascript-modules https://qiita.com/toydev/items/e163d35a7e8e3c11fba2
+import { jest } from '@jest/globals';
 import {
   getDirectoryHandle,
   getRootDirectoryHandle,
   readDirectory,
 } from '@kartagraph-editor/domain/fileSystem';
-import { updateFileNodeState } from '@kartagraph-editor/domain/fileTree/expand';
-jest.mock('@kartagraph-editor/domain/fileSystem');
-const mockedHandler = jest.mocked(getDirectoryHandle);
-const mockedRootHandler = jest.mocked(getRootDirectoryHandle);
-const mockedReadDirectory = jest.mocked(readDirectory);
+// import { updateFileNodeState } from '@kartagraph-editor/domain/fileTree/expand';
+// const mockedHandler = jest.mocked(getDirectoryHandle);
+// const mockedRootHandler = jest.mocked(getRootDirectoryHandle);
+// const mockedReadDirectory = jest.mocked(readDirectory);
 
+// ここからesm向けの記法
+const mockedHandler = jest.fn() as jest.MockedFunction<
+  typeof getDirectoryHandle
+>;
+const mockedRootHandler = jest.fn() as jest.MockedFunction<
+  typeof getRootDirectoryHandle
+>;
+const mockedReadDirectory = jest.fn() as jest.MockedFunction<
+  typeof readDirectory
+>;
+jest.unstable_mockModule('@kartagraph-editor/domain/fileSystem', () => ({
+  getDirectoryHandle: mockedHandler,
+  getRootDirectoryHandle: mockedRootHandler,
+  readDirectory: mockedReadDirectory,
+}));
+const { updateFileNodeState } = await import(
+  '@kartagraph-editor/domain/fileTree/expand'
+);
 describe('updateFileNodeState', () => {
   const fsNodes = [
     {
