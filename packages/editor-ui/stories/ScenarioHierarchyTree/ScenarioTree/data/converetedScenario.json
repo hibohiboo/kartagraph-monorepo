@@ -1,0 +1,129 @@
+{
+  "id": "sample",
+  "title": "シナリオテスト",
+  "scenes": [
+    {
+      "id": "scene1",
+      "title": "冒険者の宿",
+      "isFirstScene": true,
+      "event": {
+        "id": "event1",
+        "type": "message",
+        "data": {
+          "text": "「おはよう！\n今日もがんばろー」",
+          "image": "/images/characters/recept/laugh.png"
+        }
+      },
+      "cards": [
+        {
+          "name": "宿の娘",
+          "src": "/images/characters/recept/laugh.png",
+          "x": 100,
+          "y": 50,
+          "clickEventId": "click1",
+          "event": {
+            "id": "click1",
+            "type": "branch",
+            "data": {
+              "condition": "hasTag",
+              "tag": "風呂",
+              "next": "お風呂どうだった"
+            },
+            "next": {
+              "id": "mesicheck",
+              "type": "branch",
+              "data": {
+                "condition": "hasTag",
+                "tag": "ご飯",
+                "next": "ご飯どうだった"
+              },
+              "next": {
+                "id": "huromeshi",
+                "type": "message",
+                "data": {
+                  "text": "「お風呂？ご飯？」",
+                  "image": "/images/characters/recept/laugh.png",
+                  "select": [
+                    {
+                      "label": "お風呂",
+                      "next": {
+                        "id": "huro",
+                        "type": "message",
+                        "data": {
+                          "text": "「はい、バスタオル！」",
+                          "image": "/images/characters/recept/laugh.png"
+                        },
+                        "next": {
+                          "id": "addHuroTag",
+                          "type": "addTag",
+                          "data": {
+                            "name": "風呂"
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "label": "ご飯",
+                      "next": {
+                        "id": "gohan",
+                        "type": "message",
+                        "data": {
+                          "text": "「今日は揚げじゃがだよ！」",
+                          "image": "/images/characters/recept/laugh.png"
+                        },
+                        "next": {
+                          "id": "addGohanTag",
+                          "type": "addTag",
+                          "data": {
+                            "name": "ご飯"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "扉",
+          "src": "/images/door.png",
+          "x": 400,
+          "y": 200,
+          "clickEventId": "goodbye",
+          "event": {
+            "id": "goodbye",
+            "type": "changeScene",
+            "data": {
+              "sceneId": "scene2",
+              "title": "最初の街"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "scene2",
+      "title": "最初の街",
+      "isFirstScene": false,
+      "cards": [
+        {
+          "name": "冒険者の宿",
+          "src": "/images/adv_inn_74x94.png",
+          "x": 100,
+          "y": 50,
+          "clickEventId": "toInn",
+          "event": {
+            "id": "toInn",
+            "type": "changeScene",
+            "data": {
+              "sceneId": "scene1",
+              "title": "冒険者の宿"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

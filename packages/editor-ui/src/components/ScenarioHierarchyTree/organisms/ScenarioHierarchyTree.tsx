@@ -1,5 +1,4 @@
 import { Tree } from 'primereact/tree';
-import { BsFilePlay } from 'react-icons/bs';
 import { FaImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { GiCardboardBox } from 'react-icons/gi';
@@ -8,9 +7,10 @@ import { IconWithText } from '../../ScenarioTree/atoms/IconWithText';
 import { indentStyle } from '../../ScenarioTree/constants';
 import {
   EventId,
-  EventItem,
-  SceneEvent,
+  SceneEvent as SceneEvent,
 } from '../../ScenarioTree/molecules/EventItem';
+import ConvertedEventItem from '../molecules/ConvertedEventItem';
+import { ConvertedScenario, ConvertedScene } from '../type';
 interface Card {
   name: string;
   clickEventId: EventId;
@@ -31,7 +31,7 @@ export interface Scenario {
   firstSceneId: string;
 }
 
-function Scene({ scene }: { scene: Scene }) {
+function Scene({ scene }: { scene: ConvertedScene }) {
   return (
     <>
       <IconWithText icon={<FaImage />} text={scene.title} />
@@ -42,16 +42,7 @@ function Scene({ scene }: { scene: Scene }) {
           {scene.cards.map((card) => (
             <li key={card.name}>
               <IconWithText icon={<TbCards />} text={card.name} />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div style={{ ...indentStyle }}>
-        <IconWithText icon={<BsFilePlay />} text={'イベント一覧'} />
-        <ul style={indentStyle}>
-          {scene.events.map((event) => (
-            <li key={event.id}>
-              <EventItem event={event} />
+              <ConvertedEventItem event={card.event} />
             </li>
           ))}
         </ul>
@@ -59,7 +50,8 @@ function Scene({ scene }: { scene: Scene }) {
     </>
   );
 }
-function ScenarioTree({ scenario }: { scenario: Scenario }) {
+
+function ScenarioHierarchyTree({ scenario }: { scenario: ConvertedScenario }) {
   return (
     <div>
       <h2 style={{ display: 'inline-flex', alignItems: 'center' }}>
@@ -80,4 +72,4 @@ function ScenarioTree({ scenario }: { scenario: Scenario }) {
   );
 }
 
-export default ScenarioTree;
+export default ScenarioHierarchyTree;
