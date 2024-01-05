@@ -238,5 +238,37 @@ describe('convertScenario', () => {
       const [card1] = scene1.cards;
       expect(card1.name).toBe('宿の娘');
     });
+    test('カードにイベントを設定できること', () => {
+      const ret = convertScenario({
+        ...scenario,
+        firstSceneId: 'scene1',
+        scenes: [
+          {
+            id: 'scene1',
+            title: '冒険者の宿',
+            eventId: 'event1',
+            events: [
+              {
+                id: 'click1',
+                type: 'message',
+                data: {
+                  text: '「おはよう！」',
+                  image: '/images/characters/recept/laugh.png',
+                },
+              },
+            ],
+            cards: [
+              {
+                name: '宿の娘',
+                clickEventId: 'click1',
+              },
+            ],
+          },
+        ],
+      });
+      const [scene1] = ret.scenes;
+      const [card1] = scene1.cards;
+      expect(card1.event.data.text).toBe('「おはよう！」');
+    });
   });
 });

@@ -12,7 +12,10 @@ export const convertScenario = (scenario: Scenario) => {
         title: scene.title,
         isFirstScene: scenario.firstSceneId === scene.id,
         event,
-        cards: scene.cards.map((card) => ({ ...card })),
+        cards: scene.cards.map((card) => ({
+          ...card,
+          event: createEvent(card.clickEventId, scene.events, scenario.scenes),
+        })),
       };
     }),
   };
