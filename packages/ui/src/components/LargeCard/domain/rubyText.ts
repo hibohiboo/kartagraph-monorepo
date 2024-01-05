@@ -1,4 +1,4 @@
-import sanitizeHtml from 'sanitize-html';
+import DOMPurify from 'dompurify';
 
 export function rubyText(text?: string) {
   if (!text) return '';
@@ -16,5 +16,5 @@ export function rubyText(text?: string) {
     .replace(/[|｜]（(.+?)）/g, '（$1）')
     .replace(/[|｜]\((.+?)\)/g, '($1)');
 
-  return sanitizeHtml(html, { allowedTags: ['ruby', 'rt'] });
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS: ['ruby', 'rt'] });
 }

@@ -14,7 +14,7 @@ export default defineConfig({
         manualChunks: {
           react: ['react', 'react-dom', 'react/jsx-runtime'],
           // reactFamily: ['react-router-dom'],
-          others: ['sanitize-html'],
+          others: ['dompurify'],
           primereact: ['primereact/carousel'],
         },
       },
