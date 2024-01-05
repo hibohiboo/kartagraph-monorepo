@@ -4,11 +4,16 @@ import { FaImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { GiCardboardBox } from 'react-icons/gi';
 import { TbCards } from 'react-icons/tb';
-import { IconWithText } from '../atoms/IconWithText';
-import { indentStyle } from '../constants';
-import { EventItem, SceneEvent } from '../molecules/EventItem';
+import { IconWithText } from '../../ScenarioTree/atoms/IconWithText';
+import { indentStyle } from '../../ScenarioTree/constants';
+import {
+  EventId,
+  EventItem,
+  SceneEvent,
+} from '../../ScenarioTree/molecules/EventItem';
 interface Card {
   name: string;
+  clickEventId: EventId;
 }
 
 interface Scene {
@@ -16,7 +21,7 @@ interface Scene {
   title: string;
   cards: Card[];
   events: SceneEvent[];
-  eventId?: string;
+  eventId?: EventId;
 }
 
 export interface Scenario {

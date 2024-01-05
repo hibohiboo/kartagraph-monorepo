@@ -9,7 +9,7 @@ import { TbArrowBigRightLinesFilled } from 'react-icons/tb';
 import { EllipsisText } from '../atoms/EllipsisText';
 import { IconWithText } from '../atoms/IconWithText';
 import { indentStyle } from '../constants';
-type EventId = string;
+export type EventId = string;
 type EventType = 'message' | 'messages' | 'branch' | 'addTag' | 'endScenario';
 export interface SceneEvent {
   id: EventId;
