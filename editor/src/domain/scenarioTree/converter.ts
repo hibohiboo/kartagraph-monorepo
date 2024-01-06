@@ -38,6 +38,7 @@ function createEvent(
 }
 
 function createData(event: any, events: any, scenes: any): any {
+  if (event.data == null) return undefined;
   if (event.data.select != null) {
     return {
       ...event.data,
@@ -56,7 +57,7 @@ function createData(event: any, events: any, scenes: any): any {
       title: scene.title,
     };
   }
-  if (event.data.next != null) {
+  if (typeof event.data.next === 'string') {
     return {
       ...event.data,
       next: createEvent(event.data.next, events, scenes),

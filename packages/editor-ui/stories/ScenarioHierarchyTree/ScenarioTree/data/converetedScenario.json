@@ -27,7 +27,18 @@
             "data": {
               "condition": "hasTag",
               "tag": "風呂",
-              "next": "お風呂どうだった"
+              "next": {
+                "id": "お風呂どうだった",
+                "type": "message",
+                "data": {
+                  "text": "「お湯加減いかがでしたか」",
+                  "image": "/images/characters/recept/laugh.png"
+                },
+                "next": {
+                  "id": "end",
+                  "type": "endScenario"
+                }
+              }
             },
             "next": {
               "id": "mesicheck",
@@ -35,7 +46,18 @@
               "data": {
                 "condition": "hasTag",
                 "tag": "ご飯",
-                "next": "ご飯どうだった"
+                "next": {
+                  "id": "ご飯どうだった",
+                  "type": "message",
+                  "data": {
+                    "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
+                    "image": "/images/characters/recept/laugh.png"
+                  },
+                  "next": {
+                    "id": "end",
+                    "type": "endScenario"
+                  }
+                }
               },
               "next": {
                 "id": "huromeshi",
