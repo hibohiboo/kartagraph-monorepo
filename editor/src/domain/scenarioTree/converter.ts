@@ -28,36 +28,39 @@ function createEvent(
 ): any {
   const event = events.find((event: any) => event.id === eventId);
   if (event == null) return undefined;
+  const data = createData(event, events, scenes);
+  return {
+    id: event.id,
+    type: event.type,
+    data,
+    next: createEvent(event.next, events, scenes),
+  };
+}
+
+function createData(event: any, events: any, scenes: any): any {
   if (event.data.select != null) {
     return {
-      id: event.id,
-      type: event.type,
-      data: {
-        ...event.data,
-        select: event.data.select.map((select: any) => {
-          return {
-            ...select,
-            next: createEvent(select.next, events, scenes),
-          };
-        }),
-      },
+      ...event.data,
+      select: event.data.select.map((select: any) => {
+        return {
+          ...select,
+          next: createEvent(select.next, events, scenes),
+        };
+      }),
     };
   }
   if (event.type === 'changeScene') {
     const scene = scenes.find((scene: any) => scene.id === event.data.sceneId);
     return {
-      id: event.id,
-      type: event.type,
-      data: {
-        sceneId: event.data.sceneId,
-        title: scene.title,
-      },
+      sceneId: event.data.sceneId,
+      title: scene.title,
     };
   }
-  return {
-    id: event.id,
-    type: event.type,
-    data: event.data as any,
-    next: createEvent(event.next, events, scenes),
-  };
+  if (event.data.next != null) {
+    return {
+      ...event.data,
+      next: createEvent(event.data.next, events, scenes),
+    };
+  }
+  return event.data;
 }

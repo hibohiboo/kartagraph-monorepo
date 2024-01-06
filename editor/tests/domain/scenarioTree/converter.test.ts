@@ -177,6 +177,46 @@ describe('convertScenario', () => {
         '「今日もがんばろー」',
       );
     });
+    test('分岐のイベントをネストできること', () => {
+      const ret = convertScenario({
+        ...scenario,
+        firstSceneId: 'scene1',
+        scenes: [
+          {
+            id: 'scene1',
+            title: '冒険者の宿',
+            eventId: 'event1',
+            events: [
+              {
+                id: 'event1',
+                type: 'branch',
+                data: {
+                  condition: 'hasTag',
+                  tag: '風呂',
+                  next: 'お風呂どうだった',
+                },
+                next: 'mesicheck',
+              },
+              {
+                id: 'お風呂どうだった',
+                type: 'message',
+                data: {
+                  text: '「お湯加減いかがでしたか」',
+                  image: '/images/characters/recept/laugh.png',
+                },
+                next: 'end',
+              },
+            ],
+            cards: [],
+          },
+        ],
+      });
+      const [scene1] = ret.scenes;
+      const event1 = scene1.event;
+      expect(event1?.id).toBe('event1');
+      expect(event1?.type).toBe('branch');
+      expect(event1?.data?.next.data.text).toBe('「お湯加減いかがでしたか」');
+    });
   });
   describe('固有イベント', () => {
     test('シーン変更の場合次のシーンの名前が取得できること', () => {
