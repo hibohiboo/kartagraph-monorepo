@@ -7,6 +7,15 @@ export const convertScenario = (scenario: Scenario) => {
     title: scenario.title,
     scenes: scenario.scenes.map((scene) => {
       const event = createEvent(scene.eventId, scene.events, scenario.scenes);
+      const namedEvents = scene.events
+        .filter((e) => e.title != null)
+        .map((event) => {
+          return {
+            ...event,
+            data: createData(event, scene.events, scenario.scenes),
+            next: createEvent(event.next, scene.events, scenario.scenes),
+          };
+        });
       return {
         id: scene.id,
         title: scene.title,
@@ -20,6 +29,7 @@ export const convertScenario = (scenario: Scenario) => {
             scenario.scenes,
           ),
         })),
+        events: namedEvents,
       };
     }),
   };

@@ -16,6 +16,7 @@ export interface SceneEvent {
   type: string | EventType;
   data?: unknown;
   next?: EventId;
+  title?: string;
 }
 type SceneEventBase = Omit<SceneEvent, 'type' | 'data'>;
 interface MessageEvent extends SceneEventBase {

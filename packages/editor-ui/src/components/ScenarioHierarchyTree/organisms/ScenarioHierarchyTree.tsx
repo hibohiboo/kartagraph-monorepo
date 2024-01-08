@@ -50,10 +50,15 @@ function Scene({ scene }: { scene: ConvertedScene }) {
       <div style={{ ...indentStyle }}>
         <IconWithText icon={<GiCardboardBox />} text={'カード一覧'} />
         <ul style={indentStyle}>
-          {scene.cards.map((card) => (
-            <li key={card.name}>
+          {scene.cards.map((card, i) => (
+            <li key={`${card.name}-${i}`}>
               <IconWithText icon={<TbCards />} text={card.name} />
-              <ConvertedEventItem event={card.clickedEvent} />
+              <div style={indentStyle}>
+                <IconWithText icon={<GrTrigger />} text={'クリック時'} />
+                <div style={indentStyle}>
+                  <ConvertedEventItem event={card.clickedEvent} />
+                </div>
+              </div>
             </li>
           ))}
         </ul>
