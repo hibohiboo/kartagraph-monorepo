@@ -12,7 +12,7 @@ export default function ConvertedEventItem({
   if (event.type === 'branch')
     return <BranchConvertedEventItem event={event} />;
   return (
-    <div style={indentStyle}>
+    <div>
       <HierarchyTreeEventItem event={event} />
       {event.next && typeof event.next !== 'string' && (
         <ConvertedEventItem event={event.next} />

@@ -45,6 +45,15 @@
             "text": "「お湯加減いかがでしたか」",
             "image": "/images/characters/recept/laugh.png"
           },
+          "next": "よかったよ"
+        },
+        {
+          "id": "よかったよ",
+          "type": "message",
+          "data": {
+            "text": "「よかった？ まんぞくいただけたようでうれしいです」",
+            "image": "/images/characters/recept/laugh.png"
+          },
           "next": "end"
         },
         {

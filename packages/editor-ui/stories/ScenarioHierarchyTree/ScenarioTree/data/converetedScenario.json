@@ -35,8 +35,16 @@
                   "image": "/images/characters/recept/laugh.png"
                 },
                 "next": {
-                  "id": "end",
-                  "title": "シナリオ終了"
+                  "id": "よかったよ",
+                  "type": "message",
+                  "data": {
+                    "text": "「よかった？ まんぞくいただけたようでうれしいです」",
+                    "image": "/images/characters/recept/laugh.png"
+                  },
+                  "next": {
+                    "id": "end",
+                    "title": "シナリオ終了"
+                  }
                 }
               }
             },

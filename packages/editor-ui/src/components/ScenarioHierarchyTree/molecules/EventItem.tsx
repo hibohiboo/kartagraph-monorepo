@@ -120,7 +120,11 @@ function SelectEventItem({ event }: { event: SelectEvent }) {
               icon={<TbArrowBigRightFilled title={label} />}
               text={`【${label}】`}
             />
-            {next && <ConvertedEventItem event={next} />}
+            {next && (
+              <div style={indentStyle}>
+                <ConvertedEventItem event={next} />
+              </div>
+            )}
           </li>
         ))}
       </ul>
