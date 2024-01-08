@@ -9,13 +9,13 @@ interface SelectOption {
   label: string;
   next: EventData | string;
 }
-type EventType =
-  | 'message'
-  | 'messages'
-  | 'branch'
-  | 'addTag'
-  | 'endScenario'
-  | 'changeScene';
+// type EventType =
+//   | 'message'
+//   | 'messages'
+//   | 'branch'
+//   | 'addTag'
+//   | 'endScenario'
+//   | 'changeScene';
 
 export interface ConvertedSceneEvent {
   id: string;

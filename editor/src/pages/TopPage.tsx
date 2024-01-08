@@ -9,6 +9,7 @@ import {
   scenarioIdAtom,
   scenarioStateAtom,
 } from '@kartagraph-editor/store/worker/gameCore';
+import { ScenarioHierarchyTree } from '@kartagraph-editor-ui/index';
 import Card from '@kartagraph-ui/components/Card/Card';
 import { useAtom } from 'jotai';
 import { Button } from 'primereact/button';
@@ -27,7 +28,7 @@ function App() {
     if (scenarioState === 'endScenario')
       navigate(`/scenario/${scenarioId}/result`);
   }, [navigate, scenarioId, scenarioState]);
-
+  const convertedScenario = convertScenario(scenario) as any;
   return (
     <div>
       <Splitter>
@@ -39,11 +40,15 @@ function App() {
         </SplitterPanel>
         <SplitterPanel size={15}>
           <div style={{ height: '100vh', overflowY: 'auto', width: '100%' }}>
+            <ScenarioHierarchyTree scenario={convertedScenario} />
             <details>
+              <summary>▼JSON</summary>
+              <pre>{JSON.stringify(convertedScenario, undefined, 2)}</pre>
+            </details>
+            <details>
+              <summary>▼一覧表示</summary>
               <ScenarioTree scenario={scenario} />
             </details>
-
-            <pre>{JSON.stringify(convertScenario(scenario), undefined, 2)}</pre>
           </div>
         </SplitterPanel>
         <SplitterPanel size={40}>

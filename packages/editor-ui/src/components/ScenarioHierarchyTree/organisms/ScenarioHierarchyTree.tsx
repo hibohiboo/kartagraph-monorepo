@@ -109,7 +109,6 @@ function ScenarioHierarchyTree({ scenario }: { scenario: ConvertedScenario }) {
         </ul>
       </div>
       <Tree />
-      <pre>{JSON.stringify(scenario, null, 2)}</pre>
     </div>
   );
 }
