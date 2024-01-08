@@ -22,11 +22,11 @@
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
-    "@types/react": "^18.2.46",
+    "@types/react": "^18.2.47",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "dotenv": "^16.3.1",
-    "msw": "^2.0.11",
+    "msw": "^2.0.12",
     "vite": "^5.0.11"
   },
   "msw": {
