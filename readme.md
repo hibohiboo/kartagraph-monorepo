@@ -9,6 +9,8 @@
 [openapi backend](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-openapi/)  
 [jest-report packages/worker](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-worker/jest.html)  
 [storybook packages/ui](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-components/)  
+[jest-report editor](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-editor/jest.html)  
+[storybook packages/editor-ui](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-editor-components/)  
 
 [wiki](https://github.com/hibohiboo/kartagraph-monorepo/wiki/%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E3%82%A8%E3%83%B3%E3%83%89)  
 [Backlogs](https://github.com/hibohiboo/kartagraph-monorepo/issues)  

@@ -69,7 +69,8 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         working-directory: ${{ env.BUILD_PATH }}
-
+      # #############
+      # フロントエンド
       # storybook 準備
       - name: Install dependencies
         run: npm install
@@ -88,7 +89,28 @@ jobs:
       - name: Worker Unit Test
         run: npm run test
         working-directory: packages/worker
+      # #############
+      # # editor-ui #
+      # エディタ用 storybook 準備
+      - name: Install dependencies
+        run: npm install
+        working-directory: packages/editor-ui
 
+      # エディタ用 storybook ビルド -> dist の publicフォルダ内
+      - name: Build Sample Storybook
+        run: npm run build-storybook
+        working-directory: packages/editor-ui
+      # # editor #
+      # エディタ用jest reports 作成 
+      - name: Worker Unit Test Prepare
+        run: npm install
+        working-directory: editor
+
+      - name: Worker Unit Test
+        run: npm run test
+        working-directory: editor
+      # #############
+      # バックエンド
       # OpenAPI Document 作成
       - name: OpenAPI Schema Modules
         run: npm  install

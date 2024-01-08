@@ -32,5 +32,15 @@
     "VITE_APP_FIREBASE_PROJECT_ID": "editor",
     "VITE_APP_FIREBASE_APP_ID": "editor",
     "VITE_APP_FIREBASE_MEASUREMENT_ID": "editor"
-  }
+  },
+  "reporters": [
+    "default",
+    [
+      "jest-html-reporters",
+      {
+        "publicPath": "../dist/public/jest-reports-editor",
+        "filename": "jest.html"
+      }
+    ]
+  ]
 }
