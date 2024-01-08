@@ -42,7 +42,15 @@ function createEvent(
 ): any {
   const event = events.find((event: any) => event.id === eventId);
   if (event == null) return undefined;
+  if (event.title != null) {
+    return {
+      id: event.id,
+      title: event.title,
+    };
+  }
+
   const data = createData(event, events, scenes);
+
   return {
     id: event.id,
     type: event.type,

@@ -136,6 +136,45 @@ describe('convertScenario', () => {
       expect(event1?.data?.text).toBe('「おはよう！\n今日もがんばろー」');
       expect(event1?.next.data?.text).toBe('「そういえば」');
     });
+    test('nextがタイトル付きイベントの場合、タイトルとIDのみ変換すること', () => {
+      const ret = convertScenario({
+        ...scenario,
+        firstSceneId: 'scene1',
+        scenes: [
+          {
+            id: 'scene1',
+            title: '冒険者の宿',
+            eventId: 'event1',
+            events: [
+              {
+                id: 'event1',
+                type: 'message',
+                title: 'おはよう',
+                data: {
+                  text: '「おはよう！\n今日もがんばろー」',
+                  image: '/images/characters/recept/laugh.png',
+                },
+                next: 'event2',
+              },
+              {
+                id: 'event2',
+                type: 'message',
+                data: {
+                  text: '「そういえば」',
+                },
+              },
+            ],
+            cards: [],
+          },
+        ],
+      });
+      const [scene1] = ret.scenes;
+      const event1 = scene1.event;
+      expect(event1.id).toBe('event1');
+      expect(event1.title).toBe('おはよう');
+      expect(event1.type).toBeUndefined();
+      expect(event1.data).toBeUndefined();
+    });
   });
   describe('イベントのネスト', () => {
     test('イベントをネストできること', () => {

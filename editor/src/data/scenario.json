@@ -119,6 +119,7 @@
         },
         {
           "id": "end",
+          "title": "シナリオ終了",
           "type": "endScenario"
         },
         {
