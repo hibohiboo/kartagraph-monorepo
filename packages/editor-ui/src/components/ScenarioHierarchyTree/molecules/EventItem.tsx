@@ -9,6 +9,7 @@ import { CgListTree } from 'react-icons/cg';
 import { FaFileImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { TbArrowBigRightLinesFilled } from 'react-icons/tb';
+import { TbArrowBigRightFilled } from 'react-icons/tb';
 import { ConvertedSceneEvent } from '../type';
 import ConvertedEventItem from './ConvertedEventItem';
 
@@ -116,7 +117,7 @@ function SelectEventItem({ event }: { event: SelectEvent }) {
           <li key={`${label}-${i}`}>
             <IconWithText icon={<CgListTree />} text={'分岐'} />
             <IconWithText
-              icon={<TbArrowBigRightLinesFilled title={label} />}
+              icon={<TbArrowBigRightFilled title={label} />}
               text={`【${label}】`}
             />
             {next && <ConvertedEventItem event={next} />}

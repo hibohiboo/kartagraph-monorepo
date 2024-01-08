@@ -32,22 +32,48 @@ export interface Scenario {
   scenes: Scene[];
   firstSceneId: string;
 }
-
+const hasSceneEvent = (s: ConvertedScene) => {
+  if (s.event) return true;
+  if (s.events && s.events.length !== 0) return true;
+  return false;
+};
 function Scene({ scene }: { scene: ConvertedScene }) {
   return (
     <>
       <IconWithText icon={<FaImage />} text={scene.title} />
-      {scene.event && (
-        <div>
+      <div>
+        {hasSceneEvent(scene) && (
           <IconWithText icon={<BsFilePlay />} text={'イベント'} />
+        )}
+        {scene.event && (
           <div style={indentStyle}>
             <IconWithText icon={<GrTrigger />} text={'到着時'} />
             <ConvertedEventItem event={scene.event} />
           </div>
-        </div>
-      )}
+        )}
+        {scene.events && scene.events.length !== 0 && (
+          <div style={indentStyle}>
+            <IconWithText icon={<BsFilePlay />} text={'名前付イベント'} />
+            <ul style={indentStyle}>
+              {scene.events.map((event, i) => (
+                <li key={`${event.title}-${i}`}>
+                  <IconWithText
+                    icon={<BsFilePlay />}
+                    text={`【${event.title}】`}
+                  />
+                  <div style={indentStyle}>
+                    <ConvertedEventItem
+                      event={{ ...event, title: undefined }}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
-      <div style={{ ...indentStyle }}>
+      <div>
         <IconWithText icon={<GiCardboardBox />} text={'カード一覧'} />
         <ul style={indentStyle}>
           {scene.cards.map((card, i) => (

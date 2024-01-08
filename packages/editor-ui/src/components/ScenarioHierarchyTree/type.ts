@@ -22,6 +22,7 @@ export interface ConvertedSceneEvent {
   type: string; // EventType;
   data?: any;
   next?: ConvertedSceneEvent | string;
+  title?: string;
 }
 
 interface Card {
@@ -38,6 +39,7 @@ export interface ConvertedScene {
   title: string;
   isFirstScene: boolean;
   event?: ConvertedSceneEvent;
+  events: ConvertedSceneEvent[];
   cards: Card[];
 }
 
