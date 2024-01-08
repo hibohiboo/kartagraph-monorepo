@@ -28,6 +28,7 @@ function App() {
     if (scenarioState === 'endScenario')
       navigate(`/scenario/${scenarioId}/result`);
   }, [navigate, scenarioId, scenarioState]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const convertedScenario = convertScenario(scenario) as any;
   return (
     <div>

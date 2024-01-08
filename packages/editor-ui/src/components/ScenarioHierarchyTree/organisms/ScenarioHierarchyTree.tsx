@@ -13,6 +13,8 @@ import {
 } from '../../ScenarioTree/molecules/EventItem';
 import ConvertedEventItem from '../molecules/ConvertedEventItem';
 import { ConvertedScenario, ConvertedScene } from '../type';
+import styles from './ScenarioHierarchyTree.module.css';
+
 interface Card {
   name: string;
   clickEventId: EventId;
@@ -41,53 +43,57 @@ function Scene({ scene }: { scene: ConvertedScene }) {
   return (
     <>
       <IconWithText icon={<FaImage />} text={scene.title} />
-      <div>
-        {hasSceneEvent(scene) && (
-          <IconWithText icon={<BsFilePlay />} text={'イベント'} />
-        )}
-        {scene.event && (
-          <div style={indentStyle}>
-            <IconWithText icon={<GrTrigger />} text={'到着時'} />
-            <ConvertedEventItem event={scene.event} />
-          </div>
-        )}
-        {scene.events && scene.events.length !== 0 && (
-          <div style={indentStyle}>
-            <IconWithText icon={<BsFilePlay />} text={'名前付イベント'} />
-            <ul style={indentStyle}>
-              {scene.events.map((event, i) => (
-                <li key={`${event.title}-${i}`}>
-                  <IconWithText
-                    icon={<BsFilePlay />}
-                    text={`【${event.title}】`}
-                  />
-                  <div style={indentStyle}>
-                    <ConvertedEventItem
-                      event={{ ...event, title: undefined }}
-                    />
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div>
-        <IconWithText icon={<GiCardboardBox />} text={'カード一覧'} />
-        <ul style={indentStyle}>
-          {scene.cards.map((card, i) => (
-            <li key={`${card.name}-${i}`}>
-              <IconWithText icon={<TbCards />} text={card.name} />
+      <div style={indentStyle}>
+        <div>
+          {hasSceneEvent(scene) && (
+            <IconWithText icon={<BsFilePlay />} text={'イベント'} />
+          )}
+          {scene.event && (
+            <div style={indentStyle}>
+              <IconWithText icon={<GrTrigger />} text={'到着時'} />
               <div style={indentStyle}>
-                <IconWithText icon={<GrTrigger />} text={'クリック時'} />
-                <div style={indentStyle}>
-                  <ConvertedEventItem event={card.clickedEvent} />
-                </div>
+                <ConvertedEventItem event={scene.event} />
               </div>
-            </li>
-          ))}
-        </ul>
+            </div>
+          )}
+          {scene.events && scene.events.length !== 0 && (
+            <div style={indentStyle}>
+              <IconWithText icon={<BsFilePlay />} text={'名前付イベント'} />
+              <ul style={indentStyle}>
+                {scene.events.map((event, i) => (
+                  <li key={`${event.title}-${i}`}>
+                    <IconWithText
+                      icon={<BsFilePlay />}
+                      text={`【${event.title}】`}
+                    />
+                    <div style={indentStyle}>
+                      <ConvertedEventItem
+                        event={{ ...event, title: undefined }}
+                      />
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <IconWithText icon={<GiCardboardBox />} text={'カード一覧'} />
+          <ul style={indentStyle}>
+            {scene.cards.map((card, i) => (
+              <li key={`${card.name}-${i}`}>
+                <IconWithText icon={<TbCards />} text={card.name} />
+                <div style={indentStyle}>
+                  <IconWithText icon={<GrTrigger />} text={'クリック時'} />
+                  <div style={indentStyle}>
+                    <ConvertedEventItem event={card.clickedEvent} />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );
@@ -95,7 +101,7 @@ function Scene({ scene }: { scene: ConvertedScene }) {
 
 function ScenarioHierarchyTree({ scenario }: { scenario: ConvertedScenario }) {
   return (
-    <div>
+    <div className={styles.treeStyle}>
       <h2 style={{ display: 'inline-flex', alignItems: 'center' }}>
         <IconWithText icon={<GiStabbedNote />} text={scenario.title} />
       </h2>

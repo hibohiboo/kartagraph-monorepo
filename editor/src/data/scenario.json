@@ -15,6 +15,14 @@
           "data": {
             "text": "「おはよう！\n今日もがんばろー」",
             "image": "/images/characters/recept/laugh.png"
+          },
+          "next": "event1-2"
+        },
+        {
+          "id": "event1-2",
+          "type": "message",
+          "data": {
+            "text": "宿の娘は元気にそういった"
           }
         },
         {
