@@ -62,6 +62,9 @@ interface ChangeScene extends SceneEventBase {
     title: string;
   };
 }
+interface NamedEvent extends SceneEventBase {
+  title: string;
+}
 function isEventFactory<T extends { type: string }>(type: string) {
   return (e: { type: string }): e is T => e.type === type;
 }
@@ -73,10 +76,12 @@ const isEndScenarioEvent = isEventFactory<EndScenarioEvent>('endScenario');
 const isChangeSceneEvent = isEventFactory<ChangeScene>('changeScene');
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isSelectEvent = (e: any): e is SelectEvent => e.data?.select != null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isNamedEvent = (e: any): e is NamedEvent => e.title != null;
 
 function MessageEventItem({ event }: { event: MessageEvent }) {
   return (
-    <span style={{ display: 'inline-flex' }}>
+    <span style={{ display: 'inline-flex' }} title={event.data.text}>
       <IconWithText icon={<BiWindow />} text={event.type} />
       <EllipsisText text={event.data.text} />
     </span>
@@ -132,12 +137,27 @@ function BranchEventItem({ event }: { event: BranchEvent }) {
     </span>
   );
 }
+function NamedEventItem({ event }: { event: NamedEvent }) {
+  return (
+    <IconWithText
+      icon={
+        <>
+          <TbArrowBigRightLinesFilled title={event.id} />
+          <BsFilePlay />
+        </>
+      }
+      text={`【${event.title}】`}
+    />
+  );
+}
 export function HierarchyTreeEventItem({
   event,
 }: {
   event: ConvertedSceneEvent;
 }) {
-  if (isSelectEvent(event)) {
+  if (isNamedEvent(event)) {
+    return <NamedEventItem event={event} />;
+  } else if (isSelectEvent(event)) {
     return <SelectEventItem event={event} />;
   } else if (isMessageEvent(event)) {
     return <MessageEventItem event={event} />;

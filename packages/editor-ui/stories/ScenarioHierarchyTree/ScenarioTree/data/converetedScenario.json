@@ -36,7 +36,7 @@
                 },
                 "next": {
                   "id": "end",
-                  "type": "endScenario"
+                  "title": "シナリオ終了"
                 }
               }
             },
@@ -55,7 +55,7 @@
                   },
                   "next": {
                     "id": "end",
-                    "type": "endScenario"
+                    "title": "シナリオ終了"
                   }
                 }
               },
@@ -123,6 +123,13 @@
             }
           }
         }
+      ],
+      "events": [
+        {
+          "id": "end",
+          "title": "シナリオ終了",
+          "type": "endScenario"
+        }
       ]
     },
     {
@@ -145,7 +152,8 @@
             }
           }
         }
-      ]
+      ],
+      "events": []
     }
   ]
 }
