@@ -15,9 +15,7 @@ export default function ConvertedEventItem({
     <div style={indentStyle}>
       <HierarchyTreeEventItem event={event} />
       {event.next && typeof event.next !== 'string' && (
-        <div style={indentStyle}>
-          <ConvertedEventItem event={event.next} />
-        </div>
+        <ConvertedEventItem event={event.next} />
       )}
     </div>
   );
@@ -29,7 +27,7 @@ function BranchConvertedEventItem({ event }: { event: ConvertedSceneEvent }) {
     alignItems: 'baseline',
   };
   return (
-    <div style={indentStyle}>
+    <div>
       <HierarchyTreeEventItem event={event} />
       {event.data && event.data.next && typeof event.data.next !== 'string' && (
         <div style={branchItemStyle}>

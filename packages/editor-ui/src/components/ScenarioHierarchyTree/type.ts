@@ -30,7 +30,7 @@ interface Card {
   x: number;
   y: number;
   clickEventId: string;
-  event: ConvertedSceneEvent;
+  clickedEvent: ConvertedSceneEvent;
 }
 
 export interface ConvertedScene {

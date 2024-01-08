@@ -39,7 +39,10 @@ function App() {
         </SplitterPanel>
         <SplitterPanel size={15}>
           <div style={{ height: '100vh', overflowY: 'auto', width: '100%' }}>
-            <ScenarioTree scenario={scenario} />
+            <details>
+              <ScenarioTree scenario={scenario} />
+            </details>
+
             <pre>{JSON.stringify(convertScenario(scenario), undefined, 2)}</pre>
           </div>
         </SplitterPanel>

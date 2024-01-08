@@ -308,7 +308,7 @@ describe('convertScenario', () => {
       });
       const [scene1] = ret.scenes;
       const [card1] = scene1.cards;
-      expect(card1.event.data.text).toBe('「おはよう！」');
+      expect(card1.clickedEvent.data.text).toBe('「おはよう！」');
     });
   });
 });

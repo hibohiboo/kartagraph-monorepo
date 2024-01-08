@@ -1,7 +1,9 @@
 import { Tree } from 'primereact/tree';
+import { BsFilePlay } from 'react-icons/bs';
 import { FaImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
 import { GiCardboardBox } from 'react-icons/gi';
+import { GrTrigger } from 'react-icons/gr';
 import { TbCards } from 'react-icons/tb';
 import { IconWithText } from '../../ScenarioTree/atoms/IconWithText';
 import { indentStyle } from '../../ScenarioTree/constants';
@@ -35,6 +37,15 @@ function Scene({ scene }: { scene: ConvertedScene }) {
   return (
     <>
       <IconWithText icon={<FaImage />} text={scene.title} />
+      {scene.event && (
+        <div>
+          <IconWithText icon={<BsFilePlay />} text={'イベント'} />
+          <div style={indentStyle}>
+            <IconWithText icon={<GrTrigger />} text={'到着時'} />
+            <ConvertedEventItem event={scene.event} />
+          </div>
+        </div>
+      )}
 
       <div style={{ ...indentStyle }}>
         <IconWithText icon={<GiCardboardBox />} text={'カード一覧'} />
@@ -42,7 +53,7 @@ function Scene({ scene }: { scene: ConvertedScene }) {
           {scene.cards.map((card) => (
             <li key={card.name}>
               <IconWithText icon={<TbCards />} text={card.name} />
-              <ConvertedEventItem event={card.event} />
+              <ConvertedEventItem event={card.clickedEvent} />
             </li>
           ))}
         </ul>

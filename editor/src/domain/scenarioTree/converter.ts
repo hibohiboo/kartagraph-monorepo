@@ -14,7 +14,11 @@ export const convertScenario = (scenario: Scenario) => {
         event,
         cards: scene.cards.map((card) => ({
           ...card,
-          event: createEvent(card.clickEventId, scene.events, scenario.scenes),
+          clickedEvent: createEvent(
+            card.clickEventId,
+            scene.events,
+            scenario.scenes,
+          ),
         })),
       };
     }),
