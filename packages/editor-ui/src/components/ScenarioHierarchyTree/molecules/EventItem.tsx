@@ -83,7 +83,8 @@ const isNamedEvent = (e: any): e is NamedEvent => e.title != null;
 function MessageEventItem({ event }: { event: MessageEvent }) {
   return (
     <span style={{ display: 'inline-flex' }} title={event.data.text}>
-      <IconWithText icon={<BiWindow />} text={event.type} />
+      {/* <IconWithText icon={<BiWindow />} text={event.type} /> */}
+      <IconWithText icon={<BiWindow />} text={''} />
       <EllipsisText text={event.data.text} />
     </span>
   );
