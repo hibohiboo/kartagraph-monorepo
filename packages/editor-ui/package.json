@@ -17,21 +17,21 @@
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.12.0"
+    "react-icons": "^5.0.1"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.7",
-    "@storybook/addon-interactions": "^7.6.7",
-    "@storybook/addon-links": "^7.6.7",
-    "@storybook/addon-mdx-gfm": "^7.6.7",
+    "@storybook/addon-essentials": "^7.6.10",
+    "@storybook/addon-interactions": "^7.6.10",
+    "@storybook/addon-links": "^7.6.10",
+    "@storybook/addon-mdx-gfm": "^7.6.10",
     "@storybook/addon-onboarding": "^1.0.10",
-    "@storybook/blocks": "^7.6.7",
-    "@storybook/react": "^7.6.7",
-    "@storybook/react-vite": "^7.6.7",
+    "@storybook/blocks": "^7.6.10",
+    "@storybook/react": "^7.6.10",
+    "@storybook/react-vite": "^7.6.10",
     "@storybook/testing-library": "^0.2.2",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "storybook": "^7.6.7",
-    "vite": "^5.0.11"
+    "storybook": "^7.6.10",
+    "vite": "^5.0.12"
   },
   "exports": {
     ".": "./src/index.ts",
