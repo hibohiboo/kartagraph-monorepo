@@ -32,7 +32,7 @@ interface SelectEvent extends SceneEventBase {
   };
 }
 interface MessagesEvent extends SceneEventBase {
-  type: 'message';
+  type: 'messages';
   data: {
     texts: string[];
     image?: string;
