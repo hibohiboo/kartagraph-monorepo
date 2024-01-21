@@ -26,13 +26,12 @@ html {
   /* // 下の設定が認識できないブラウザのための指定。 */
   font-size: 100%;
   /* //calc(1em + 1vw); // ビューポートの高さと幅に合わせてテキストサイズを調整。  */
-  font-size: 1em; 
+  font-size: 1em;
   background-color: var(--white);
   height: 100%;
 }
 
 body {
-  font-size: 1.6rem;
   color: var(--black);
   font-family:  -apple-system, Segoe UI, Helvetica Neue, Hiragino Kaku Gothic ProN, "メイリオ",meiryo,
     BlinkMacSystemFont, Roboto, Oxygen,

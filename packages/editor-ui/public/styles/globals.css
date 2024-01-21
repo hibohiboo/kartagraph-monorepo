@@ -1,3 +1,4 @@
+
 :root {
   --white: #ffffff;
   --ghost-gray: #ccccdb;
@@ -30,7 +31,6 @@ html {
 }
 
 body {
-  font-size: 1.6rem;
   color: var(--black);
   font-family:  -apple-system, Segoe UI, Helvetica Neue, Hiragino Kaku Gothic ProN, "メイリオ",meiryo,
     BlinkMacSystemFont, Roboto, Oxygen,
@@ -45,39 +45,5 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  list-style: none;
-}
-/* 
-a {
-  color: inherit;
-  text-decoration: none;
 }
 
-h1 {
-  font-size: 2.8rem;
-}
-
-h2 {
-  font-size: 2.4rem;
-}
-
-h3 {
-  font-size: 2rem;
-}
-
-@media screen and (max-width: 767px) {
-  h1 {
-    font-size: 2.2rem;
-    line-height: 1.4;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-    line-height: 1.4;
-  }
-
-  h3 {
-    font-size: 1.4rem;
-    line-height: 1.4;
-  }
-} */
