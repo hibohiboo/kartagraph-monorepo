@@ -7,3 +7,5 @@ npm create vite@latest app
 √ Select a variant: » TypeScript + SWC
 ```
 
+
+
