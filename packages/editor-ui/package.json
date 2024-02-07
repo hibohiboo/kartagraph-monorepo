@@ -20,17 +20,17 @@
     "react-icons": "^5.0.1"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.6.10",
-    "@storybook/addon-interactions": "^7.6.10",
-    "@storybook/addon-links": "^7.6.10",
-    "@storybook/addon-mdx-gfm": "^7.6.10",
-    "@storybook/addon-onboarding": "^1.0.10",
-    "@storybook/blocks": "^7.6.10",
-    "@storybook/react": "^7.6.10",
-    "@storybook/react-vite": "^7.6.10",
+    "@storybook/addon-essentials": "^7.6.13",
+    "@storybook/addon-interactions": "^7.6.13",
+    "@storybook/addon-links": "^7.6.13",
+    "@storybook/addon-mdx-gfm": "^7.6.13",
+    "@storybook/addon-onboarding": "^1.0.11",
+    "@storybook/blocks": "^7.6.13",
+    "@storybook/react": "^7.6.13",
+    "@storybook/react-vite": "^7.6.13",
     "@storybook/testing-library": "^0.2.2",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "storybook": "^7.6.10",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "storybook": "^7.6.13",
     "vite": "^5.0.12"
   },
   "exports": {
