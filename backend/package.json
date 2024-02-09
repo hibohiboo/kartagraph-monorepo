@@ -20,6 +20,6 @@
     "ts-node": "^10.9.2"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.8.0"
+    "@neondatabase/serverless": "^0.8.1"
   }
 }
