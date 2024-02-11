@@ -4,6 +4,7 @@ get:
   description: >-
     シナリオ一覧を取得します。
     まだ絞り込みなどの機能はありません。
+    ソート順は更新日時の降順です。
   security:
     - ApiKeyAuth: [ ]
   responses:
@@ -12,6 +13,4 @@ get:
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: ../components/schemas/scenario/scenario-list-item.yml
+            $ref: ../components/schemas/scenario/scenario-list.yml
