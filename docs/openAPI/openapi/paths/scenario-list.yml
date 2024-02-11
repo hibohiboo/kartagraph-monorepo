@@ -1,0 +1,17 @@
+get:
+  operationId: scenario/list
+  summary: シナリオ一覧取得
+  description: >-
+    シナリオ一覧を取得します。
+    まだ絞り込みなどの機能はありません。
+  security:
+    - ApiKeyAuth: [ ]
+  responses:
+    200:
+      description: シナリオ一覧取得
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../components/schemas/scenario/scenario-list-item.yml

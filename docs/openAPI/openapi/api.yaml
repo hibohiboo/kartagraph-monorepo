@@ -18,6 +18,8 @@ paths:
     $ref: paths/tags.yml
   /v1/api/scenario/{scenarioId}/tags:
     $ref: paths/scenario.yml
+  /v1/api/scenario/list:
+    $ref: paths/scenario-list.yml
 
 
 components:
