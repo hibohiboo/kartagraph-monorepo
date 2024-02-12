@@ -11,12 +11,15 @@
     "ncu": "ncu -u"
   },
   "dependencies": {
+    "@tanstack/query-core": "^5.20.1",
     "firebase": "^10.8.0",
     "jotai": "^2.6.4",
+    "jotai-tanstack-query": "^0.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^3.5.2",
+    "wonka": "^6.3.4"
   },
   "devDependencies": {
     "@kartagraph/eslint-config-custom": "*",

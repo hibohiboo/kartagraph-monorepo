@@ -31,8 +31,11 @@
   * などなど、自由にテキストを置けるようにする
 
 #### 画面機能
-##### 初期表示
+##### ページ表示前
 * シナリオ概要取得APIの呼出し
+  * loader
+##### 初期表示
+
 
 ##### カルーセル
 * カルーセルの基本機能を持つ
@@ -76,5 +79,26 @@
 [].created| 登録日時
 [].updated| 更新日時
 [].id| シナリオID
+
+
+## 作業メモ
+
+### 参考
+jotaiとAPIから取得した値の扱いを確認する。
+Redux Tool KitのQueryと似た仕組みがあるようなので、これを利用する。キャッシュのことなど、ベストプラクティスがあれば従うべきと考えている。
+
+[jotai query](https://jotai.org/docs/extensions/query)
+
+[React Query vs. Redux Toolkit with Thunk: Streamlining Data Management and State](https://medium.com/@mudassir.iqball/supercharging-your-react-app-with-react-query-and-redux-toolkit-a-comparison-5b7f802ce1cc)
+
+```
+npm i jotai-tanstack-query @tanstack/query-core wonka
+```
+
+ライブラリ|概要
+--|--
+jotai-tanstack-query|jotaiとtanstack-queryをつなぐ拡張
+@tanstack/query-core|tanstack-query.HTTP通信のキャッシュなどを担当
+wonka|rxjsやlxjsに似たストリームのライブラリ。Callbag仕様にのっとる。
 
 
