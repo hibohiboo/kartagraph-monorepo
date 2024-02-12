@@ -1,6 +1,8 @@
 .title {
   text-align: center;
   font-size: 1.8rem;
+  line-height: 1.8;
+  white-space: pre-line;
 }
 .figure {
   height: 100px;

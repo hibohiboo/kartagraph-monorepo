@@ -11,9 +11,6 @@ const args = {
 改行テスト
 |ルビテスト《えくすかりばー》`,
   detail: '作者：hibo',
-  onClick: (id: string) => {
-    console.log(id);
-  },
 };
 
 const meta = {

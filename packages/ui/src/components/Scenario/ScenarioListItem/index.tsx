@@ -7,7 +7,6 @@ type ScenarioListItemProps = {
   src: string;
   summary: string;
   detail: string;
-  onClick: (id: string) => void;
 };
 
 export function ScenarioListItem({
@@ -16,11 +15,13 @@ export function ScenarioListItem({
   src,
   summary,
   detail,
-  onClick,
 }: ScenarioListItemProps) {
   return (
-    <div className={styles.letter} onClick={() => onClick(id)}>
-      <div className={styles.title}>{title}</div>
+    <div className={styles.letter}>
+      <div
+        className={styles.title}
+        dangerouslySetInnerHTML={{ __html: rubyText(title) }}
+      ></div>
       <figure className={styles.figure}>
         {src && <img src={src} alt={title} className={styles.image} />}
       </figure>
