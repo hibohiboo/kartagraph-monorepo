@@ -11,7 +11,7 @@
     "ncu": "ncu -u"
   },
   "dependencies": {
-    "@tanstack/query-core": "^5.20.1",
+    "@tanstack/query-core": "^5.20.2",
     "firebase": "^10.8.0",
     "jotai": "^2.6.4",
     "jotai-tanstack-query": "^0.8.5",
@@ -29,7 +29,7 @@
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "dotenv": "^16.4.2",
-    "msw": "^2.1.7",
+    "msw": "^2.2.0",
     "vite": "^5.1.1"
   },
   "msw": {
