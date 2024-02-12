@@ -15,3 +15,13 @@ export type TagSummary = {
   userCount: number;
   tagName: string;
 };
+
+export type ScenarioListItem = {
+  id: string;
+  title: string;
+  src: string;
+  summary: string;
+  detail: string;
+  created: string;
+  updated: string;
+};
