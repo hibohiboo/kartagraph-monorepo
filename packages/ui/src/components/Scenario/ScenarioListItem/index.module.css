@@ -11,7 +11,8 @@
   width: auto;
 }
 .summary {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
+  white-space: pre-line;
 }
 .letter {
   background: #fff;

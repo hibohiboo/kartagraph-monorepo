@@ -6,7 +6,9 @@ const args = {
   id: '7d8bb386-0f86-4dff-be34-86bb2f55b366',
   title: 'ゴブリンの洞窟',
   src: 'images/icons/witch-flight.png',
-  summary: '紹介文',
+  summary: `紹介文
+  
+改行テスト`,
   detail: '作者：hibo',
   onClick: (id: string) => {
     console.log(id);
