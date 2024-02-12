@@ -1,4 +1,4 @@
-import { rubyText } from '../../domain/rubyText';
+import { rubyText } from '../../../atoms/rubyText';
 import styles from './index.module.css';
 
 const getFontSize = (text: string | undefined) => {

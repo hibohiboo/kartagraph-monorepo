@@ -8,7 +8,8 @@ const args = {
   src: 'images/icons/witch-flight.png',
   summary: `紹介文
   
-改行テスト`,
+改行テスト
+|ルビテスト《えくすかりばー》`,
   detail: '作者：hibo',
   onClick: (id: string) => {
     console.log(id);

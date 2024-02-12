@@ -1,3 +1,4 @@
+import { rubyText } from '@kartagraph-ui/components/atoms/rubyText';
 import { BiSolidDetail } from 'react-icons/bi';
 import styles from './index.module.css';
 type ScenarioListItemProps = {
@@ -24,7 +25,10 @@ export function ScenarioListItem({
         {src && <img src={src} alt={title} className={styles.image} />}
       </figure>
 
-      <div className={styles.summary}>{summary}</div>
+      <div
+        className={styles.summary}
+        dangerouslySetInnerHTML={{ __html: rubyText(summary) }}
+      />
       <div>
         <button
           className={styles.detail}
