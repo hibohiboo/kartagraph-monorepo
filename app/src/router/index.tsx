@@ -5,6 +5,7 @@ import { initReport } from '@kartagraph-app/domain/analytics/analyticsService';
 import ScenarioPage from '@kartagraph-app/pages/ScenarioPage';
 import TopPage from '@kartagraph-app/pages/TopPage';
 import TutorialPage from '@kartagraph-app/pages/TutorialPage';
+import ScenarioListPage from '@kartagraph-app/pages/scenario/ScenarioListPage';
 import ScenarioResultPage from '@kartagraph-app/pages/scenario/ScenarioResultPage';
 import { initUserIdAtom } from '@kartagraph-app/store/auth/authAtom';
 import { gameCoreStore } from '@kartagraph-app/store/worker/gameCore';
@@ -40,6 +41,10 @@ export const router = createBrowserRouter(
           path: 'scenario',
           element: <RootLayout />,
           children: [
+            {
+              index: true,
+              element: <ScenarioListPage />,
+            },
             {
               path: ':scenarioId',
               index: true,
