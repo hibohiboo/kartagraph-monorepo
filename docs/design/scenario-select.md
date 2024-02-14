@@ -101,4 +101,19 @@ jotai-tanstack-query|jotaiとtanstack-queryをつなぐ拡張
 @tanstack/query-core|tanstack-query.HTTP通信のキャッシュなどを担当
 wonka|rxjsやlxjsに似たストリームのライブラリ。Callbag仕様にのっとる。
 
+### バックエンド
+
+openapiからrestを作ることを試す。
+
+3.0か2.0しか対応していないようなので、3.1を3.0にダウングレードして使う。
+
+[openapi-down-convert](https://github.com/apiture/openapi-down-convert)
+[OpenAPI を使用した REST API の設定](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-import-api.html)
+[OpenAPI × AWS CDK × APIGateway でRest APIを管理する](https://zenn.dev/taroman_zenn/articles/91879cec40627c)
+
+使おうかと思ったが、よく読んだらCDKとopenapiの併用はできないもよう。（追加はできる）
+openapiによるパス管理とLambda定義を行っているソースもあったが、最終更新が1年前。
+無理に使うのは危険なにおいなので諦める。
+
+
 
