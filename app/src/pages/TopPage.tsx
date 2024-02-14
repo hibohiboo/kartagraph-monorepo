@@ -15,7 +15,7 @@ export default function TopPage() {
         name="スタート"
         src={getSrc('/images/adv_inn_74x94.png')}
         onClick={() => {
-          transitionNavigate('/tutorial');
+          transitionNavigate('/scenario/');
           setCardHide(true);
         }}
       />

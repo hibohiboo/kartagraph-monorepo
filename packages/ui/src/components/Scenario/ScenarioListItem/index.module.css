@@ -6,7 +6,8 @@
 }
 .figure {
   height: 100px;
-  text-align: center;
+  display: flex;
+  justify-content: center;
 }
 .figure img {
   height: 100%;
