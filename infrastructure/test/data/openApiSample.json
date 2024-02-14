@@ -1,0 +1,314 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "カルタグラフ",
+    "description": "カルタグラフ用API",
+    "contact": { "name": "hibohiboo", "url": "https://twitter.com/hibohiboo" },
+    "license": { "name": "MIT", "url": "https://opensource.org/licenses/MIT" }
+  },
+  "paths": {
+    "/v1/api/tags": {
+      "put": {
+        "operationId": "tags",
+        "summary": "タグ情報送信",
+        "description": "ユーザが獲得したタグを送付し、DBに保存します。",
+        "security": [{ "ApiKeyAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "シナリオID(UUID)",
+                    "example": "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+                  },
+                  "userId": {
+                    "type": "string",
+                    "description": "ユーザID(Firebase Authのuid)",
+                    "example": "33fCzdRoHwgB2BXX5ttxbEJPYtM2"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "description": "タグ リスト",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "タグ名",
+                          "example": "シナリオ開始"
+                        },
+                        "type": {
+                          "type": "string",
+                          "description": "タグ種別",
+                          "example": ["scenario", "global", "secret"]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "タグ履歴作成/更新" } }
+      }
+    },
+    "/v1/api/scenario/{scenarioId}/tags": {
+      "get": {
+        "operationId": "getScenarioTags",
+        "summary": "シナリオタグサマリー取得",
+        "description": "シナリオタグの集計結果を取得します。 ただし、tag_typeがsecretのタグは集計対象外です。",
+        "security": [{ "ApiKeyAuth": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "scenarioId",
+            "schema": {
+              "type": "string",
+              "example": "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "シナリオタグサマリー取得",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "tagName": {
+                        "type": "string",
+                        "description": "タグ名",
+                        "example": "シナリオ開始"
+                      },
+                      "userCount": {
+                        "type": "number",
+                        "description": "タグを取得したユーザの人数",
+                        "example": 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/api/scenario/list": {
+      "get": {
+        "operationId": "scenario/list",
+        "summary": "シナリオ一覧取 得",
+        "description": "シナリオ一覧を取得します。 まだ絞り込みなどの機能はありません。 ソート順は更新日時の降順です。",
+        "security": [{ "ApiKeyAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "シナリオ一覧取得",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "シナリオID",
+                      "example": "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+                    },
+                    "title": {
+                      "type": "string",
+                      "description": "シナリオタイトル",
+                      "example": "ゴブリンの洞窟"
+                    },
+                    "src": {
+                      "type": "string",
+                      "description": "タイトル画像",
+                      "example": "タイトル画像のURL"
+                    },
+                    "summary": {
+                      "type": "string",
+                      "description": "紹介文",
+                      "example": "紹介文"
+                    },
+                    "detail": {
+                      "type": "string",
+                      "description": "シナリオ詳細",
+                      "example": "作者：hibo"
+                    },
+                    "created": {
+                      "type": "string",
+                      "description": "登録日時",
+                      "example": "2017-07-21T17:32:28Z"
+                    },
+                    "updated": {
+                      "type": "string",
+                      "description": "更新日時",
+                      "example": "2017-07-21T17:32:28Z"
+                    }
+                  },
+                  "example": [
+                    {
+                      "id": "7d8bb386-0f86-4dff-be34-86bb2f55b366",
+                      "title": "ゴブリンの洞窟",
+                      "src": "タイトル画像のURL",
+                      "summary": "紹介文",
+                      "detail": "作者：hibo",
+                      "created": "2017-07-21T17:32:28Z",
+                      "updated": "2017-07-21T17:32:28Z"
+                    },
+                    {
+                      "id": "7d8bb386-0f86-4dff-be34-86bb2f55b367",
+                      "title": "冒険者ギルドの登録",
+                      "src": "タイトル画像のURL",
+                      "summary": "紹介文",
+                      "detail": "作者：hibo",
+                      "created": "2017-07-20T17:32:28Z",
+                      "updated": "2017-07-20T17:32:28Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": { "type": "apiKey", "in": "header", "name": "x-api-key" }
+    },
+    "schemas": {
+      "tag": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "タグ名",
+            "example": "シナリオ開始"
+          },
+          "type": {
+            "type": "string",
+            "description": "タグ種別",
+            "example": ["scenario", "global", "secret"]
+          }
+        }
+      },
+      "tags": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "シナリオID(UUID)",
+            "example": "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+          },
+          "userId": {
+            "type": "string",
+            "description": "ユーザID(Firebase Authのuid)",
+            "example": "33fCzdRoHwgB2BXX5ttxbEJPYtM2"
+          },
+          "tags": {
+            "type": "array",
+            "description": "タグリスト",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "タグ名",
+                  "example": "シナリオ開始"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "タグ種別",
+                  "example": ["scenario", "global", "secret"]
+                }
+              }
+            }
+          }
+        }
+      },
+      "scenario-tags-response": {
+        "type": "object",
+        "properties": {
+          "tagName": {
+            "type": "string",
+            "description": "タグ名",
+            "example": "シナリオ開始"
+          },
+          "userCount": {
+            "type": "number",
+            "description": "タグを取得したユーザの人数",
+            "example": 10
+          }
+        }
+      },
+      "scenario-list": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "シナリオID",
+            "example": "7d8bb386-0f86-4dff-be34-86bb2f55b366"
+          },
+          "title": {
+            "type": "string",
+            "description": "シナリオタイトル",
+            "example": "ゴブリンの洞窟"
+          },
+          "src": {
+            "type": "string",
+            "description": "タイトル画像",
+            "example": "タイトル画像のURL"
+          },
+          "summary": {
+            "type": "string",
+            "description": "紹介文",
+            "example": "紹介文"
+          },
+          "detail": {
+            "type": "string",
+            "description": "シナリオ詳細",
+            "example": "作者：hibo"
+          },
+          "created": {
+            "type": "string",
+            "description": "登録日時",
+            "example": "2017-07-21T17:32:28Z"
+          },
+          "updated": {
+            "type": "string",
+            "description": "更新日時",
+            "example": "2017-07-21T17:32:28Z"
+          }
+        },
+        "example": [
+          {
+            "id": "7d8bb386-0f86-4dff-be34-86bb2f55b366",
+            "title": "ゴブリンの洞窟",
+            "src": "タイトル画像のURL",
+            "summary": "紹介文",
+            "detail": "作者：hibo",
+            "created": "2017-07-21T17:32:28Z",
+            "updated": "2017-07-21T17:32:28Z"
+          },
+          {
+            "id": "7d8bb386-0f86-4dff-be34-86bb2f55b367",
+            "title": "冒険者ギルドの登録",
+            "src": "タイトル画像のURL",
+            "summary": "紹介文",
+            "detail": "作者：hibo",
+            "created": "2017-07-20T17:32:28Z",
+            "updated": "2017-07-20T17:32:28Z"
+          }
+        ]
+      }
+    }
+  }
+}

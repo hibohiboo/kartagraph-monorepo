@@ -110,10 +110,37 @@ openapiからrestを作ることを試す。
 [openapi-down-convert](https://github.com/apiture/openapi-down-convert)
 [OpenAPI を使用した REST API の設定](https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/api-gateway-import-api.html)
 [OpenAPI × AWS CDK × APIGateway でRest APIを管理する](https://zenn.dev/taroman_zenn/articles/91879cec40627c)
-
+[AWS CDKで作ったAPI Gateway + LambdaからOpenAPIドキュメントを生成してみた](https://zenn.dev/ncdc/articles/42c7d2b8dfec3e)
 使おうかと思ったが、よく読んだらCDKとopenapiの併用はできないもよう。（追加はできる）
 openapiによるパス管理とLambda定義を行っているソースもあったが、最終更新が1年前。
 無理に使うのは危険なにおいなので諦める。
 
+[AWS CDKを使ってAPI Gateway(HTTPAPI)+LambdaをOpenAPIで定義してデプロイする](https://serverless.co.jp/blog/347/) では公式のCDKで実現している模様。こちらを試したい。
+これを使うと、yamlから下記のオブジェクトが取得できる。
+
+```js
+{
+  "openapi": "3.1.0",
+  "info": {
+    "version": "0.0.1",
+    "title": "カルタグラフ",
+    "description": "カルタグラフ用API",
+    "contact": { "name": "hibohiboo", "url": "https://twitter.com/hibohiboo" },
+    "license": { "name": "MIT", "url": "https://opensource.org/licenses/MIT" }
+  },
+  "paths": {
+    "/v1/api/tags": {
+      "put": {
+        "operationId": "tags",
+        "summary": "タグ情報送信",
+        // 以下略
+      }
+    }
+  }
+}
+
+```
+
+ここまで書いて、bundle結果をJSONで出力して、使用したほうが早いのではと気づく。
 
 

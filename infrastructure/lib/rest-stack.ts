@@ -5,6 +5,13 @@ import { LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
+import * as SwaggerParser from '@apidevtools/swagger-parser';
+
+type PromiseType<T extends Promise<any>> =
+  T extends Promise<infer P> ? P : never;
+type OpenApiDocument = PromiseType<
+  ReturnType<typeof SwaggerParser.dereference>
+>;
 
 interface Props extends core.StackProps {
   projectId: string;
@@ -13,6 +20,7 @@ interface Props extends core.StackProps {
   apiVersion: string;
   neonEndpoint: string;
   cloundFrontDomain: string;
+  openApi: OpenApiDocument;
 }
 const HANDLER_DIR = '../backend/src/handlers/api';
 export class KartaGraphRESTAPIStack extends core.Stack {
