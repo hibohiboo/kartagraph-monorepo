@@ -9,6 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
+    "openapi-init": "cd ../docs/openAPI && npm run bundle-json",
     "predeploy": "cd .. && npm run build",
     "deploy": "cdk -a \"npx ts-node --prefer-ts-exts bin/infrastructure.ts\" deploy --all --profile produser",
     "deploy-layer": "cdk -a \"npx ts-node --prefer-ts-exts bin/lambda-layer-version-deploy.ts\" deploy --all --profile produser",
@@ -26,7 +27,6 @@
     "typescript": "~5.3.3"
   },
   "dependencies": {
-    "@apidevtools/swagger-parser": "^10.1.0",
     "aws-cdk-lib": "2.127.0",
     "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"

@@ -4,9 +4,9 @@ import 'source-map-support/register';
 import * as dotenv from 'dotenv';
 import * as cdk from 'aws-cdk-lib';
 import { KartaGraphRESTAPIStack } from '../lib/rest-stack';
-import * as SwaggerParser from '@apidevtools/swagger-parser';
 
 dotenv.config({ path: './.env.local' });
+
 const envList = [
   'PROJECT_ID',
   'SSM_PARAM_KEY_LAYER_VERSIONS_ARN',
@@ -20,29 +20,22 @@ for (const key of envList) {
 }
 const processEnv = process.env as Record<(typeof envList)[number], string>;
 
-(async () => {
-  const openApi = await SwaggerParser.dereference(
-    '../docs/openAPI/dist/bundle.yaml',
-  );
-  console.log(JSON.stringify(openApi));
-  // const app = new cdk.App();
-  // const env = {
-  //   account: process.env.CDK_DEFAULT_ACCOUNT,
-  //   region: process.env.CDK_DEFAULT_REGION,
-  // };
+const app = new cdk.App();
+const env = {
+  account: process.env.CDK_DEFAULT_ACCOUNT,
+  region: process.env.CDK_DEFAULT_REGION,
+};
 
-  // new KartaGraphRESTAPIStack(
-  //   app,
-  //   `${processEnv.PROJECT_ID}-KartaGraphRESTAPIStack`,
-  //   {
-  //     ssmLambdaLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
-  //     ssmAPIGWUrlKey: `${processEnv.SSM_PARAM_KEY_API_URL}-${processEnv.PROJECT_ID}`,
-  //     env,
-  //     neonEndpoint: processEnv.NEON_ENDPOINT,
-  //     projectId: processEnv.PROJECT_ID,
-  //     apiVersion: processEnv.REST_API_VERSION,
-  //     cloundFrontDomain: processEnv.CLOUND_FRONT_DOMAIN,
-  //     openApi,
-  //   },
-  // );
-})();
+new KartaGraphRESTAPIStack(
+  app,
+  `${processEnv.PROJECT_ID}-KartaGraphRESTAPIStack`,
+  {
+    ssmLambdaLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
+    ssmAPIGWUrlKey: `${processEnv.SSM_PARAM_KEY_API_URL}-${processEnv.PROJECT_ID}`,
+    env,
+    neonEndpoint: processEnv.NEON_ENDPOINT,
+    projectId: processEnv.PROJECT_ID,
+    apiVersion: processEnv.REST_API_VERSION,
+    cloundFrontDomain: processEnv.CLOUND_FRONT_DOMAIN,
+  },
+);

@@ -11,14 +11,16 @@ info:
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
-
+servers:
+  - url: https://api.example.com/v1/api
+    description: バージョンとapiであることを表す部分までは共通
 
 paths:
-  /v1/api/tags:
+  /tags:
     $ref: paths/tags.yml
-  /v1/api/scenario/{scenarioId}/tags:
+  /scenario/{scenarioId}/tags:
     $ref: paths/scenario.yml
-  /v1/api/scenario/list:
+  /scenario/list:
     $ref: paths/scenario-list.yml
 
 

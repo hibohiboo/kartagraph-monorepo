@@ -1,0 +1,3 @@
+*
+!.gitignore
+# npm run openapi-init で ここにopenapi.jsonが生成される

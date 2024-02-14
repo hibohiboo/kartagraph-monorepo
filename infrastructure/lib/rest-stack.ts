@@ -5,13 +5,9 @@ import { LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
-import * as SwaggerParser from '@apidevtools/swagger-parser';
-
-type PromiseType<T extends Promise<any>> =
-  T extends Promise<infer P> ? P : never;
-type OpenApiDocument = PromiseType<
-  ReturnType<typeof SwaggerParser.dereference>
->;
+import openApi from '../data/openapi.json';
+import { getKeyMap } from '../util/customTypes';
+import { convertPathList } from '../util/convertPathList';
 
 interface Props extends core.StackProps {
   projectId: string;
@@ -20,16 +16,19 @@ interface Props extends core.StackProps {
   apiVersion: string;
   neonEndpoint: string;
   cloundFrontDomain: string;
-  openApi: OpenApiDocument;
 }
 const HANDLER_DIR = '../backend/src/handlers/api';
+
+const keyMap = getKeyMap(openApi.paths);
 export class KartaGraphRESTAPIStack extends core.Stack {
+  private apiRoot: apigateway.Resource;
+  private resourceMap = new Map<string, apigateway.Resource>();
+
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id, props);
     // APIGateway作成
     const restApi = this.createRestAPIGateway(props);
 
-    const apiRoot = restApi.root.addResource('api');
     const methodOptions = this.createMethodOptions({
       'method.request.header.Content-Type': true,
     });
@@ -51,7 +50,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       functionName: 'kartagraphPutTagsLambda',
       description: 'カルタグラフのタグをRDSに永続化',
     });
-    const tagsResource = apiRoot.addResource('tags');
+    const tagsResource = this.getResource(keyMap['/tags']);
     tagsResource.addMethod(
       'PUT',
       new apigateway.LambdaIntegration(putTagsLambda),
@@ -64,10 +63,9 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       functionName: 'kartagraphGetTagsSummaryLambda',
       description: 'タグごとの個数を返却',
     });
-    const scenarioResource = apiRoot.addResource('scenario');
-    const scenarioTags = scenarioResource
-      .addResource('{scenarioId}')
-      .addResource('tags');
+    const scenarioTags = this.getResource(
+      keyMap['/scenario/{scenarioId}/tags'],
+    );
     scenarioTags.addMethod(
       'GET',
       new apigateway.LambdaIntegration(getScnearioTagsLambda),
@@ -98,9 +96,31 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       value: `${restApi.domainName}`,
     });
 
+    this.apiRoot = restApi.root.addResource('api');
     return restApi;
   }
-
+  private getResource(path: string): core.aws_apigateway.Resource {
+    if (!this.apiRoot) throw new Error('restApi empty');
+    const cache = this.resourceMap.get(path);
+    if (cache) return cache;
+    const pathList = convertPathList(path);
+    for (const p of pathList) {
+      const resourceNameList = p.split('/').filter((value) => value !== '');
+      if (resourceNameList.length === 0) continue;
+      if (resourceNameList.length === 1) {
+        const resource = this.apiRoot.addResource(resourceNameList[0]);
+        this.resourceMap.set(p, resource);
+        continue;
+      }
+      const currentName = resourceNameList.pop();
+      const parentResource = this.getResource(`/${resourceNameList.join('/')}`);
+      if (!parentResource || !currentName)
+        throw new Error('parentResource or currentName empty');
+      const resource = parentResource.addResource(currentName);
+      this.resourceMap.set(p, resource);
+    }
+    return this.resourceMap.get(path)!;
+  }
   private createUsagePlan(
     restApi: apigateway.RestApi,
     apiName: string,

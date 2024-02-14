@@ -11,6 +11,7 @@
     "test": "redocly lint",
     "bundle": "redocly bundle -o dist/bundle.yaml",
     "postbundle": "openapi-down-convert -i dist/bundle.yaml -o dist/bundle-3.0.yaml",
+    "bundle-json": "redocly bundle -o ../../infrastructure/data/openapi.json",
     "build": "redocly build-docs core@v1 --disableGoogleFont -o ../../dist/public/kartagraph-openapi/index.html"
   }
 }

@@ -141,6 +141,9 @@ openapiによるパス管理とLambda定義を行っているソースもあっ�
 
 ```
 
-ここまで書いて、bundle結果をJSONで出力して、使用したほうが早いのではと気づく。
+[Promiseを外す](https://kakehashi-dev.hatenablog.com/entry/2021/12/20/080000)
+ここまでのコミットID `1c95c66657c63d81fc56b69be5cc172d3e733985`
+
+ここまで書いて、@apidevtools/swagger-parserを使うより、bundle結果をJSONで出力して、使用したほうが早いのではと気づく。
 
 
