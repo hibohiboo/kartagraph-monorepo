@@ -1,6 +1,6 @@
 put:
   operationId: tags
-  summary: タグ情報送信
+  summary: タグ情報永続化
   description: >-
     ユーザが獲得したタグを送付し、DBに保存します。
   security:

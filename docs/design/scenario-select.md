@@ -81,6 +81,24 @@
 [].id| シナリオID
 
 
+#### テーブル設計
+
+物理名|論理名
+--|--
+scenario_list|シナリオ
+
+カラム名|論理名|データ型
+--|--|--
+id|シナリオID[PK]|uuid
+title|シナリオタイトル|text
+src|タイトル画像のパス|text
+summary|紹介文|text
+detail|シナリオ詳細文(自由記述)|text
+s3_key|S3のオブジェクトキー|text
+created| 登録日時|timestamp
+updated| 更新日時|timestamp
+
+
 ## 作業メモ
 
 ### 参考

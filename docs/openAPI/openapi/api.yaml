@@ -20,7 +20,7 @@ paths:
     $ref: paths/tags.yml
   /scenario/{scenarioId}/tags:
     $ref: paths/scenario.yml
-  /scenario/list:
+  /scenario:
     $ref: paths/scenario-list.yml
 
 

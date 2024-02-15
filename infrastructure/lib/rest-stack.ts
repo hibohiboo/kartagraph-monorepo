@@ -20,6 +20,7 @@ interface Props extends core.StackProps {
 const HANDLER_DIR = '../backend/src/handlers/api';
 
 const keyMap = getKeyMap(openApi.paths);
+
 export class KartaGraphRESTAPIStack extends core.Stack {
   private apiRoot: apigateway.Resource;
   private resourceMap = new Map<string, apigateway.Resource>();
@@ -48,14 +49,11 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       ...defaultLambdaProps,
       entry: `${HANDLER_DIR}/putTags.ts`,
       functionName: 'kartagraphPutTagsLambda',
-      description: 'カルタグラフのタグをRDSに永続化',
+      description: openApi.paths[keyMap['/tags']].put.summary,
     });
     const tagsResource = this.getResource(keyMap['/tags']);
-    tagsResource.addMethod(
-      'PUT',
-      new apigateway.LambdaIntegration(putTagsLambda),
-      methodOptions,
-    );
+    tagsResource.addMethod('PUT', new apigateway.LambdaIntegration(putTagsLambda), methodOptions);
+
     // タグ統計取得
     const getScnearioTagsLambda = this.createLambda({
       ...defaultLambdaProps,
@@ -63,12 +61,19 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       functionName: 'kartagraphGetTagsSummaryLambda',
       description: 'タグごとの個数を返却',
     });
-    const scenarioTags = this.getResource(
-      keyMap['/scenario/{scenarioId}/tags'],
-    );
-    scenarioTags.addMethod(
-      'GET',
-      new apigateway.LambdaIntegration(getScnearioTagsLambda),
+    const scenarioTags = this.getResource(keyMap['/scenario/{scenarioId}/tags']);
+    scenarioTags.addMethod('GET', new apigateway.LambdaIntegration(getScnearioTagsLambda), methodOptions);
+
+    // シナリオ一覧取得
+    const getScenarioLambda = this.createLambda({
+      ...defaultLambdaProps,
+      entry: `${HANDLER_DIR}/getScenarioList.ts`,
+      functionName: 'getScenarioList',
+      description: openApi.paths[keyMap['/scenario']].get.summary,
+    });
+    this.getResource(keyMap['/scenario']).addMethod(
+      getKeyMap(openApi.paths[keyMap['/scenario']]).get,
+      new apigateway.LambdaIntegration(getScenarioLambda),
       methodOptions,
     );
   }
@@ -114,18 +119,13 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       }
       const currentName = resourceNameList.pop();
       const parentResource = this.getResource(`/${resourceNameList.join('/')}`);
-      if (!parentResource || !currentName)
-        throw new Error('parentResource or currentName empty');
+      if (!parentResource || !currentName) throw new Error('parentResource or currentName empty');
       const resource = parentResource.addResource(currentName);
       this.resourceMap.set(p, resource);
     }
     return this.resourceMap.get(path)!;
   }
-  private createUsagePlan(
-    restApi: apigateway.RestApi,
-    apiName: string,
-    props: Props,
-  ) {
+  private createUsagePlan(restApi: apigateway.RestApi, apiName: string, props: Props) {
     // apiKeyを設定
     const apiKey = restApi.addApiKey('defaultKeys');
     const usagePlan = restApi.addUsagePlan(`${apiName}-usage-plan`, {
@@ -151,34 +151,18 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     const bundling = {
       externalModules: ['@neondatabase/serverless'],
     };
-    const lambdaLayerArn = StringParameter.valueForStringParameter(
-      this,
-      props.ssmKeyForLambdaLayerArn,
-    );
+    const lambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaLayerArn);
 
-    const layers = [
-      LayerVersion.fromLayerVersionArn(
-        this,
-        'node_modules-layer',
-        lambdaLayerArn,
-      ),
-    ];
+    const layers = [LayerVersion.fromLayerVersionArn(this, 'node_modules-layer', lambdaLayerArn)];
     // 同じStack上でLayerVersionを作っていない場合、cdk synthで sam local 実行用のoutputを作るときにレイヤーを使うとエラーになる。
-    const layerSettings = !!process.env['CDK_SYNTH']
-      ? {}
-      : {
-          bundling,
-          layers,
-        };
+    const layerSettings = !!process.env['CDK_SYNTH'] ? {} : { bundling, layers };
 
     return {
       runtime: Runtime.NODEJS_20_X,
       ...layerSettings,
       environment: props.environment,
       initialPolicy: props.initialPolicy,
-      timeout: props.timeoutSec
-        ? core.Duration.seconds(props.timeoutSec)
-        : undefined,
+      timeout: props.timeoutSec ? core.Duration.seconds(props.timeoutSec) : undefined,
     };
   }
 
@@ -188,9 +172,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     core.Tags.of(func).add('Name', props.functionName);
     return func;
   }
-  private createMethodOptions(
-    requestParameters: Record<string, boolean>,
-  ): apigateway.MethodOptions {
+  private createMethodOptions(requestParameters: Record<string, boolean>): apigateway.MethodOptions {
     const responseParameters = {
       'method.response.header.Access-Control-Allow-Headers': true,
       'method.response.header.Access-Control-Allow-Methods': true,
