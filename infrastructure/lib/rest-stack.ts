@@ -2,12 +2,12 @@ import * as core from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import openApi from '../data/openapi.json';
-import { getKeyMap } from '../util/customTypes';
 import { convertPathList } from '../util/convertPathList';
+import { LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
 
 interface Props extends core.StackProps {
   projectId: string;
@@ -17,9 +17,10 @@ interface Props extends core.StackProps {
   neonEndpoint: string;
   cloundFrontDomain: string;
 }
-const HANDLER_DIR = '../backend/src/handlers/api';
+type OpenAPI = typeof openApi;
+type Paths = OpenAPI['paths'];
 
-const keyMap = getKeyMap(openApi.paths);
+const HANDLER_DIR = '../backend/src/handlers/api';
 
 export class KartaGraphRESTAPIStack extends core.Stack {
   private apiRoot: apigateway.Resource;
@@ -30,57 +31,55 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     // APIGateway作成
     const restApi = this.createRestAPIGateway(props);
 
-    const methodOptions = this.createMethodOptions({
-      'method.request.header.Content-Type': true,
-    });
-
     const commonEnv = {
-      DATABASE_URL: props.neonEndpoint,
+      DATABASE_URL: props.neonEndpoint, // NEONへのアクセスを行うConnection String
       CLOUND_FRONT_DOMAIN: props.cloundFrontDomain,
-    }; // NEONへのアクセスを行うConnection String
+    };
+
     const defaultLambdaProps = this.createLambdaProps({
       ssmKeyForLambdaLayerArn: props.ssmLambdaLayerKey,
       environment: { ...commonEnv },
       timeoutSec: 30, // 外部エンドポイントを経由してJSONを処理するため3秒では足りない
     });
 
-    // シナリオ永続化
-    const putTagsLambda = this.createLambda({
+    // シナリオタグ永続化
+    this.createAPILambdaResource('/tags', 'put', {
       ...defaultLambdaProps,
       entry: `${HANDLER_DIR}/putTags.ts`,
-      functionName: 'kartagraphPutTagsLambda',
-      description: openApi.paths[keyMap['/tags']].put.summary,
     });
-    const tagsResource = this.getResource(keyMap['/tags']);
-    tagsResource.addMethod('PUT', new apigateway.LambdaIntegration(putTagsLambda), methodOptions);
-
     // タグ統計取得
-    const getScnearioTagsLambda = this.createLambda({
+    this.createAPILambdaResource('/scenario/{scenarioId}/tags', 'get', {
       ...defaultLambdaProps,
       entry: `${HANDLER_DIR}/getTagsSummary.ts`,
-      functionName: 'kartagraphGetTagsSummaryLambda',
-      description: 'タグごとの個数を返却',
     });
-    const scenarioTags = this.getResource(keyMap['/scenario/{scenarioId}/tags']);
-    scenarioTags.addMethod('GET', new apigateway.LambdaIntegration(getScnearioTagsLambda), methodOptions);
-
     // シナリオ一覧取得
-    const getScenarioLambda = this.createLambda({
+    this.createAPILambdaResource('/scenario', 'get', {
       ...defaultLambdaProps,
       entry: `${HANDLER_DIR}/getScenarioList.ts`,
-      functionName: 'getScenarioList',
-      description: openApi.paths[keyMap['/scenario']].get.summary,
     });
-    this.getResource(keyMap['/scenario']).addMethod(
-      getKeyMap(openApi.paths[keyMap['/scenario']]).get,
-      new apigateway.LambdaIntegration(getScenarioLambda),
-      methodOptions,
-    );
   }
+
+  private createAPILambdaResource<T extends keyof Paths, T2 extends keyof Paths[T]>(path: T, method: T2, props: Partial<NodejsFunctionProps>) {
+    const methodStr = method as string; // 型が合わない(string | number | Symbol とみなされる)ので本来の型であるstringキャスト
+    const lambda = this.createLambda(
+      {
+        ...props,
+        // summary は 必ず入力するものとして、 any で逃げる
+        description: (openApi as any).paths[path][method].summary,
+      },
+      `${methodStr}-${path}`,
+    );
+    const methodOptions = this.createMethodOptions({
+      'method.request.header.Content-Type': true,
+    });
+
+    this.getResource(path).addMethod(methodStr.toUpperCase(), new LambdaIntegration(lambda), methodOptions);
+  }
+
   private createRestAPIGateway(props: Props) {
     const restApiName = `${props.projectId}-rest-api`;
 
-    const restApi = new apigateway.RestApi(this, restApiName, {
+    const restApi = new RestApi(this, restApiName, {
       description: 'カルタグラフバックエンドRESTAPI',
       restApiName,
       endpointTypes: [apigateway.EndpointType.REGIONAL],
@@ -104,7 +103,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     this.apiRoot = restApi.root.addResource('api');
     return restApi;
   }
-  private getResource(path: string): core.aws_apigateway.Resource {
+  private getResource(path: string): apigateway.Resource {
     if (!this.apiRoot) throw new Error('restApi empty');
     const cache = this.resourceMap.get(path);
     if (cache) return cache;
@@ -125,7 +124,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     }
     return this.resourceMap.get(path)!;
   }
-  private createUsagePlan(restApi: apigateway.RestApi, apiName: string, props: Props) {
+  private createUsagePlan(restApi: RestApi, apiName: string, props: Props) {
     // apiKeyを設定
     const apiKey = restApi.addApiKey('defaultKeys');
     const usagePlan = restApi.addUsagePlan(`${apiName}-usage-plan`, {
@@ -154,6 +153,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     const lambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaLayerArn);
 
     const layers = [LayerVersion.fromLayerVersionArn(this, 'node_modules-layer', lambdaLayerArn)];
+
     // 同じStack上でLayerVersionを作っていない場合、cdk synthで sam local 実行用のoutputを作るときにレイヤーを使うとエラーになる。
     const layerSettings = !!process.env['CDK_SYNTH'] ? {} : { bundling, layers };
 
@@ -166,12 +166,14 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     };
   }
 
-  private createLambda(props: core.aws_lambda_nodejs.NodejsFunctionProps) {
-    if (!props.functionName) throw new Error('functionName empty');
-    const func = new NodejsFunction(this, props.functionName, props);
-    core.Tags.of(func).add('Name', props.functionName);
+  private createLambda(props: NodejsFunctionProps, key: string) {
+    // 第2引数は [\p{L}\p{Z}\p{N}_.:/=+\-@]* で表現される文字列である必要が文字。{}は使えないので置換する
+    const k = key.replaceAll('{', '__').replaceAll('}', '__');
+    const func = new NodejsFunction(this, k, props);
+    core.Tags.of(func).add('ApiPath', k);
     return func;
   }
+
   private createMethodOptions(requestParameters: Record<string, boolean>): apigateway.MethodOptions {
     const responseParameters = {
       'method.response.header.Access-Control-Allow-Headers': true,
