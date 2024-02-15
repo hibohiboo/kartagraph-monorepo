@@ -21,7 +21,7 @@ export const handlers = [
       headers,
     });
   }),
-  http.get('/v1/api/scenario/', () => {
+  http.get('/v1/api/scenario', () => {
     return new HttpResponse(JSON.stringify(scenarioList), {
       status: 200,
       headers,

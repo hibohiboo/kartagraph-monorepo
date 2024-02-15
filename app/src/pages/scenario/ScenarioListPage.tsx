@@ -17,23 +17,27 @@ function ScenarioListPage() {
 
   if (isPending) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
+  if (!data) return <div>Empty</div>;
+
+  const wrapperStyle = {
+    position: 'relative',
+    maxWidth: '550px',
+    color: 'black',
+    margin: 'auto',
+  } as const;
+  const scenarioItems = data.map((item) => (
+    <Link key={item.id} to={`/scenario/${item.id}/`}>
+      <ScenarioListItem {...item} src={getSrc(`/${item.src}`)} />
+    </Link>
+  ));
+  // データが１つだけのときにカルーセルを表示するとエラーになるので、その場合は1つだけの表示にする
+  if (data.length === 1) {
+    return <div style={wrapperStyle}>{scenarioItems}</div>;
+  }
 
   return (
-    <div
-      style={{
-        position: 'relative',
-        maxWidth: '550px',
-        color: 'black',
-        margin: 'auto',
-      }}
-    >
-      <Slider {...settings}>
-        {data?.map((item) => (
-          <Link key={item.id} to={`/scenario/${item.id}/`}>
-            <ScenarioListItem {...item} src={getSrc(`/${item.src}`)} />
-          </Link>
-        ))}
-      </Slider>
+    <div style={wrapperStyle}>
+      <Slider {...settings}>{scenarioItems}</Slider>
     </div>
   );
 }
