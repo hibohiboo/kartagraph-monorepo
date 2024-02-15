@@ -23,5 +23,8 @@
     "editor",
     "types",
     "backend"
-  ]
+  ],
+  "dependencies": {
+    "aws-cdk": "^2.128.0"
+  }
 }
