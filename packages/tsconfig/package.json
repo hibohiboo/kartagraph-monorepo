@@ -3,8 +3,11 @@
     "private": true,
     "version": "0.0.0",
     "devDependencies": {
-        "@types/node": "^20.11.18",
+        "@types/node": "^20.11.19",
+        "npm-check-updates": "^16.14.15",
         "typescript": "^5.3.3"
+    },
+    "scripts": {
+        "ncu": "ncu -u"
     }
-    ,"scripts": {"ncu": "ncu -u"}
 }
