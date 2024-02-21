@@ -1,5 +1,6 @@
 {
   "id": "sample",
+  "uid": "user-id",
   "firstSceneId": "scene1",
   "title": "シナリオテスト",
   "scenes": [

@@ -26,16 +26,13 @@ const env = {
   region: process.env.CDK_DEFAULT_REGION,
 };
 
-new KartaGraphRESTAPIStack(
-  app,
-  `${processEnv.PROJECT_ID}-KartaGraphRESTAPIStack`,
-  {
-    ssmLambdaLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
-    ssmAPIGWUrlKey: `${processEnv.SSM_PARAM_KEY_API_URL}-${processEnv.PROJECT_ID}`,
-    env,
-    neonEndpoint: processEnv.NEON_ENDPOINT,
-    projectId: processEnv.PROJECT_ID,
-    apiVersion: processEnv.REST_API_VERSION,
-    cloundFrontDomain: processEnv.CLOUND_FRONT_DOMAIN,
-  },
-);
+new KartaGraphRESTAPIStack(app, `${processEnv.PROJECT_ID}-KartaGraphRESTAPIStack`, {
+  ssmLambdaLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
+  ssmAPIGWUrlKey: `${processEnv.SSM_PARAM_KEY_API_URL}-${processEnv.PROJECT_ID}`,
+  env,
+  neonEndpoint: processEnv.NEON_ENDPOINT,
+  projectId: processEnv.PROJECT_ID,
+  apiVersion: processEnv.REST_API_VERSION,
+  cloundFrontDomain: processEnv.CLOUND_FRONT_DOMAIN,
+  mediaBucketName: `${processEnv.PROJECT_ID}-media-bucket`,
+});
