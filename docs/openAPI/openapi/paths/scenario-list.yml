@@ -14,3 +14,19 @@ get:
         application/json:
           schema:
             $ref: ../components/schemas/scenario/scenario-list.yml
+
+put:
+  operationId: put/scenario
+  summary: シナリオ送付
+  description: >-
+    シナリオを送付しS3に格納します。
+  security:
+    - ApiKeyAuth: [ ]
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/scenario/scenario-list-item.yml
+  responses:
+    202:
+      description: シナリオ受領
