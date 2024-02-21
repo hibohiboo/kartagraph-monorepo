@@ -6,14 +6,7 @@ import { KartaGraphFrontCdkStack } from '../lib/front-cdk';
 
 dotenv.config({ path: './.env.local' });
 
-const envList = [
-  'PROJECT_ID',
-  'TAG_PROJECT_NAME',
-  'BUCKET_NAME',
-  'SSM_PARAM_KEY_API_URL',
-  'REST_API_VERSION',
-  'REST_API_X_API_KEY',
-] as const;
+const envList = ['PROJECT_ID', 'TAG_PROJECT_NAME', 'BUCKET_NAME', 'SSM_PARAM_KEY_API_URL', 'REST_API_VERSION', 'REST_API_X_API_KEY'] as const;
 for (const key of envList) {
   if (!process.env[key]) throw new Error(`please add ${key} to .env`);
 }
@@ -42,4 +35,5 @@ new KartaGraphFrontCdkStack(app, `${processEnv.PROJECT_ID}-FrontCdkStack`, {
   xAPIKey: `${processEnv.REST_API_X_API_KEY}`,
   env,
   crossRegionReferences: true,
+  mediaBucketName: `${processEnv.PROJECT_ID}-media-bucket`,
 });

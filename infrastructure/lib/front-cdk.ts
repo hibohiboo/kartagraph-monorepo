@@ -21,7 +21,7 @@ import {
 } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin, S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { Effect, PolicyStatement, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { BlockPublicAccess, Bucket, IBucket } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketProps, HttpMethods, IBucket } from 'aws-cdk-lib/aws-s3';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
@@ -42,6 +42,7 @@ interface Props extends cdk.StackProps {
   ssmAPIGWUrlKey: string;
   apiVersion: string;
   xAPIKey: string;
+  mediaBucketName: string;
 }
 const defaultPolicyOptionComment = 'カルタグラフ デフォルトポリシー';
 const dataPolicyOptionComment = 'カルタグラフ データ部用ポリシー';
@@ -67,42 +68,39 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     // CloudFront オリジン用のS3バケットを作成
     const bucket = this.createS3(props.bucketName);
 
+    // 画像やシナリオデータ用のS3バケットを作成
+    const mediaBucket = this.createS3(props.mediaBucketName, {
+      cors: [{ allowedMethods: [HttpMethods.GET, HttpMethods.HEAD], allowedOrigins: ['*'], allowedHeaders: ['*'] }],
+    });
+
     // CloudFront で設定する オリジンアクセスコントロール を作成
     const oac = this.createOAC(props.oacName);
 
     // CloudFrontディストリビューションを作成
-    const distribution = this.createCloudFront(bucket, oac, props);
+    const distribution = this.createCloudFront(bucket, oac, props, mediaBucket);
 
     // S3バケットポリシーで、CloudFrontのオリジンアクセスコントロールを許可
     this.createPolicy(bucket, distribution);
+    this.createPolicy(mediaBucket, distribution);
 
     // // 指定したディレクトリをデプロイ
     for (const item of props.subDirectoryPath) {
-      this.deployS3(
-        bucket,
-        distribution,
-        item.path,
-        props.bucketName,
-        item.alias,
-      );
+      this.deployS3(bucket, distribution, item.path, props.bucketName, item.alias);
       // 確認用にCloudFrontのURLに整形して出力
-      new cdk.CfnOutput(
-        this,
-        `${props.distributionName}-${item.alias}-top-url`,
-        {
-          value: `https://${distribution.distributionDomainName}/${item.alias}/`,
-        },
-      );
+      new cdk.CfnOutput(this, `${props.distributionName}-${item.alias}-top-url`, {
+        value: `https://${distribution.distributionDomainName}/${item.alias}/`,
+      });
     }
 
     cdk.Tags.of(this).add('Project', props.projectNameTag);
   }
-  private createS3(bucketName: string) {
+  private createS3(bucketName: string, options: BucketProps = {}) {
     const bucket = new Bucket(this, bucketName, {
       bucketName,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
+      ...options,
       // デフォルト = accessControl: BucketAccessControl.PRIVATE,
     });
     return bucket;
@@ -129,16 +127,10 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     });
     bucket.addToResourcePolicy(myBucketPolicy);
     myBucketPolicy.addCondition('StringEquals', {
-      'AWS:SourceArn': `arn:aws:cloudfront::${
-        cdk.Stack.of(this).account
-      }:distribution/${distribution.distributionId}`,
+      'AWS:SourceArn': `arn:aws:cloudfront::${cdk.Stack.of(this).account}:distribution/${distribution.distributionId}`,
     });
   }
-  private createCloudFront(
-    bucket: Bucket,
-    oac: CfnOriginAccessControl,
-    props: Props,
-  ) {
+  private createCloudFront(bucket: Bucket, oac: CfnOriginAccessControl, props: Props, mediaBucket: Bucket) {
     const { defaultCachePolicyName, distributionName } = props;
     const defaultPolicyOption = {
       cachePolicyName: defaultCachePolicyName,
@@ -146,11 +138,7 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       enableAcceptEncodingGzip: true,
       enableAcceptEncodingBrotli: true,
     };
-    const myCachePolicy = new CachePolicy(
-      this,
-      defaultCachePolicyName,
-      defaultPolicyOption,
-    );
+    const myCachePolicy = new CachePolicy(this, defaultCachePolicyName, defaultPolicyOption);
 
     const origin = new S3Origin(bucket);
 
@@ -161,7 +149,7 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     });
 
     const responseHeadersPolicy = this.createResponseHeadersPolicy();
-    const additionalBehaviors = this.createAdditionalBehaviors(origin, props);
+    const additionalBehaviors = this.createAdditionalBehaviors(origin, props, mediaBucket);
     const d = new Distribution(this, distributionName, {
       comment: distributionComment,
       defaultRootObject: '/index.html',
@@ -181,143 +169,108 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       additionalBehaviors,
     });
     cdk.Tags.of(d).add('Service', 'Cloud Front');
-    this.settindDestribution(d, bucket, oac);
+
+    this.settindDestribution(d, [bucket, mediaBucket], oac);
 
     return d;
   }
 
-  private settindDestribution(
-    d: Distribution,
-    bucket: Bucket,
-    oac: CfnOriginAccessControl,
-  ) {
-    // Additional settings for origin 0 (0:appBucket)
+  private settindDestribution(d: Distribution, buckets: Bucket[], oac: CfnOriginAccessControl) {
+    // Additional settings for origin 0 (0:appBucket, 1:mediaBucket)
     const cfnDistribution = d.node.defaultChild as CfnDistribution;
-    // Delete OAI
-    cfnDistribution.addOverride(
-      'Properties.DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity',
-      '',
-    );
-
-    // OAC does not require CustomOriginConfig
-    cfnDistribution.addPropertyDeletionOverride(
-      'DistributionConfig.Origins.0.CustomOriginConfig',
-    );
-
-    // By default, the s3 WebsiteURL is set and an error occurs, so set the S3 domain name
-    cfnDistribution.addPropertyOverride(
-      'DistributionConfig.Origins.0.DomainName',
-      bucket.bucketRegionalDomainName,
-    );
-
-    // OAC settings
-    cfnDistribution.addPropertyOverride(
-      'DistributionConfig.Origins.0.OriginAccessControlId',
-      oac.getAtt('Id'),
-    );
+    buckets.forEach((b, i) => {
+      // Delete OAI
+      cfnDistribution.addOverride(`Properties.DistributionConfig.Origins.${i}.S3OriginConfig.OriginAccessIdentity`, '');
+      // OAC does not require CustomOriginConfig
+      cfnDistribution.addPropertyDeletionOverride(`DistributionConfig.Origins.${i}.CustomOriginConfig`);
+      // By default, the s3 WebsiteURL is set and an error occurs, so set the S3 domain name
+      cfnDistribution.addPropertyOverride(`DistributionConfig.Origins.${i}.DomainName`, b.bucketRegionalDomainName);
+      // OAC settings
+      cfnDistribution.addPropertyOverride(`DistributionConfig.Origins.${i}.OriginAccessControlId`, oac.getAtt('Id'));
+    });
   }
 
   private createResponseHeadersPolicy() {
-    const responseHeadersPolicy = new ResponseHeadersPolicy(
-      this,
-      'ResponseHeadersPolicy',
-      {
-        securityHeadersBehavior: {
-          contentTypeOptions: { override: true },
-          frameOptions: {
-            frameOption: HeadersFrameOption.SAMEORIGIN,
-            override: true,
-          },
-          referrerPolicy: {
-            referrerPolicy: HeadersReferrerPolicy.SAME_ORIGIN,
-            override: true,
-          },
-          strictTransportSecurity: {
-            accessControlMaxAge: cdk.Duration.seconds(63072000),
-            includeSubdomains: true,
-            preload: true,
-            override: true,
-          },
-          xssProtection: {
-            protection: true,
-            modeBlock: true,
-            override: true,
-          },
+    const responseHeadersPolicy = new ResponseHeadersPolicy(this, 'ResponseHeadersPolicy', {
+      securityHeadersBehavior: {
+        contentTypeOptions: { override: true },
+        frameOptions: {
+          frameOption: HeadersFrameOption.SAMEORIGIN,
+          override: true,
         },
-        corsBehavior: {
-          accessControlAllowOrigins: ['https://ccfolia.com'],
-          accessControlAllowHeaders: ['*'],
-          accessControlAllowMethods: ['ALL'],
-          accessControlAllowCredentials: false,
-          originOverride: true,
+        referrerPolicy: {
+          referrerPolicy: HeadersReferrerPolicy.SAME_ORIGIN,
+          override: true,
         },
-        customHeadersBehavior: {
-          customHeaders: [
-            {
-              header: 'Cache-Control',
-              value: 'no-cache',
-              override: true,
-            },
-            {
-              header: 'pragma',
-              value: 'no-cache',
-              override: true,
-            },
-            {
-              header: 'server',
-              value: '',
-              override: true,
-            },
-          ],
+        strictTransportSecurity: {
+          accessControlMaxAge: cdk.Duration.seconds(63072000),
+          includeSubdomains: true,
+          preload: true,
+          override: true,
+        },
+        xssProtection: {
+          protection: true,
+          modeBlock: true,
+          override: true,
         },
       },
-    );
+      corsBehavior: {
+        accessControlAllowOrigins: ['https://ccfolia.com'],
+        accessControlAllowHeaders: ['*'],
+        accessControlAllowMethods: ['ALL'],
+        accessControlAllowCredentials: false,
+        originOverride: true,
+      },
+      customHeadersBehavior: {
+        customHeaders: [
+          {
+            header: 'Cache-Control',
+            value: 'no-cache',
+            override: true,
+          },
+          {
+            header: 'pragma',
+            value: 'no-cache',
+            override: true,
+          },
+          {
+            header: 'server',
+            value: '',
+            override: true,
+          },
+        ],
+      },
+    });
     return responseHeadersPolicy;
   }
-  private createAdditionalBehaviors(
-    origin: IOrigin,
-    props: Props,
-  ): Record<string, BehaviorOptions> {
+  private createAdditionalBehaviors(origin: IOrigin, props: Props, mediaBucket: Bucket): Record<string, BehaviorOptions> {
     const additionalBehaviors = {
       [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
       'data/*': this.createAdditionBehaviorForData(origin, props),
+      '/assets/*': {
+        origin: new S3Origin(mediaBucket),
+      },
     };
     return additionalBehaviors;
   }
-  private createAdditionBehaviorForData(
-    origin: IOrigin,
-    props: Props,
-  ): BehaviorOptions {
+  private createAdditionBehaviorForData(origin: IOrigin, props: Props): BehaviorOptions {
     return {
       origin,
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      cachePolicy: new CachePolicy(
-        this,
-        `${props.distributionName}-data-cache-policy`,
-        {
-          cachePolicyName: `${props.distributionName}-data-cache-cache-policy`,
-          comment: dataPolicyOptionComment,
-          // defaultTtl: cdk.Duration.seconds(0),
-          // maxTtl: cdk.Duration.seconds(10),
-          headerBehavior: CacheHeaderBehavior.allowList('content-type'),
-        },
-      ),
+      cachePolicy: new CachePolicy(this, `${props.distributionName}-data-cache-policy`, {
+        cachePolicyName: `${props.distributionName}-data-cache-cache-policy`,
+        comment: dataPolicyOptionComment,
+        // defaultTtl: cdk.Duration.seconds(0),
+        // maxTtl: cdk.Duration.seconds(10),
+        headerBehavior: CacheHeaderBehavior.allowList('content-type'),
+      }),
     };
   }
   private createAdditionBehaviorForAPIGW(props: Props): BehaviorOptions {
-    const restApiUrl = StringParameter.valueForStringParameter(
-      this,
-      props.ssmAPIGWUrlKey,
-    );
-    const apiEndPointUrlWithoutProtocol = Fn.select(
-      1,
-      Fn.split('://', restApiUrl),
-    );
-    const apiEndPointDomainName = Fn.select(
-      0,
-      Fn.split('/', apiEndPointUrlWithoutProtocol),
-    );
+    const restApiUrl = StringParameter.valueForStringParameter(this, props.ssmAPIGWUrlKey);
+    const apiEndPointUrlWithoutProtocol = Fn.select(1, Fn.split('://', restApiUrl));
+    const apiEndPointDomainName = Fn.select(0, Fn.split('/', apiEndPointUrlWithoutProtocol));
     // accessControlAllowOrigins
     const ret: BehaviorOptions = {
       origin: new HttpOrigin(apiEndPointDomainName, {
@@ -326,41 +279,24 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
 
-      cachePolicy: new CachePolicy(
-        this,
-        `${props.distributionName}-rest-api-cache-policy`,
-        {
-          cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
-          comment: 'CloudFront + ApiGateway用ポリシー',
-          defaultTtl: cdk.Duration.seconds(0),
-          maxTtl: cdk.Duration.seconds(10),
-          headerBehavior: CacheHeaderBehavior.allowList(
-            'x-api-key',
-            'content-type',
-          ),
-        },
-      ),
+      cachePolicy: new CachePolicy(this, `${props.distributionName}-rest-api-cache-policy`, {
+        cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
+        comment: 'CloudFront + ApiGateway用ポリシー',
+        defaultTtl: cdk.Duration.seconds(0),
+        maxTtl: cdk.Duration.seconds(10),
+        headerBehavior: CacheHeaderBehavior.allowList('x-api-key', 'content-type'),
+      }),
     };
     return ret;
   }
 
-  private deployS3(
-    siteBucket: IBucket,
-    distribution: IDistribution,
-    sourcePath: string,
-    bucketName: string,
-    basepath: string,
-  ) {
-    new BucketDeployment(
-      this,
-      `${bucketName}-deploy-with-invalidation-${basepath}`,
-      {
-        sources: [Source.asset(sourcePath)],
-        destinationBucket: siteBucket,
-        distribution,
-        distributionPaths: [`/${basepath}/*`],
-        destinationKeyPrefix: basepath,
-      },
-    );
+  private deployS3(siteBucket: IBucket, distribution: IDistribution, sourcePath: string, bucketName: string, basepath: string) {
+    new BucketDeployment(this, `${bucketName}-deploy-with-invalidation-${basepath}`, {
+      sources: [Source.asset(sourcePath)],
+      destinationBucket: siteBucket,
+      distribution,
+      distributionPaths: [`/${basepath}/*`],
+      destinationKeyPrefix: basepath,
+    });
   }
 }

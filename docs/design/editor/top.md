@@ -55,3 +55,7 @@ JSONPath|論理名
 .summary|紹介文
 .detail|シナリオ詳細文(自由記述)
 
+### S3
+S3はシナリオ保存用のバケットと、メインのフロントエンドを表示するS3とを分ける。
+(参考: https://dev.classmethod.jp/articles/cdk-multi-origin-oac/ )
+
