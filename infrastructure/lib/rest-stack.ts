@@ -7,7 +7,10 @@ import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 import openApi from '../data/openapi.json';
 import { convertPathList } from '../util/convertPathList';
-import { LambdaIntegration, RestApi } from 'aws-cdk-lib/aws-apigateway';
+import { AwsIntegration, LambdaIntegration, PassthroughBehavior, RestApi } from 'aws-cdk-lib/aws-apigateway';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { Bucket, EventType, IBucket } from 'aws-cdk-lib/aws-s3';
+import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
 
 interface Props extends core.StackProps {
   projectId: string;
@@ -16,12 +19,19 @@ interface Props extends core.StackProps {
   apiVersion: string;
   neonEndpoint: string;
   cloundFrontDomain: string;
+  mediaBucketName: string;
 }
 type OpenAPI = typeof openApi;
 type Paths = OpenAPI['paths'];
 
-const HANDLER_DIR = '../backend/src/handlers/api';
-
+const HANDLER_DIR = '../backend/src/handlers';
+const API_HANDLER_DIR = `${HANDLER_DIR}/api`;
+const EVENT_HANDLER_DIR = `${HANDLER_DIR}/event`;
+const responseParameters = {
+  'method.response.header.Access-Control-Allow-Headers': true,
+  'method.response.header.Access-Control-Allow-Methods': true,
+  'method.response.header.Access-Control-Allow-Origin': true,
+};
 export class KartaGraphRESTAPIStack extends core.Stack {
   private apiRoot: apigateway.Resource;
   private resourceMap = new Map<string, apigateway.Resource>();
@@ -45,18 +55,21 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     // シナリオタグ永続化
     this.createAPILambdaResource('/tags', 'put', {
       ...defaultLambdaProps,
-      entry: `${HANDLER_DIR}/putTags.ts`,
+      entry: `${API_HANDLER_DIR}/putTags.ts`,
     });
     // タグ統計取得
     this.createAPILambdaResource('/scenario/{scenarioId}/tags', 'get', {
       ...defaultLambdaProps,
-      entry: `${HANDLER_DIR}/getTagsSummary.ts`,
+      entry: `${API_HANDLER_DIR}/getTagsSummary.ts`,
     });
     // シナリオ一覧取得
     this.createAPILambdaResource('/scenario', 'get', {
       ...defaultLambdaProps,
-      entry: `${HANDLER_DIR}/getScenarioList.ts`,
+      entry: `${API_HANDLER_DIR}/getScenarioList.ts`,
     });
+    // シナリオ送付
+    const bucket = Bucket.fromBucketName(this, props.mediaBucketName, props.mediaBucketName);
+    this.createAPIS3ToLambdaResource('/scenario', 'put', { ...defaultLambdaProps, entry: `${EVENT_HANDLER_DIR}/putScenario.ts` }, bucket);
   }
 
   private createAPILambdaResource<T extends keyof Paths, T2 extends keyof Paths[T]>(path: T, method: T2, props: Partial<NodejsFunctionProps>) {
@@ -76,6 +89,34 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     this.getResource(path).addMethod(methodStr.toUpperCase(), new LambdaIntegration(lambda), methodOptions);
   }
 
+  private createAPIS3ToLambdaResource<T extends keyof Paths, T2 extends keyof Paths[T]>(
+    path: T,
+    method: T2,
+    props: Partial<NodejsFunctionProps>,
+    bucket: IBucket,
+  ) {
+    const methodStr = method as string;
+    const lambda = this.createLambda(
+      {
+        ...props,
+        description: (openApi as any).paths[path][method].summary,
+      },
+      `${methodStr}-${path}`,
+    );
+    const role = this.createRole(bucket, '/scenario/');
+    this.getResource(path).addMethod(methodStr.toUpperCase(), this.createIntegration(role, bucket), {
+      requestParameters: {},
+      methodResponses: [this.createOkResponse(), this.create400Response(), this.createErrorResponse()],
+    });
+
+    bucket.addEventNotification(EventType.OBJECT_CREATED_PUT, new LambdaDestination(lambda));
+    bucket.grantRead(lambda);
+  }
+  private createRole(bucket: IBucket, path: string) {
+    const restApiRole = new Role(this, 'Role', { assumedBy: new ServicePrincipal('apigateway.amazonaws.com'), path });
+    bucket.grantReadWrite(restApiRole);
+    return restApiRole;
+  }
   private createRestAPIGateway(props: Props) {
     const restApiName = `${props.projectId}-rest-api`;
 
@@ -148,7 +189,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     timeoutSec?: number;
   }) {
     const bundling = {
-      externalModules: ['@neondatabase/serverless'],
+      externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3'],
     };
     const lambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaLayerArn);
 
@@ -184,24 +225,57 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       apiKeyRequired: true,
       requestParameters,
       methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Timestamp': true,
-            'method.response.header.Content-Length': true,
-            'method.response.header.Content-Type': true,
-            ...responseParameters,
-          },
-        },
-        {
-          statusCode: '400',
-          responseParameters,
-        },
-        {
-          statusCode: '500',
-          responseParameters,
-        },
+        { statusCode: '202', responseParameters },
+        { statusCode: '400', responseParameters },
+        { statusCode: '500', responseParameters },
       ],
+    };
+  }
+  private createIntegration(restApiRole: Role, bucket: IBucket) {
+    const responseParameters = {
+      'method.response.header.Access-Control-Allow-Headers': "'Content-Type,Authorization'",
+      'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,PUT'",
+      'method.response.header.Access-Control-Allow-Origin': "'*'",
+    };
+    return new AwsIntegration({
+      service: 's3',
+      integrationHttpMethod: 'PUT',
+      // アップロード先を指定する
+      path: `${bucket.bucketName}/scenario/{uid}/{id}/{time}-{rid}.json`,
+      options: {
+        credentialsRole: restApiRole,
+        passthroughBehavior: PassthroughBehavior.WHEN_NO_MATCH,
+        requestParameters: {
+          // リクエスト を 統合リクエスト にマッピングする
+          'integration.request.path.time': 'context.requestTimeEpoch',
+          'integration.request.path.rid': 'context.requestId',
+          'integration.request.path.uid': 'method.request.body.uid',
+          'integration.request.path.id': 'method.request.body.id',
+        },
+        integrationResponses: [
+          { statusCode: '202', responseParameters },
+          { statusCode: '400', selectionPattern: '4\\d{2}', responseParameters },
+          { statusCode: '500', selectionPattern: '5\\d{2}', responseParameters },
+        ],
+      },
+    });
+  }
+  private createOkResponse() {
+    return {
+      statusCode: '202',
+      responseParameters,
+    };
+  }
+  private create400Response() {
+    return {
+      statusCode: '400',
+      responseParameters,
+    };
+  }
+  private createErrorResponse() {
+    return {
+      statusCode: '500',
+      responseParameters,
     };
   }
 }
