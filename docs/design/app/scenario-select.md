@@ -95,7 +95,7 @@ src|タイトル画像のパス|text
 summary|紹介文|text
 detail|シナリオ詳細文(自由記述)|text
 s3_key|S3のオブジェクトキー|text
-created| 登録日時|timestamp
+created| 登録日時(UTC)|timestamp
 updated| 更新日時|timestamp
 
 

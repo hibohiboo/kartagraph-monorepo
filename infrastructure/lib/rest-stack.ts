@@ -112,6 +112,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     bucket.addEventNotification(EventType.OBJECT_CREATED_PUT, new LambdaDestination(lambda));
     bucket.grantRead(lambda);
   }
+
   private createRole(bucket: IBucket, path: string) {
     const restApiRole = new Role(this, 'Role', { assumedBy: new ServicePrincipal('apigateway.amazonaws.com'), path });
     bucket.grantReadWrite(restApiRole);
@@ -241,14 +242,12 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       service: 's3',
       integrationHttpMethod: 'PUT',
       // アップロード先を指定する
-      path: `${bucket.bucketName}/scenario/{uid}/{id}/{time}-{rid}.json`,
+      path: `${bucket.bucketName}/scenario/{uid}/{id}.json`,
       options: {
         credentialsRole: restApiRole,
         passthroughBehavior: PassthroughBehavior.WHEN_NO_MATCH,
         requestParameters: {
           // リクエスト を 統合リクエスト にマッピングする
-          'integration.request.path.time': 'context.requestTimeEpoch',
-          'integration.request.path.rid': 'context.requestId',
           'integration.request.path.uid': 'method.request.body.uid',
           'integration.request.path.id': 'method.request.body.id',
         },

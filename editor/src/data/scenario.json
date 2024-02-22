@@ -1,8 +1,11 @@
 {
-  "id": "sample",
+  "id": "a9ff348b-8a64-4dae-b658-c05ac44413fa",
   "uid": "user-id",
   "firstSceneId": "scene1",
   "title": "シナリオテスト",
+  "src":"/images/backgrounds/adv_inn_2.png", 
+  "summary":"テストサマリ", 
+  "detail":"詳細",
   "scenes": [
     {
       "id": "scene1",
