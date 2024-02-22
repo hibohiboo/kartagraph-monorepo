@@ -99,11 +99,26 @@ insert into scenario_list (id,title,src,summary,detail,s3_key,created,updated)
 npx prisma db pull
 ```
 
+```
 These objects have comments defined in the database, which is not yet fully supported. Read more: https://pris.ly/d/database-comments
   - Type: "model", name: "scenario_list"
   - Type: "model", name: "tag_history"
+```
 
-npx prisma migrate dev --name introspected_change
+
+[guide](https://neon.tech/docs/guides/prisma)
+
+下記エラーで migration init が失敗。
+
+```
+The fallback method for database resets failed, meaning Migrate could not clean up the database entirely. Original error:
+ERROR: must be owner of table RinneScenario
+   0: sql_schema_connector::best_effort_reset
+           with namespaces=None
+             at schema-engine\connectors\sql-schema-connector\src\lib.rs:356
+   1: schema_core::state::Reset
+             at schema-engine\core\src\state.rs:425
+```
 
 ### 参考
 
