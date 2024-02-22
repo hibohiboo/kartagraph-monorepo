@@ -1,18 +1,13 @@
 import FilePreviewer from '@kartagraph-editor/components/FilePreviewer/FilePreviewer';
-import FileTree from '@kartagraph-editor/components/FileSystem/FileTree';
 import ScenarioPreviewer from '@kartagraph-editor/components/ScenarioPreviewer/ScenariPreviewer';
 import ScenarioTree from '@kartagraph-editor/domain/scenarioTree/components/ScenarioTree';
 import { convertScenario } from '@kartagraph-editor/domain/scenarioTree/converter';
 import { useEditorHooks } from '@kartagraph-editor/hooks/useEditorHooks';
 import { useGameCoreHooks } from '@kartagraph-editor/hooks/useGameCore';
-import {
-  scenarioIdAtom,
-  scenarioStateAtom,
-} from '@kartagraph-editor/store/worker/gameCore';
+import { scenarioIdAtom, scenarioStateAtom } from '@kartagraph-editor/store/worker/gameCore';
 import { ScenarioHierarchyTree } from '@kartagraph-editor-ui/index';
 import Card from '@kartagraph-ui/components/Card/Card';
 import { useAtom } from 'jotai';
-import { Button } from 'primereact/button';
 import { Splitter, SplitterPanel } from 'primereact/splitter';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,22 +20,24 @@ function App() {
   const [scenarioId] = useAtom(scenarioIdAtom);
 
   useEffect(() => {
-    if (scenarioState === 'endScenario')
-      navigate(`/scenario/${scenarioId}/result`);
+    if (scenarioState === 'endScenario') navigate(`/scenario/${scenarioId}/result`);
   }, [navigate, scenarioId, scenarioState]);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const convertedScenario = convertScenario(scenario) as any;
+
   return (
     <div>
       <Splitter>
-        <SplitterPanel size={5}>
-          <div style={{ height: '100vh', overflowY: 'auto' }}>
-            <Button onClick={vm.readRootDirectory}>クリックで読み込み</Button>
-            <FileTree /> <pre>{vm.treeJson}</pre>
-          </div>
-        </SplitterPanel>
         <SplitterPanel size={15}>
           <div style={{ height: '100vh', overflowY: 'auto', width: '100%' }}>
+            <button
+              onClick={() => {
+                fetch('/v1/api/scenario', { method: 'PUT', body: JSON.stringify(scenario) });
+              }}
+            >
+              保存
+            </button>
             <ScenarioHierarchyTree scenario={convertedScenario} />
             <details>
               <summary>▼JSON</summary>

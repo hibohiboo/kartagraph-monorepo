@@ -24,4 +24,9 @@ export const handlers = [
       },
     });
   }),
+  http.put('/v1/api/scenario', () => {
+    return new HttpResponse(JSON.stringify({}), {
+      status: 202,
+    });
+  }),
 ];
