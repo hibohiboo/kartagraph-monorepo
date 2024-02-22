@@ -9,6 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "ncu": "ncu -u",
+    "postncu": "msw init",
     "test": "cross-env NODE_OPTIONS='--experimental-vm-modules' jest -c jest.config.json",
     "watch": "cross-env NODE_OPTIONS='--experimental-vm-modules' jest -c jest.config.json --watch"
   },

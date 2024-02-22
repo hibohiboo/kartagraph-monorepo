@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "ncu": "ncu -u"
+    "ncu": "ncu -u",
+    "postncu": "msw init"
   },
   "dependencies": {
     "@tanstack/query-core": "^5.22.2",
