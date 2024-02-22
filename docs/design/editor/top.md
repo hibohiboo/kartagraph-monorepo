@@ -91,6 +91,20 @@ insert into scenario_list (id,title,src,summary,detail,s3_key,created,updated)
             updated = EXCLUDED.updated;
 ```
 
+### マイグレーション手順
+
+[troubleshooting](https://www.prisma.io/docs/orm/prisma-migrate/workflows/troubleshooting)
+
+```
+npx prisma db pull
+```
+
+These objects have comments defined in the database, which is not yet fully supported. Read more: https://pris.ly/d/database-comments
+  - Type: "model", name: "scenario_list"
+  - Type: "model", name: "tag_history"
+
+npx prisma migrate dev --name introspected_change
+
 ### 参考
 
 [Prisma Neon](https://www.prisma.io/docs/orm/overview/databases/neon)
@@ -98,6 +112,7 @@ insert into scenario_list (id,title,src,summary,detail,s3_key,created,updated)
 [NestJSに最適のORMを考えてみる（Prisma VS TypeORM）](https://ap-ep.com/node-orm/)
 [TypescriptのSQLクエリビルダーのkyselyが快適](https://qiita.com/mont_blanc/items/0564a946b0d6919ad3a0)
 [TypeScript用クエリービルダー「Kysely」でトランザクション、UPSERT、JOINを使ってみた](https://qiita.com/kanedaq/items/2202b700533e9ca15f9e)
+[schema](https://www.prisma.io/docs/orm/reference/prisma-schema-reference)
 
 ### 検討
 #### S3に残すキーに日付とか入れる？
