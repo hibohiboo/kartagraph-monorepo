@@ -4,7 +4,7 @@
   "scripts": {
     "prepare": "git config --local core.hooksPath .githooks && echo Changed hooks directory when npm install",
     "build": "turbo build",
-    "ncu": "turbo ncu",
+    "ncu": "turbo ncu && cd infrastructure && npm run ncu && cd ../docs/openAPI && npm run ncu",
     "dev": "turbo dev",
     "deploy": "cd infrastructure && npm run deploy"
   },
@@ -23,8 +23,5 @@
     "editor",
     "types",
     "backend"
-  ],
-  "dependencies": {
-    "aws-cdk": "^2.128.0"
-  }
+  ]
 }
