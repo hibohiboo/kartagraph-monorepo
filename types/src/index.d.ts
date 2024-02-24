@@ -1,3 +1,5 @@
+export { ScenarioListItem } from '@/prisma-types';
+
 type Tag = {
   tagName: string;
   tagType: string;
@@ -14,14 +16,4 @@ export type TagHistory = {
 export type TagSummary = {
   userCount: number;
   tagName: string;
-};
-
-export type ScenarioListItem = {
-  id: string;
-  title: string;
-  src: string;
-  summary: string;
-  detail: string;
-  created: string;
-  updated: string;
 };

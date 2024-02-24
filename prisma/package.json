@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prepare": "prisma generate",
+    "generate": "prisma generate",
     "pull": "prisma db pull"
   },
   "author": "",
