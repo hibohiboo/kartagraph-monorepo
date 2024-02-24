@@ -1,29 +1,20 @@
 import { execQuery } from '@kartagraph-backend/utils/repository';
+import { scenario_listSchema } from '@kartagraph-prisma-zod';
 import { ScenarioListItem } from '@kartagraph-types/index';
-export const getScenarioList = async () => {
+export const getScenarioList = async (): Promise<ScenarioListItem> => {
   const ret = await execQuery(
     `SELECT id
           , title
           , src
           , summary
           , detail
+          , s3_key
           , created
           , updated
        FROM scenario_list
    ORDER BY updated desc
     `,
   );
-  const retJson = ret.map(
-    (r): ScenarioListItem => ({
-      id: r.id,
-      title: r.title,
-      src: r.src,
-      summary: r.summary,
-      detail: r.detail,
-      s3_key: r.s3_key,
-      created: new Date(r.created),
-      updated: new Date(r.updated),
-    }),
-  );
+  const retJson = ret.map((r) => scenario_listSchema.parse(r));
   return retJson;
 };

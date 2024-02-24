@@ -8,6 +8,7 @@ example:
     src: タイトル画像のURL
     summary: 紹介文
     detail: 作者：hibo
+    s3_key: scenario/user-id/a9ff348b-8a64-4dae-b658-c05ac44413f1.json
     created: 2017-07-21T17:32:28Z
     updated: 2017-07-21T17:32:28Z
   - id: 7d8bb386-0f86-4dff-be34-86bb2f55b367
@@ -15,5 +16,6 @@ example:
     src: タイトル画像のURL
     summary: 紹介文
     detail: 作者：hibo
+    s3_key: scenario/user-id/b9ff348b-8a64-4dae-b658-c05ac44413f2.json
     created: 2017-07-20T17:32:28Z
     updated: 2017-07-20T17:32:28Z

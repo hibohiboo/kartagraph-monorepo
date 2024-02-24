@@ -3,7 +3,8 @@
     "baseUrl": ".",
     "paths": {
       "@kartagraph-backend/*": ["./src/*"],
-      "@kartagraph-types/*": ["../types/src/*"]
+      "@kartagraph-types/*": ["../types/src/*"],
+      "@kartagraph-prisma-zod": ["../prisma/generated/zod/index.ts"],
     }
   },
   "include": ["src", "tests","../types"],

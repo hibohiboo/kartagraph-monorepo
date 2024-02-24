@@ -20,6 +20,10 @@ properties:
     type: string
     description: シナリオ詳細
     example: "作者：hibo"
+  s3_key:
+    type: string
+    description: S3キー
+    example: "scenario/user-id/a9ff348b-8a64-4dae-b658-c05ac44413f1.json"
   created:
     type: string
     description: 登録日時
@@ -34,5 +38,6 @@ example:
     src: タイトル画像のURL
     summary: 紹介文
     detail: 作者：hibo
+    s3_key: scenario/user-id/a9ff348b-8a64-4dae-b658-c05ac44413f1.json
     created: 2017-07-21T17:32:28Z
     updated: 2017-07-21T17:32:28Z
