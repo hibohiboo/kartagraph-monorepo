@@ -1,7 +1,7 @@
 import * as core from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
-import { LayerVersion, Runtime } from 'aws-cdk-lib/aws-lambda';
+import { LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
@@ -11,14 +11,16 @@ import { AwsIntegration, LambdaIntegration, PassthroughBehavior, RestApi } from 
 import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, EventType, IBucket } from 'aws-cdk-lib/aws-s3';
 import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
+import { RUNTIME_VERSION } from '../constants/lambda';
 
 const bundling = {
-  externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', 'zod', '@prisma/client'],
+  externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', 'zod', '@prisma/client', '/opt/nodejs/*'],
 };
 
 interface Props extends core.StackProps {
   projectId: string;
   ssmLambdaLayerKey: string;
+  ssmLambdaCommonLayerKey: string;
   ssmAPIGWUrlKey: string;
   apiVersion: string;
   neonEndpoint: string;
@@ -52,6 +54,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
 
     const defaultLambdaProps = this.createLambdaProps({
       ssmKeyForLambdaLayerArn: props.ssmLambdaLayerKey,
+      ssmKeyForLambdaCommonLayerArn: props.ssmLambdaCommonLayerKey,
       environment: { ...commonEnv },
       timeoutSec: 30, // 外部エンドポイントを経由してJSONを処理するため3秒では足りない
     });
@@ -189,19 +192,24 @@ export class KartaGraphRESTAPIStack extends core.Stack {
 
   private createLambdaProps(props: {
     ssmKeyForLambdaLayerArn: string;
+    ssmKeyForLambdaCommonLayerArn: string;
     environment?: Record<string, string>;
     initialPolicy?: iam.PolicyStatement[];
     timeoutSec?: number;
   }) {
     const lambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaLayerArn);
+    const commonLambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaCommonLayerArn);
 
-    const layers = [LayerVersion.fromLayerVersionArn(this, 'node_modules-layer', lambdaLayerArn)];
+    const layers = [
+      LayerVersion.fromLayerVersionArn(this, 'node_modules-layer', lambdaLayerArn),
+      LayerVersion.fromLayerVersionArn(this, 'common-layer', commonLambdaLayerArn),
+    ];
 
     // 同じStack上でLayerVersionを作っていない場合、cdk synthで sam local 実行用のoutputを作るときにレイヤーを使うとエラーになる。
     const layerSettings = !!process.env['CDK_SYNTH'] ? {} : { bundling, layers };
 
     return {
-      runtime: Runtime.NODEJS_20_X,
+      runtime: RUNTIME_VERSION,
       ...layerSettings,
       environment: props.environment,
       initialPolicy: props.initialPolicy,

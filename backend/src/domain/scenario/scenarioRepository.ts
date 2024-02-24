@@ -1,5 +1,5 @@
 import { execQuery } from '@kartagraph-backend/utils/repository';
-import { scenario_listSchema } from '@kartagraph-prisma-zod';
+import { scenario_listSchema } from '/opt/nodejs/index';
 import { ScenarioListItem } from '@kartagraph-types/index';
 
 export const getScenarioList = async (): Promise<ScenarioListItem> => {

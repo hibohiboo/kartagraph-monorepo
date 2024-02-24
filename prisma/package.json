@@ -1,9 +1,8 @@
 {
   "name": "@kartagraph/prisma-zod",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
+    "bundle": "esbuild --bundle generated/zod/index.ts --outfile=dist/index.js --target=node20 --format=cjs",
     "generate": "prisma generate",
     "pull": "prisma db pull"
   },
@@ -14,6 +13,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "esbuild": "^0.20.1",
     "prisma": "^5.10.2",
     "zod-prisma-types": "^3.1.6"
   }

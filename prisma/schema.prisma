@@ -1,14 +1,25 @@
-generator zod {
-  provider = "zod-prisma-types"
-}
-
 generator client {
   provider = "prisma-client-js"
+}
+
+generator zod {
+  provider = "zod-prisma-types"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model scenario_list {
+  id      String   @id @db.Uuid
+  title   String
+  src     String
+  summary String
+  detail  String
+  s3_key  String
+  created DateTime @default(now()) @db.Timestamptz(6)
+  updated DateTime @default(now()) @updatedAt @db.Timestamptz(6)
 }
 
 model RinneScenario {
@@ -41,18 +52,6 @@ model paragraphs_relation {
   to   String
 
   @@id([from, to])
-}
-
-/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model scenario_list {
-  id      String   @id @db.Uuid
-  title   String
-  src     String
-  summary String
-  detail  String
-  s3_key  String
-  created DateTime @default(now()) @db.Timestamptz(6)
-  updated DateTime @default(now()) @db.Timestamptz(6)
 }
 
 model solo_journal {

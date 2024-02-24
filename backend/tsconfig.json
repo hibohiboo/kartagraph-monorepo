@@ -4,7 +4,7 @@
     "paths": {
       "@kartagraph-backend/*": ["./src/*"],
       "@kartagraph-types/*": ["../types/src/*"],
-      "@kartagraph-prisma-zod": ["../prisma/generated/zod/index.ts"],
+      "/opt/nodejs/*": ["../prisma/generated/zod/*"],
     }
   },
   "include": ["src", "tests","../types"],

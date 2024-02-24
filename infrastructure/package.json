@@ -13,6 +13,7 @@
     "openapi-init": "cd ../docs/openAPI && npm run bundle-json",
     "predeploy": "cd .. && npm run build",
     "deploy": "cdk -a \"npx ts-node --prefer-ts-exts bin/infrastructure.ts\" deploy --all --profile produser",
+    "predeploy-layer": "cd ../prisma && npm run bundle",
     "deploy-layer": "cdk -a \"npx ts-node --prefer-ts-exts bin/lambda-layer-version-deploy.ts\" deploy --all --profile produser",
     "deploy-rest": "cdk -a \"npx ts-node --prefer-ts-exts bin/rest.ts\" deploy --all --profile produser"
   },

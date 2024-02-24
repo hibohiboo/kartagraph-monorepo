@@ -23,5 +23,6 @@ const env = {
 
 new LambdaLayersStack(app, `${processEnv.PROJECT_ID}-LambdaLayersStack`, {
   ssmKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
+  commonSsmKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}-common`,
   env,
 });

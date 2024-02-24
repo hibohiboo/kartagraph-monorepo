@@ -28,6 +28,7 @@ const env = {
 
 new KartaGraphRESTAPIStack(app, `${processEnv.PROJECT_ID}-KartaGraphRESTAPIStack`, {
   ssmLambdaLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}`,
+  ssmLambdaCommonLayerKey: `${processEnv.SSM_PARAM_KEY_LAYER_VERSIONS_ARN}-${processEnv.PROJECT_ID}-common`,
   ssmAPIGWUrlKey: `${processEnv.SSM_PARAM_KEY_API_URL}-${processEnv.PROJECT_ID}`,
   env,
   neonEndpoint: processEnv.NEON_ENDPOINT,
