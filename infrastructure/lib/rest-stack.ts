@@ -170,7 +170,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     // apiKeyを設定
     const apiKey = restApi.addApiKey('defaultKeys');
     const usagePlan = restApi.addUsagePlan(`${apiName}-usage-plan`, {
-      quota: { limit: 2000, period: apigateway.Period.DAY },
+      quota: { limit: 100, period: apigateway.Period.DAY },
       throttle: { burstLimit: 2, rateLimit: 1 },
     });
     usagePlan.addApiKey(apiKey);
