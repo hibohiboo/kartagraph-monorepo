@@ -28,7 +28,7 @@
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
-    "@types/react": "^18.2.57",
+    "@types/react": "^18.2.58",
     "@types/react-dom": "^18.2.19",
     "@types/react-slick": "^0.23.13",
     "@vitejs/plugin-react-swc": "^3.6.0",

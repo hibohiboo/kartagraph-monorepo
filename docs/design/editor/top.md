@@ -120,6 +120,13 @@ ERROR: must be owner of table RinneScenario
              at schema-engine\core\src\state.rs:425
 ```
 
+今後、の方針として、DBファーストで作成を行うこととする。
+DBに更新があった際は、下記コマンドでスキーマファイルを自動生成する。
+
+```
+npx prisma db pull
+```
+
 ### 参考
 
 [Prisma Neon](https://www.prisma.io/docs/orm/overview/databases/neon)
