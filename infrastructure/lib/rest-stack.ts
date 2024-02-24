@@ -12,6 +12,10 @@ import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, EventType, IBucket } from 'aws-cdk-lib/aws-s3';
 import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
 
+const bundling = {
+  externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', 'zod', '@prisma/client'],
+};
+
 interface Props extends core.StackProps {
   projectId: string;
   ssmLambdaLayerKey: string;
@@ -189,9 +193,6 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     initialPolicy?: iam.PolicyStatement[];
     timeoutSec?: number;
   }) {
-    const bundling = {
-      externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3'],
-    };
     const lambdaLayerArn = StringParameter.valueForStringParameter(this, props.ssmKeyForLambdaLayerArn);
 
     const layers = [LayerVersion.fromLayerVersionArn(this, 'node_modules-layer', lambdaLayerArn)];
