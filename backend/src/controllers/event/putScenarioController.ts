@@ -1,5 +1,5 @@
 import { execQuery } from '@kartagraph-backend/utils/repository';
-import type { ScenarioListItem } from '@kartagraph-types/index';
+import { scenario_listSchema } from '/opt/nodejs/index';
 
 interface S3Record {
   s3: {
@@ -8,8 +8,15 @@ interface S3Record {
   eventTime: string;
 }
 
-export const putScenario = async (s3Json: unknown, record: S3Record) => {
-  const { id, title, src, summary, detail } = s3Json as ScenarioListItem;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const putScenario = async (s3Json: any, record: S3Record) => {
+  const item = scenario_listSchema.parse({
+    ...s3Json,
+    s3_key: record.s3.object.key,
+    created: record.eventTime,
+    updated: record.eventTime,
+  });
+  const { id, title, src, summary, detail } = item;
 
   await execQuery(`
 insert into scenario_list (id,title,src,summary,detail,s3_key,created,updated) 

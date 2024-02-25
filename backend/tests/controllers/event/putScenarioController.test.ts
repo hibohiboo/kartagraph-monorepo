@@ -34,7 +34,7 @@ describe('putScenarioController', () => {
   });
   test('引数が不足したイベントでエラーとなること', async () => {
     await expect(async () => {
-      await putScenario(s3Json, record);
+      await putScenario({ ...s3Json, id: undefined }, record);
     }).rejects.toThrow();
   });
 });
