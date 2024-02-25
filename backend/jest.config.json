@@ -1,0 +1,29 @@
+{
+  "roots": [
+    "<rootDir>/src","<rootDir>/tests"
+  ],
+  "transform": {
+    "^.+\\.ts$": "ts-jest"
+  },
+  "testMatch": [
+    "**/?(*.)+(spec|test).+(ts|js)"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "<rootDir>/"
+  ],
+  "moduleNameMapper": {
+    "^@kartagraph-backend/(.*)$": "<rootDir>/src/$1",
+    "^/opt/nodejs/(.*)$": "<rootDir>/../prisma/dist/$1"
+  },
+  "reporters": [
+    "default",
+    [
+      "jest-html-reporters",
+      {
+        "publicPath": "../../dist/public/jest-reports-backend",
+        "filename": "jest.html"
+      }
+    ]
+  ]
+}
