@@ -26,8 +26,23 @@ describe('getScenarioList', () => {
   test('受領した結果が期待する場合じゃない場合のテスト', async () => {
     const mock = require('@kartagraph-backend/utils/repository').execQuery as jest.Mock;
     mock.mockImplementation(() => [{ ...scenarioListItem, s3_key: undefined } as any]);
+
     await expect(async () => {
       await getScenarioList();
-    }).rejects.toThrow();
+    }).rejects.toThrow(/(?=.*s3_key)(?=.*Required)/s);
+    // Throwされるメッセージは下記。 正規表現でs3_keyとRequiredが含まれることを確認
+    // 改行を含むため、正規表現のオプションにsを指定
+
+    // [
+    //   {
+    //     \"code\": \"invalid_type\",
+    //     \"expected\": \"string\",
+    //     \"received\": \"undefined\",
+    //     \"path\": [
+    //       \"s3_key\"
+    //     ],
+    //     \"message\": \"Required\"
+    //   }
+    // ]
   });
 });
