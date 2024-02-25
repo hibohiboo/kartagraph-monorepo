@@ -14,7 +14,7 @@ import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
 import { RUNTIME_VERSION } from '../constants/lambda';
 
 const bundling = {
-  externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', 'zod', '@prisma/client', '/opt/nodejs/*'],
+  externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', '/opt/nodejs/*'],
 };
 
 interface Props extends core.StackProps {
