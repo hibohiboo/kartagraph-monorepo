@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getScenarioList } from '@kartagraph-backend/domain/scenario/scenarioRepository';
 import { scenarioListItem } from './data/scenarioList';
 
@@ -20,5 +22,12 @@ describe('getScenarioList', () => {
       created: new Date('2024-02-22T13:04:04.905Z'),
       updated: new Date('2024-02-22T14:30:55.898Z'),
     });
+  });
+  test('受領した結果が期待する場合じゃない場合のテスト', async () => {
+    const mock = require('@kartagraph-backend/utils/repository').execQuery as jest.Mock;
+    mock.mockImplementation(() => [{ ...scenarioListItem, s3_key: undefined } as any]);
+    await expect(async () => {
+      await getScenarioList();
+    }).rejects.toThrow();
   });
 });
