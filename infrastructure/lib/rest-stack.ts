@@ -1,17 +1,17 @@
 import * as core from 'aws-cdk-lib';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { AwsIntegration, LambdaIntegration, PassthroughBehavior, RestApi } from 'aws-cdk-lib/aws-apigateway';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
-import { StringParameter } from 'aws-cdk-lib/aws-ssm';
-import { Construct } from 'constructs';
-import openApi from '../data/openapi.json';
-import { convertPathList } from '../util/convertPathList';
-import { AwsIntegration, LambdaIntegration, PassthroughBehavior, RestApi } from 'aws-cdk-lib/aws-apigateway';
-import { Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Bucket, EventType, IBucket } from 'aws-cdk-lib/aws-s3';
 import { LambdaDestination } from 'aws-cdk-lib/aws-s3-notifications';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { Construct } from 'constructs';
 import { RUNTIME_VERSION } from '../constants/lambda';
+import openApi from '../data/openapi.json';
+import { convertPathList } from '../util/convertPathList';
 
 const bundling = {
   externalModules: ['@neondatabase/serverless', '@aws-sdk/client-s3', '/opt/nodejs/*'],
@@ -206,7 +206,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
     ];
 
     // 同じStack上でLayerVersionを作っていない場合、cdk synthで sam local 実行用のoutputを作るときにレイヤーを使うとエラーになる。
-    const layerSettings = !!process.env['CDK_SYNTH'] ? {} : { bundling, layers };
+    const layerSettings = process.env['CDK_SYNTH'] ? {} : { bundling, layers };
 
     return {
       runtime: RUNTIME_VERSION,

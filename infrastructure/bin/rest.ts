@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-/* eslint-disable turbo/no-undeclared-env-vars */
+
 import 'source-map-support/register';
-import * as dotenv from 'dotenv';
 import * as cdk from 'aws-cdk-lib';
+import * as dotenv from 'dotenv';
 import { KartaGraphRESTAPIStack } from '../lib/rest-stack';
 
 dotenv.config({ path: './.env.local' });

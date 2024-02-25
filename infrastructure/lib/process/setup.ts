@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as childProcess from 'child_process';
-import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as fs from 'fs-extra';
 
 const zodSchemaPath = '../prisma/dist';
 const nodeModulesPath = './bundle-node_modules';

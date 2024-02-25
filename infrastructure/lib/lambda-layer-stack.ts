@@ -1,9 +1,9 @@
 import { Aspects, Stack, StackProps, Tag, Tags } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { Construct } from 'constructs';
-import { COMMON_LAMBDA_LAYER_DIR, NODE_LAMBDA_LAYER_DIR } from './process/setup';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
+import { Construct } from 'constructs';
 import { RUNTIME_VERSION } from '../constants/lambda';
+import { COMMON_LAMBDA_LAYER_DIR, NODE_LAMBDA_LAYER_DIR } from './process/setup';
 
 interface LambdaLayersStackProps extends StackProps {
   ssmKey: string;
