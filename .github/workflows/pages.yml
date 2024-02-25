@@ -115,15 +115,12 @@ jobs:
       - name: OpenAPI Schema Modules
         run: npm  install
         working-directory: docs/openAPI
+
       - name: OPEN API Schema Build
         run: npm run build
         working-directory: docs/openAPI
 
-      # ドキュメント作成
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ${{ env.BUILD_PATH }}/dist
+
 
       # jest reports 作成 
       - name: Backend Unit Test Prepare
@@ -138,6 +135,14 @@ jobs:
         run: npm run test
         working-directory: backend
 
+      ########################################
+      # ドキュメント作成
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.BUILD_PATH }}/dist
+      ########################################
+      # デプロイ
   deploy:
     environment:
       name: github-pages
