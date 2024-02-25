@@ -130,6 +130,10 @@ jobs:
         run: npm install
         working-directory: backend
 
+      - name: Backend Unit Test Prepare Build Prisma Zod
+        run: npm install
+        working-directory: prisma
+
       - name: Backend Unit Test
         run: npm run test
         working-directory: backend
