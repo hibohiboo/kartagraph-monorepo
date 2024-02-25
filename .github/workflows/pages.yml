@@ -72,7 +72,7 @@ jobs:
       # #############
       # フロントエンド
       # storybook 準備
-      - name: Install dependencies
+      - name: Install dependencies ui
         run: npm install
         working-directory: packages/ui
 
@@ -92,7 +92,7 @@ jobs:
       # #############
       # # editor-ui #
       # エディタ用 storybook 準備
-      - name: Install dependencies
+      - name: Install dependencies editor-ui
         run: npm install
         working-directory: packages/editor-ui
 
