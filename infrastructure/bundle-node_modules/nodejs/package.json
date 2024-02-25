@@ -2,7 +2,6 @@
   "name": "@kartagraph/backend",
   "private": true,
   "version": "0.0.1",
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",

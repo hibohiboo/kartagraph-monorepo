@@ -1,6 +1,5 @@
 {
   "name": "@kartagraph/prisma-zod",
-  "type": "module",
   "scripts": {
     "bundle": "esbuild --bundle generated/zod/index.ts --outfile=dist/index.js --target=node20 --format=cjs",
     "generate": "prisma generate",
