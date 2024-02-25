@@ -7,6 +7,7 @@
 [カルタグラフ - app](https://d39tlgyf23zo7h.cloudfront.net/app/)  
 
 [openapi backend](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-openapi/)  
+[jest-report backend](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-backend/jest.html)  
 [jest-report packages/worker](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-worker/jest.html)  
 [storybook packages/ui](https://hibohiboo.github.io/kartagraph-monorepo/public/kartagraph-components/)  
 [jest-report editor](https://hibohiboo.github.io/kartagraph-monorepo/public/jest-reports-editor/jest.html)  
@@ -26,11 +27,10 @@ project-root/
 │   ├── bin/           (デプロイスクリプトやAWS CLIコマンド)
 │   ├── package.json   (デプロイ用npm scripts)
 │
-├── docs/                  (プロジェクト全体のドキュメント)
-│     ├── gameCore 
-│       ├── summary.md      (フロントエンドゲームロジックの仕様)
-│     ├── frontend.md       (フロントエンドの仕様)
-│     ├── backend.md        (バックエンドAPIの仕様)│
+├── docs/                 (プロジェクト全体のドキュメント)
+│     ├── design          (機能の仕様)
+│     ├── assets          (図)
+│     ├── openAPI         (バックエンドAPIの仕様)│
 ├── README.md             (プロジェクト全体の説明と導入ガイド)
 ├── package.json          (ルートの依存関係と設定)
 ├── packages

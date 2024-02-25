@@ -125,6 +125,15 @@ jobs:
         with:
           path: ${{ env.BUILD_PATH }}/dist
 
+      # jest reports 作成 
+      - name: Backend Unit Test Prepare
+        run: npm install
+        working-directory: backend
+
+      - name: Backend Unit Test
+        run: npm run test
+        working-directory: backend
+
   deploy:
     environment:
       name: github-pages
