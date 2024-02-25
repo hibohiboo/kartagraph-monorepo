@@ -102,11 +102,11 @@ jobs:
         working-directory: packages/editor-ui
       # # editor #
       # エディタ用jest reports 作成 
-      - name: Worker Unit Test Prepare
+      - name: Editor Unit Test Prepare
         run: npm install
         working-directory: editor
 
-      - name: Worker Unit Test
+      - name: Editor Unit Test
         run: npm run test
         working-directory: editor
       # #############
@@ -148,4 +148,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4
