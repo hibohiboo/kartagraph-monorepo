@@ -21,7 +21,6 @@
     "packages/*",
     "app",
     "editor",
-    "types",
-    "backend"
+    "types"
   ]
 }
