@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
+import { Fn } from 'aws-cdk-lib';
 import {
   CachePolicy,
-  OriginAccessIdentity,
   AllowedMethods,
   ViewerProtocolPolicy,
   CacheHeaderBehavior,
@@ -25,7 +25,6 @@ import { BlockPublicAccess, Bucket, BucketProps, HttpMethods, IBucket } from 'aw
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
-import { Fn } from 'aws-cdk-lib';
 interface DeployPaths {
   path: string;
   alias: string;
@@ -245,13 +244,35 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
   }
   private createAdditionalBehaviors(origin: IOrigin, props: Props, mediaBucket: Bucket): Record<string, BehaviorOptions> {
     const additionalBehaviors = {
-      [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
       'data/*': this.createAdditionBehaviorForData(origin, props),
-      '/assets/*': {
+      'add-data/*': {
         origin: new S3Origin(mediaBucket),
       },
+      [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
     };
     return additionalBehaviors;
+  }
+
+  private createAdditionBehaviorForAPIGW(props: Props): BehaviorOptions {
+    const restApiUrl = StringParameter.valueForStringParameter(this, props.ssmAPIGWUrlKey);
+    const apiEndPointUrlWithoutProtocol = Fn.select(1, Fn.split('://', restApiUrl));
+    const apiEndPointDomainName = Fn.select(0, Fn.split('/', apiEndPointUrlWithoutProtocol));
+    // accessControlAllowOrigins
+    const ret: BehaviorOptions = {
+      origin: new HttpOrigin(apiEndPointDomainName, {
+        customHeaders: { 'x-api-key': props.xAPIKey },
+      }),
+      allowedMethods: AllowedMethods.ALLOW_ALL,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      cachePolicy: new CachePolicy(this, `${props.distributionName}-rest-api-cache-policy`, {
+        cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
+        comment: 'CloudFront + ApiGateway用ポリシー',
+        defaultTtl: cdk.Duration.seconds(0),
+        maxTtl: cdk.Duration.seconds(10),
+        headerBehavior: CacheHeaderBehavior.allowList('x-api-key', 'content-type'),
+      }),
+    };
+    return ret;
   }
   private createAdditionBehaviorForData(origin: IOrigin, props: Props): BehaviorOptions {
     return {
@@ -267,29 +288,6 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       }),
     };
   }
-  private createAdditionBehaviorForAPIGW(props: Props): BehaviorOptions {
-    const restApiUrl = StringParameter.valueForStringParameter(this, props.ssmAPIGWUrlKey);
-    const apiEndPointUrlWithoutProtocol = Fn.select(1, Fn.split('://', restApiUrl));
-    const apiEndPointDomainName = Fn.select(0, Fn.split('/', apiEndPointUrlWithoutProtocol));
-    // accessControlAllowOrigins
-    const ret: BehaviorOptions = {
-      origin: new HttpOrigin(apiEndPointDomainName, {
-        customHeaders: { 'x-api-key': props.xAPIKey },
-      }),
-      allowedMethods: AllowedMethods.ALLOW_ALL,
-      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-
-      cachePolicy: new CachePolicy(this, `${props.distributionName}-rest-api-cache-policy`, {
-        cachePolicyName: `${props.distributionName}-rest-api-cache-policy`,
-        comment: 'CloudFront + ApiGateway用ポリシー',
-        defaultTtl: cdk.Duration.seconds(0),
-        maxTtl: cdk.Duration.seconds(10),
-        headerBehavior: CacheHeaderBehavior.allowList('x-api-key', 'content-type'),
-      }),
-    };
-    return ret;
-  }
-
   private deployS3(siteBucket: IBucket, distribution: IDistribution, sourcePath: string, bucketName: string, basepath: string) {
     new BucketDeployment(this, `${bucketName}-deploy-with-invalidation-${basepath}`, {
       sources: [Source.asset(sourcePath)],
