@@ -56,7 +56,7 @@ export class KartaGraphRESTAPIStack extends core.Stack {
       ssmKeyForLambdaLayerArn: props.ssmLambdaLayerKey,
       ssmKeyForLambdaCommonLayerArn: props.ssmLambdaCommonLayerKey,
       environment: { ...commonEnv },
-      timeoutSec: 30, // 外部エンドポイントを経由してJSONを処理するため3秒では足りない
+      timeoutSec: 5, // 外部エンドポイントを経由してJSONを処理するため3秒では足りない
     });
 
     // シナリオタグ永続化
