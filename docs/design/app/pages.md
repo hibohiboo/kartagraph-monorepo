@@ -16,8 +16,8 @@ URLによって表示するページを切り替える
 /|トップページ
 /tutorial|チュートリアル
 /scenario/|シナリオ一覧
-/scenario/${scenarioId}|シナリオプレイページ
-/scenario/${scenarioId}/result|シナリオプレイ結果表示ページ
+/scenario/${uid}/${scenarioId}|シナリオプレイページ
+/scenario/${uid}/${scenarioId}/result|シナリオプレイ結果表示ページ
 /agreement|利用規約
 /privacy-policy|プライバシーポリシー
 
