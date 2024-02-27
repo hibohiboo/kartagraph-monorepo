@@ -1,6 +1,5 @@
 import Layout from '@kartagraph-app/components/templates/Layout';
 import { basePath } from '@kartagraph-app/constants';
-import scenario from '@kartagraph-app/data/scenario.json';
 import { initReport } from '@kartagraph-app/domain/analytics/analyticsService';
 import ScenarioPage from '@kartagraph-app/pages/ScenarioPage';
 import TopPage from '@kartagraph-app/pages/TopPage';
@@ -46,19 +45,20 @@ export const router = createBrowserRouter(
               element: <ScenarioListPage />,
             },
             {
-              path: ':scenarioId',
+              path: ':uid/:scenarioId',
               index: true,
-              loader: async () => {
-                return JSON.stringify(scenario);
+              loader: async ({ params }) => {
+                await initMSW();
+                const data = await fetch(`/scenario/${params.uid}/${params.scenarioId}.json`);
+                const json = await data.json();
+                return JSON.stringify(json);
               },
               element: <ScenarioPage />,
             },
             {
               path: ':scenarioId/result',
               loader: async ({ params }) => {
-                const data = await fetch(
-                  `/v1/api/scenario/${params.scenarioId}/tags`,
-                );
+                const data = await fetch(`/v1/api/scenario/${params.scenarioId}/tags`);
                 const json = (await data.json()) as TagSummary[];
                 return json;
               },

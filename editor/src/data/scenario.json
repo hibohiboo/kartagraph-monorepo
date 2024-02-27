@@ -3,14 +3,14 @@
   "uid": "user-id",
   "firstSceneId": "scene1",
   "title": "シナリオテスト",
-  "src":"/images/backgrounds/adv_inn_2.png", 
+  "src":"images/backgrounds/adv_inn_2.png", 
   "summary":"テストサマリ", 
   "detail":"詳細",
   "scenes": [
     {
       "id": "scene1",
       "title": "冒険者の宿",
-      "backgroundImage": "/images/backgrounds/adv_inn_2.png",
+      "backgroundImage": "images/backgrounds/adv_inn_2.png",
       "eventId": "event1",
       "events": [
         {
@@ -18,7 +18,7 @@
           "type": "message",
           "data": {
             "text": "「おはよう！\n今日もがんばろー」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "event1-2"
         },
@@ -37,7 +37,7 @@
               "「あなたもお仕事ご苦労様です」",
               "「行ってらっしゃい！」"
             ],
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           }
         },
         {
@@ -55,7 +55,7 @@
           "type": "message",
           "data": {
             "text": "「お湯加減いかがでしたか」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "よかったよ"
         },
@@ -64,7 +64,7 @@
           "type": "message",
           "data": {
             "text": "「よかった？ まんぞくいただけたようでうれしいです」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "end"
         },
@@ -83,7 +83,7 @@
           "type": "message",
           "data": {
             "text": "「揚げじゃがいっぱい食べたね。おかわり要る？」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "end"
         },
@@ -92,7 +92,7 @@
           "type": "message",
           "data": {
             "text": "「お風呂？ご飯？」",
-            "image": "/images/characters/recept/laugh.png",
+            "image": "images/characters/recept/laugh.png",
             "select": [
               {
                 "label": "お風呂",
@@ -111,7 +111,7 @@
           "type": "message",
           "data": {
             "text": "「はい、バスタオル！」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "addHuroTag"
         },
@@ -127,7 +127,7 @@
           "type": "message",
           "data": {
             "text": "「今日は揚げじゃがだよ！」",
-            "image": "/images/characters/recept/laugh.png"
+            "image": "images/characters/recept/laugh.png"
           },
           "next": "addGohanTag"
         },
@@ -154,14 +154,14 @@
       "cards": [
         {
           "name": "宿の娘",
-          "src": "/images/characters/recept/laugh.png",
+          "src": "images/characters/recept/laugh.png",
           "x": 100,
           "y": 50,
           "clickEventId": "click1"
         },
         {
           "name": "扉",
-          "src": "/images/door.png",
+          "src": "images/door.png",
           "x": 400,
           "y": 200,
           "clickEventId": "goodbye"
@@ -171,7 +171,7 @@
     {
       "id": "scene2",
       "title": "最初の街",
-      "backgroundImage": "/images/backgrounds/town.png",
+      "backgroundImage": "images/backgrounds/town.png",
       "eventId": "event1",
       "events": [
         {
@@ -185,7 +185,7 @@
       "cards": [
         {
           "name": "冒険者の宿",
-          "src": "/images/adv_inn_74x94.png",
+          "src": "images/adv_inn_74x94.png",
           "x": 100,
           "y": 50,
           "clickEventId": "toInn"

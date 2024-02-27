@@ -1,20 +1,32 @@
 [
   {
-    "id": "7d8bb386-0f86-4dff-be34-86bb2f55b366",
-    "title": "ゴブリンの洞窟",
-    "src": "images/adv_inn_74x94.png",
-    "summary": "紹介文",
-    "detail": "作者：hibo",
-    "created": "2017-07-21T17:32:28Z",
-    "updated": "2017-07-21T17:32:28Z"
+      "id": "a9ff348b-8a64-4dae-b658-c05ac44413fa",
+      "title": "シナリオテスト",
+      "src": "/images/backgrounds/adv_inn_2.png",
+      "summary": "テストサマリ",
+      "detail": "詳細",
+      "s3_key": "scenario/user-id/a9ff348b-8a64-4dae-b658-c05ac44413fa.json",
+      "created": "2024-02-22T13:04:04.905Z",
+      "updated": "2024-02-27T15:46:50.591Z"
   },
   {
-    "id": "7d8bb386-0f86-4dff-be34-86bb2f55b367",
-    "title": "冒険者ギルドの登録",
-    "src": "タイトル画像のURL",
-    "summary": "紹介文",
-    "detail": "作者：hibo",
-    "created": "2017-07-20T17:32:28Z",
-    "updated": "2017-07-20T17:32:28Z"
+      "id": "a9ff348b-8a64-4dae-b658-c05ac44413f1",
+      "title": "title",
+      "src": "src",
+      "summary": "summary",
+      "detail": "detail",
+      "s3_key": "s3_key",
+      "created": "2024-02-22T13:04:24.641Z",
+      "updated": "2024-02-22T13:04:29.452Z"
+  },
+  {
+      "id": "7d8bb386-0f86-4dff-be34-86bb2f55b366",
+      "title": "薬草採取依頼",
+      "src": "images/adv_inn_74x94.png",
+      "summary": "薬草を10本納品してください",
+      "detail": "作者: ひぼ \n\n仕様素材: \nbing\nStable Diffusion\n",
+      "s3_key": "test.json",
+      "created": "2024-02-15T12:53:46.294Z",
+      "updated": "2024-02-15T12:53:46.294Z"
   }
 ]

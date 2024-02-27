@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { HttpResponse, http } from 'msw';
 import scenarioList from './responses/scenario/list.json';
+import scenario from './responses/scenario/scenario.json';
 import { tagsSample } from './responses/scenario/tags';
-
 const headers = {
   'Content-Type': 'application/json',
 };
@@ -17,6 +17,12 @@ export const handlers = [
     const { scenarioId } = params;
     const ret = tagsSample(scenarioId as string);
     return new HttpResponse(JSON.stringify(ret), {
+      status: 200,
+      headers,
+    });
+  }),
+  http.get('/scenario/:uid/:scenarioId', () => {
+    return new HttpResponse(JSON.stringify(scenario), {
       status: 200,
       headers,
     });
