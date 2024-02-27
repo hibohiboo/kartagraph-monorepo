@@ -254,6 +254,9 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
       'add-data/*': {
         origin: mediaOrigin,
       },
+      'scenario/*': {
+        origin: mediaOrigin,
+      },
       [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
     };
     return additionalBehaviors;
