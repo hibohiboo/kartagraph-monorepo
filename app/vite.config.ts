@@ -9,6 +9,7 @@ dotenv.config({ path: './.env.local' });
 export default defineConfig({
   plugins: [react()],
   base: `/${process.env.SUB_DIR_PATH_BUILDER}/`,
+  build: { target: 'esnext' },
   define: {
     VITE_DEFINE_BASE_PATH: JSON.stringify(process.env.SUB_DIR_PATH_BUILDER),
   },
