@@ -3,9 +3,9 @@
     "private": true,
     "version": "0.0.0",
     "devDependencies": {
-        "@types/node": "^20.11.20",
-        "npm-check-updates": "^16.14.15",
-        "typescript": "^5.3.3"
+        "@types/node": "^20.11.30",
+        "npm-check-updates": "^16.14.17",
+        "typescript": "^5.4.3"
     },
     "scripts": {
         "ncu": "ncu -u"
