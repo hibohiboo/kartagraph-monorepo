@@ -9,7 +9,6 @@ dotenv.config({ path: './.env.local' });
 export default defineConfig({
   plugins: [react()],
   base: `/${process.env.SUB_DIR_PATH_BUILDER}/`,
-  build: { target: 'esnext' },
   define: {
     VITE_DEFINE_BASE_PATH: JSON.stringify(process.env.SUB_DIR_PATH_BUILDER),
     VITE_APP_FIREBASE_API_KEY: JSON.stringify(process.env.VITE_APP_FIREBASE_API_KEY),
@@ -36,6 +35,7 @@ export default defineConfig({
     ],
   },
   build: {
+    target: 'esnext',
     chunkSizeWarningLimit: 550, // blueprintが538.09 kBあるため、デフォルトの500kBを超えてしまう
     rollupOptions: {
       output: {
