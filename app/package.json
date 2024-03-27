@@ -12,7 +12,7 @@
     "postncu": "msw init"
   },
   "dependencies": {
-    "@tanstack/query-core": "^5.28.8",
+    "@tanstack/query-core": "^5.28.9",
     "firebase": "^10.9.0",
     "jotai": "^2.7.1",
     "jotai-tanstack-query": "^0.8.5",
@@ -28,12 +28,12 @@
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
-    "@types/react": "^18.2.70",
+    "@types/react": "^18.2.72",
     "@types/react-dom": "^18.2.22",
     "@types/react-slick": "^0.23.13",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "dotenv": "^16.4.5",
-    "msw": "^2.2.10",
+    "msw": "^2.2.12",
     "vite": "^5.2.6"
   },
   "msw": {

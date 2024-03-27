@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "@apiture/openapi-down-convert": "^0.13.0",
-    "@redocly/cli": "1.10.5"
+    "@redocly/cli": "1.10.6"
   },
   "private": true,
   "scripts": {
@@ -16,6 +16,6 @@
     "build": "redocly build-docs core@v1 --disableGoogleFont -o ../../dist/public/kartagraph-openapi/index.html"
   },
   "devDependencies": {
-    "npm-check-updates": "^16.14.17"
+    "npm-check-updates": "^16.14.18"
   }
 }

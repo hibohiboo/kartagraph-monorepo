@@ -32,7 +32,7 @@
     "@storybook/testing-library": "^0.2.2",
     "@types/dompurify": "^3.0.5",
     "@vitejs/plugin-react-swc": "^3.6.0",
-    "npm-check-updates": "^16.14.17",
+    "npm-check-updates": "^16.14.18",
     "storybook": "^8.0.4"
   },
   "exports": {

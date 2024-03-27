@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "devDependencies": {
         "@types/node": "^20.11.30",
-        "npm-check-updates": "^16.14.17",
+        "npm-check-updates": "^16.14.18",
         "typescript": "^5.4.3"
     },
     "scripts": {
