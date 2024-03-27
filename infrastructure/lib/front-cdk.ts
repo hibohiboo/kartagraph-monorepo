@@ -130,41 +130,17 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     });
   }
   private createCloudFront(bucket: Bucket, oac: CfnOriginAccessControl, props: Props, mediaBucket: Bucket) {
-    const { defaultCachePolicyName, distributionName } = props;
-    const defaultPolicyOption = {
-      cachePolicyName: defaultCachePolicyName,
-      comment: defaultPolicyOptionComment,
-      enableAcceptEncodingGzip: true,
-      enableAcceptEncodingBrotli: true,
-    };
-    const myCachePolicy = new CachePolicy(this, defaultCachePolicyName, defaultPolicyOption);
+    const { distributionName } = props;
 
     const origin = new S3Origin(bucket);
-
-    const spaRoutingFunction = new Function(this, 'SpaRoutingFunction', {
-      functionName: props.functionName,
-      // 拡張子が含まれないURLはSPAファイルにリダイレクト
-      code: FunctionCode.fromInline(functionCode),
-    });
-
-    const responseHeadersPolicy = this.createResponseHeadersPolicy();
-    const additionalBehaviors = this.createAdditionalBehaviors(origin, props, mediaBucket);
+    const mediaOrigin = new S3Origin(mediaBucket);
+    const defaultBehavior = this.createDefaultBehavior(origin, props);
+    const additionalBehaviors = this.createAdditionalBehaviors(origin, props, mediaOrigin);
     const d = new Distribution(this, distributionName, {
       comment: distributionComment,
       defaultRootObject: '/index.html',
       priceClass: PriceClass.PRICE_CLASS_200,
-      defaultBehavior: {
-        origin,
-        cachePolicy: myCachePolicy,
-        viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        responseHeadersPolicy,
-        functionAssociations: [
-          {
-            eventType: FunctionEventType.VIEWER_REQUEST,
-            function: spaRoutingFunction,
-          },
-        ],
-      },
+      defaultBehavior,
       additionalBehaviors,
     });
     cdk.Tags.of(d).add('Service', 'Cloud Front');
@@ -172,6 +148,36 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     this.settindDestribution(d, [bucket, mediaBucket], oac);
 
     return d;
+  }
+
+  private createDefaultBehavior(origin: IOrigin, props: Props) {
+    const { defaultCachePolicyName } = props;
+    const defaultPolicyOption = {
+      cachePolicyName: defaultCachePolicyName,
+      comment: defaultPolicyOptionComment,
+      enableAcceptEncodingGzip: true,
+      enableAcceptEncodingBrotli: true,
+    };
+    const myCachePolicy = new CachePolicy(this, defaultCachePolicyName, defaultPolicyOption);
+    const responseHeadersPolicy = this.createResponseHeadersPolicy();
+    const spaRoutingFunction = new Function(this, 'SpaRoutingFunction', {
+      functionName: props.functionName,
+      // 拡張子が含まれないURLはSPAファイルにリダイレクト
+      code: FunctionCode.fromInline(functionCode),
+    });
+
+    return {
+      origin,
+      cachePolicy: myCachePolicy,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      responseHeadersPolicy,
+      functionAssociations: [
+        {
+          eventType: FunctionEventType.VIEWER_REQUEST,
+          function: spaRoutingFunction,
+        },
+      ],
+    };
   }
 
   private settindDestribution(d: Distribution, buckets: Bucket[], oac: CfnOriginAccessControl) {
@@ -242,11 +248,14 @@ export class KartaGraphFrontCdkStack extends cdk.Stack {
     });
     return responseHeadersPolicy;
   }
-  private createAdditionalBehaviors(origin: IOrigin, props: Props, mediaBucket: Bucket): Record<string, BehaviorOptions> {
+  private createAdditionalBehaviors(origin: IOrigin, props: Props, mediaOrigin: IOrigin): Record<string, BehaviorOptions> {
     const additionalBehaviors = {
       'data/*': this.createAdditionBehaviorForData(origin, props),
       'add-data/*': {
-        origin: new S3Origin(mediaBucket),
+        origin: mediaOrigin,
+      },
+      'scenario/*': {
+        origin: mediaOrigin,
       },
       [`${props.apiVersion}/*`]: this.createAdditionBehaviorForAPIGW(props),
     };

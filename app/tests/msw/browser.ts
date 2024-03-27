@@ -5,7 +5,7 @@ import { handlers } from './handlers';
 export const initMSW = async () => {
   if (import.meta.env.DEV) {
     const worker = setupWorker(...handlers);
-    worker.start({
+    await worker.start({
       serviceWorker: {
         url: `/${basePath}/mockServiceWorker.js`,
       },

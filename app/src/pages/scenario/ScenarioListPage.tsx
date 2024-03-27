@@ -25,11 +25,15 @@ function ScenarioListPage() {
     color: 'black',
     margin: 'auto',
   } as const;
-  const scenarioItems = data.map((item) => (
-    <Link key={item.id} to={`/scenario/${item.id}/`}>
-      <ScenarioListItem {...item} src={getSrc(`/${item.src}`)} />
-    </Link>
-  ));
+
+  const scenarioItems = data.map((item) => {
+    const [, uid] = item.s3_key.replace('.json', '').split('/');
+    return (
+      <Link key={item.id} to={`/scenario/${uid}/${item.id}/`}>
+        <ScenarioListItem {...item} src={getSrc(`/${item.src}`)} />
+      </Link>
+    );
+  });
   // データが１つだけのときにカルーセルを表示するとエラーになるので、その場合は1つだけの表示にする
   if (data.length === 1) {
     return <div style={wrapperStyle}>{scenarioItems}</div>;
