@@ -29,9 +29,7 @@ export const router = createBrowserRouter(
         {
           path: '/scenario/:scenarioId/result',
           loader: async ({ params }) => {
-            const data = await fetch(
-              `/v1/api/scenario/${params.scenarioId}/tags`,
-            );
+            const data = await fetch(`/v1/api/scenario/${params.scenarioId}/tags`);
             const json = (await data.json()) as TagSummary[];
             return json;
           },
