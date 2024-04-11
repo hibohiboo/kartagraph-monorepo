@@ -91,7 +91,7 @@ jobs:
         working-directory: packages/worker
 
       # config-inspecto ビルド -> dist の publicフォルダ内にコピー
-      - name: Build Sample Storybook
+      - name: Build ESLint Config Inspector
         run: npm run build
         working-directory: packages/eslint-config-custom
 
@@ -141,7 +141,7 @@ jobs:
 
       ########################################
       # ドキュメントトップページ作成
-      - name: OpenAPI Schema Modules
+      - name: Copy Top Page
         run: cp ./index.html ../../dist/
         working-directory: docs/assets
 
