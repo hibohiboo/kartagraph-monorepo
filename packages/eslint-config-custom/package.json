@@ -18,7 +18,7 @@
   },
   "scripts": {
     "inspect": "npx @eslint/config-inspector",
-    "build": "npx @eslint/config-inspector build && sed -i \"s|/_nuxt|_nuxt|g\" .eslint-config-inspector/index.html && sed -i \"s|baseURL:\\\"/\\\"|baseURL:'/public/eslint-config-inspector/'|g\" .eslint-config-inspector/index.html &&  rm -rf ../../dist/public/eslint-config-inspector && cp -r .eslint-config-inspector ../../dist/public/eslint-config-inspector",
+    "build": "npx @eslint/config-inspector build && rm -rf ../../dist/_nuxt && rm -rf ../../dist/api && rm -rf ../../dist/public/eslint-config-inspector && cp -r .eslint-config-inspector ../../dist/public/eslint-config-inspector && cp -r .eslint-config-inspector/_nuxt ../../dist/public/ && cp -r .eslint-config-inspector/api ../../dist/public/",
     "ncu": "ncu -u"
   }
 }
