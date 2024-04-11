@@ -18,7 +18,7 @@
   },
   "scripts": {
     "inspect": "npx @eslint/config-inspector",
-    "build": "npx @eslint/config-inspector build && sed -i \"s|<head><meta|<head><base href='https://hibohiboo.github.io/kartagraph-monorepo/public/eslint-config-inspector/' /><meta|g\" .eslint-config-inspector/index.html && rm -rf ../../dist/public/eslint-config-inspector && cp -r .eslint-config-inspector ../../dist/public/eslint-config-inspector",
+    "build": "npx @eslint/config-inspector build && sed -i \"s|/_nuxt|_nuxt|g\" .eslint-config-inspector/index.html && rm -rf ../../dist/public/eslint-config-inspector && cp -r .eslint-config-inspector ../../dist/public/eslint-config-inspector",
     "ncu": "ncu -u"
   }
 }
