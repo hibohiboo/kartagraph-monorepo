@@ -8,13 +8,15 @@
     "typescript",
     "typescriptreact"
   ],
+  "eslint.useFlatConfig": true,
+  "eslint.useESLintClass": true,
   "files.eol": "\n",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
   "editor.tabSize": 2,
   "editor.tabCompletion": "on",
-  // "editor.formatOnSave": true,
+  "editor.formatOnSave": true,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
@@ -23,7 +25,6 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
   },
-  "eslint.useESLintClass": true,
   // デフォルトの設定はオフにしておく
   "typescript.format.enable": false,
   "javascript.format.enable": false,
