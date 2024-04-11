@@ -18,6 +18,7 @@
   },
   "scripts": {
     "inspect": "npx @eslint/config-inspector",
+    "build": "npx @eslint/config-inspector build && rm -rf ../../dist/public/eslint-config-inspector&& cp -r .eslint-config-inspector ../../dist/public/eslint-config-inspector",
     "ncu": "ncu -u"
   }
 }

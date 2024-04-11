@@ -27,11 +27,11 @@ permissions:
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: 'pages'
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "." # default value when not using subfolders
+  BUILD_PATH: '.' # default value when not using subfolders
   # BUILD_PATH: subfolder
 
 jobs:
@@ -61,7 +61,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/package-lock.json
       - name: Setup Pages
@@ -81,7 +81,7 @@ jobs:
         run: npm run build-storybook
         working-directory: packages/ui
 
-      # jest reports 作成 
+      # jest reports 作成
       - name: Worker Unit Test Prepare
         run: npm install
         working-directory: packages/worker
@@ -89,6 +89,12 @@ jobs:
       - name: Worker Unit Test
         run: npm run test
         working-directory: packages/worker
+
+      # config-inspecto ビルド -> dist の publicフォルダ内にコピー
+      - name: Build Sample Storybook
+        run: npm run build
+        working-directory: packages/eslint-config-custom
+
       # #############
       # # editor-ui #
       # エディタ用 storybook 準備
@@ -101,7 +107,7 @@ jobs:
         run: npm run build-storybook
         working-directory: packages/editor-ui
       # # editor #
-      # エディタ用jest reports 作成 
+      # エディタ用jest reports 作成
       - name: Editor Unit Test Prepare
         run: npm install
         working-directory: editor
@@ -120,9 +126,7 @@ jobs:
         run: npm run build
         working-directory: docs/openAPI
 
-
-
-      # jest reports 作成 
+      # jest reports 作成
       - name: Backend Unit Test Prepare
         run: npm install
         working-directory: backend
@@ -134,6 +138,12 @@ jobs:
       - name: Backend Unit Test
         run: npm run test
         working-directory: backend
+
+      ########################################
+      # ドキュメントトップページ作成
+      - name: OpenAPI Schema Modules
+        run: cp ./index.html ../../dist/public/
+        working-directory: docs/assets
 
       ########################################
       # ドキュメント作成
