@@ -142,7 +142,7 @@ jobs:
       ########################################
       # ドキュメントトップページ作成
       - name: OpenAPI Schema Modules
-        run: cp ./index.html ../../dist/public/
+        run: cp ./index.html ../../dist/
         working-directory: docs/assets
 
       ########################################
