@@ -8,8 +8,8 @@ import { BsFilePlay } from 'react-icons/bs';
 import { CgListTree } from 'react-icons/cg';
 import { FaFileImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
-import { TbArrowBigRightLinesFilled } from 'react-icons/tb';
-import { TbArrowBigRightFilled } from 'react-icons/tb';
+import { TbArrowBigRightLines } from 'react-icons/tb';
+import { TbArrowBigRight } from 'react-icons/tb';
 import { ConvertedSceneEvent } from '../type';
 import ConvertedEventItem from './ConvertedEventItem';
 
@@ -117,10 +117,7 @@ function SelectEventItem({ event }: { event: SelectEvent }) {
         {event.data.select.map(({ label, next }, i) => (
           <li key={`${label}-${i}`}>
             <IconWithText icon={<CgListTree />} text={'分岐'} />
-            <IconWithText
-              icon={<TbArrowBigRightFilled title={label} />}
-              text={`【${label}】`}
-            />
+            <IconWithText icon={<TbArrowBigRight title={label} />} text={`【${label}】`} />
             {next && (
               <div style={indentStyle}>
                 <ConvertedEventItem event={next} />
@@ -136,10 +133,7 @@ function BranchEventItem({ event }: { event: BranchEvent }) {
   return (
     <span style={{ display: 'inline-flex' }}>
       <IconWithText icon={<CgListTree />} text={'分岐'} />
-      <IconWithText
-        icon={<BiPurchaseTag title={event.data.condition} />}
-        text={`【${event.data.tag}】を所持`}
-      />
+      <IconWithText icon={<BiPurchaseTag title={event.data.condition} />} text={`【${event.data.tag}】を所持`} />
     </span>
   );
 }
@@ -148,7 +142,7 @@ function NamedEventItem({ event }: { event: NamedEvent }) {
     <IconWithText
       icon={
         <>
-          <TbArrowBigRightLinesFilled title={event.id} />
+          <TbArrowBigRightLines title={event.id} />
           <BsFilePlay />
         </>
       }
@@ -156,11 +150,7 @@ function NamedEventItem({ event }: { event: NamedEvent }) {
     />
   );
 }
-export function HierarchyTreeEventItem({
-  event,
-}: {
-  event: ConvertedSceneEvent;
-}) {
+export function HierarchyTreeEventItem({ event }: { event: ConvertedSceneEvent }) {
   if (isNamedEvent(event)) {
     return <NamedEventItem event={event} />;
   } else if (isSelectEvent(event)) {
@@ -172,21 +162,11 @@ export function HierarchyTreeEventItem({
   } else if (isBranchEvent(event)) {
     return <BranchEventItem event={event} />;
   } else if (isAddTagsEvent(event)) {
-    return (
-      <IconWithText
-        icon={<BiPurchaseTag />}
-        text={`【${event.data.name}】を追加`}
-      />
-    );
+    return <IconWithText icon={<BiPurchaseTag />} text={`【${event.data.name}】を追加`} />;
   } else if (isEndScenarioEvent(event)) {
     return <IconWithText icon={<GiStabbedNote />} text={event.type} />;
   } else if (isChangeSceneEvent(event)) {
-    return (
-      <IconWithText
-        icon={<FaFileImage />}
-        text={`シーン切替: 【${event.data.title}】`}
-      />
-    );
+    return <IconWithText icon={<FaFileImage />} text={`シーン切替: 【${event.data.title}】`} />;
   }
   return <IconWithText icon={<BsFilePlay />} text={event.type} />;
 }

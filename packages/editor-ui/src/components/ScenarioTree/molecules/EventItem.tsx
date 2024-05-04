@@ -5,7 +5,7 @@ import { BsFilePlay } from 'react-icons/bs';
 import { CgListTree } from 'react-icons/cg';
 import { FaFileImage } from 'react-icons/fa6';
 import { GiStabbedNote } from 'react-icons/gi';
-import { TbArrowBigRightLinesFilled } from 'react-icons/tb';
+import { TbArrowBigRightLines } from 'react-icons/tb';
 import { EllipsisText } from '../atoms/EllipsisText';
 import { IconWithText } from '../atoms/IconWithText';
 import { indentStyle } from '../constants';
@@ -113,10 +113,7 @@ function SelectEventItem({ event }: { event: SelectEvent }) {
         {event.data.select.map(({ label }, i) => (
           <li key={`${label}-${i}`}>
             <IconWithText icon={<CgListTree />} text={'分岐'} />
-            <IconWithText
-              icon={<TbArrowBigRightLinesFilled title={label} />}
-              text={`【${label}】`}
-            />
+            <IconWithText icon={<TbArrowBigRightLines title={label} />} text={`【${label}】`} />
           </li>
         ))}
       </ul>
@@ -127,10 +124,7 @@ function BranchEventItem({ event }: { event: BranchEvent }) {
   return (
     <span style={{ display: 'inline-flex' }}>
       <IconWithText icon={<CgListTree />} text={'分岐'} />
-      <IconWithText
-        icon={<BiPurchaseTag title={event.data.condition} />}
-        text={`【${event.data.tag}】を所持`}
-      />
+      <IconWithText icon={<BiPurchaseTag title={event.data.condition} />} text={`【${event.data.tag}】を所持`} />
     </span>
   );
 }
@@ -144,12 +138,7 @@ export function EventItem({ event }: { event: SceneEvent }) {
   } else if (isBranchEvent(event)) {
     return <BranchEventItem event={event} />;
   } else if (isAddTagsEvent(event)) {
-    return (
-      <IconWithText
-        icon={<BiPurchaseTag />}
-        text={`【${event.data.name}】を追加`}
-      />
-    );
+    return <IconWithText icon={<BiPurchaseTag />} text={`【${event.data.name}】を追加`} />;
   } else if (isEndScenarioEvent(event)) {
     return <IconWithText icon={<GiStabbedNote />} text={event.type} />;
   } else if (isChangeSceneEvent(event)) {
