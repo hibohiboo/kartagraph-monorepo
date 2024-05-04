@@ -12,14 +12,14 @@ export default tseslint.config({
     'import/order': [
       'warn',
       {
-        groups: [ 'builtin','external','internal','parent','sibling','index','object','type' ], // importの並び順の設定
+        groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'], // importの並び順の設定
         pathGroupsExcludedImportTypes: ['builtin'],
-        pathGroups: [ { pattern: '@src/**', group: 'parent', position: 'before' } ], // エイリアスの位置を指定
+        pathGroups: [{ pattern: '@src/**', group: 'parent', position: 'before' }], // エイリアスの位置を指定
         alphabetize: { order: 'asc' }, // グループ内のソート順
       },
     ],
   },
   linterOptions: {
-    reportUnusedDisableDirectives: "off"
-  }
+    reportUnusedDisableDirectives: 'off',
+  },
 });

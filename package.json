@@ -11,10 +11,9 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^9.0.0",
-    "npm-check-updates": "^16.14.18",
+    "npm-check-updates": "^16.14.20",
     "prettier": "^3.2.5",
-    "turbo": "^1.13.2"
+    "turbo": "^1.13.3"
   },
   "packageManager": "npm@10.5.2",
   "workspaces": [

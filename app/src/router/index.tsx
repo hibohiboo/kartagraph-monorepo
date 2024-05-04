@@ -2,8 +2,6 @@ import Layout from '@kartagraph-app/components/templates/Layout';
 import { basePath } from '@kartagraph-app/constants';
 import { initReport } from '@kartagraph-app/domain/analytics/analyticsService';
 import ScenarioPage from '@kartagraph-app/pages/ScenarioPage';
-import TopPage from '@kartagraph-app/pages/TopPage';
-import TutorialPage from '@kartagraph-app/pages/TutorialPage';
 import ScenarioListPage from '@kartagraph-app/pages/scenario/ScenarioListPage';
 import ScenarioResultPage from '@kartagraph-app/pages/scenario/ScenarioResultPage';
 import { initUserIdAtom } from '@kartagraph-app/store/auth/authAtom';
@@ -27,14 +25,6 @@ export const createRouter = () =>
         },
         element: <Layout />,
         children: [
-          {
-            index: true,
-            element: <TopPage />,
-          },
-          {
-            path: 'tutorial',
-            element: <TutorialPage />,
-          },
           {
             path: 'scenario',
             element: <RootLayout />,
