@@ -22,4 +22,6 @@ export default tseslint.config({
   linterOptions: {
     reportUnusedDisableDirectives: 'off',
   },
+  // 複雑度の設定
+  complexity: ['error', 20],
 });
