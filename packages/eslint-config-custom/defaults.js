@@ -18,10 +18,10 @@ export default tseslint.config({
         alphabetize: { order: 'asc' }, // グループ内のソート順
       },
     ],
+    // 複雑度の設定
+    complexity: ['error', 10],
   },
   linterOptions: {
     reportUnusedDisableDirectives: 'off',
   },
-  // 複雑度の設定
-  complexity: ['error', 20],
 });
