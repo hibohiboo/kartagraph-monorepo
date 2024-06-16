@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import styles from './BaseWrapper.module.css';
 
-export default forwardRef<
+const BaseWrapper = forwardRef<
   HTMLDivElement,
   {
     children: React.ReactNode;
@@ -15,3 +15,5 @@ export default forwardRef<
     </div>
   );
 });
+
+export default BaseWrapper;
