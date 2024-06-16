@@ -3,7 +3,7 @@
     "private": true,
     "version": "0.0.0",
     "devDependencies": {
-        "@types/node": "^20.12.11",
+        "@types/node": "^20.14.2",
         "npm-check-updates": "^16.14.20",
         "typescript": "^5.4.5"
     },

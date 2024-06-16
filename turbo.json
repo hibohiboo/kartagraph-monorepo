@@ -1,10 +1,9 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDotEnv": [".env"],
-  "pipeline": {
-    "ncu":{},
+  "globalDependencies": [".env"],
+  "tasks": {
+    "ncu": {},
     "dev": {},
-    "build": { "dependsOn": ["^build"],
-    "outputs": ["dist", ".next/**", "!.next/cache/**"] }
+    "build": { "dependsOn": ["^build"], "outputs": ["dist", ".next/**", "!.next/cache/**"] }
   }
 }
