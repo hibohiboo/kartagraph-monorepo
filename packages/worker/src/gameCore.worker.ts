@@ -1,4 +1,4 @@
-import init, { console_log, return_js_value } from '../pkg/test_wasm';
+import init, { console_log, return_js_value, return_new_monster } from '../pkg/test_wasm';
 import { createResult } from './domain/createResult';
 import { GameCoreWorkerMessage } from './types';
 
@@ -11,7 +11,8 @@ self.addEventListener('message', (event: MessageEvent<GameCoreWorkerMessage>) =>
   console_log('test from rust worker');
   const wasmRet = return_js_value();
   console.log(wasmRet);
-
+  const monster = return_new_monster({ name: 'test', value: 'てすと' });
+  console.log('monster', monster);
   self.postMessage(ret);
 });
 
