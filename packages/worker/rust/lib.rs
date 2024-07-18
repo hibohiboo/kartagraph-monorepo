@@ -9,3 +9,7 @@ extern "C" {
 pub fn console_log(message: &str) {
   log(message)
 }
+#[wasm_bindgen]
+pub fn return_js_value() -> JsValue {
+  JsValue::NULL
+}
