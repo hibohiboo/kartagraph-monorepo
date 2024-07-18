@@ -1,0 +1,43 @@
+# You must change these to your own details.
+[package]
+authors = ["You <you@example.com>"]
+categories = ["wasm"]
+description = "My super awesome Rust, WebAssembly, and Webpack project!"
+edition = "2021"
+name = "test_wasm"
+readme = "README.md"
+version = "0.1.0"
+
+[lib]
+crate-type = ["cdylib"]
+path = "rust/lib.rs"
+
+[profile.release]
+lto = true
+
+[features]
+
+[dependencies]
+anyhow = "1.0.86"
+async-trait = "0.1.81"
+console_error_panic_hook = "0.1.7"
+futures = "0.3.30"
+getrandom = {version = "0.2.15", features = ["js"]}
+gloo-utils = {version = "0.2.0", features = ["serde"]}
+js-sys = "0.3.69"
+rand = "0.8.5"
+serde = {version = "1.0.203", features = ["derive"]}
+wasm-bindgen = {version = "0.2.92", features = []}
+wasm-bindgen-futures = "0.4.42"
+wee_alloc = {version = "0.4.5", optional = true}
+
+# The `web-sys` crate allows you to interact with the various browser APIs,
+# like the DOM.
+[dependencies.web-sys]
+features = ["console", "Worker"]
+version = "0.3.69"
+
+# These crates are used for running unit tests.
+[dev-dependencies]
+js-sys = "0.3.69"
+wasm-bindgen-test = "0.3.42"

@@ -1,33 +1,17 @@
-import { ResponseEventType } from '@kartagraph-worker/types';
-import {
-  getCurrentEvent,
-  getCurrentUserId,
-  getScenario,
-  getTags,
-  selectEvent,
-  selectTargetScene,
-  setTag,
-} from '../store';
+import { ResponseEventType, SceneEvent } from '@kartagraph-worker/types';
+import { getCurrentEvent, getCurrentUserId, getScenario, getTags, selectEvent, selectTargetScene, setTag } from '../store';
 import { trigger } from './trigger';
 import type { TagHistory } from '@kartagraph-types/index';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const next = (): { command: ResponseEventType; payload?: any } => {
-  const currentEvent = getCurrentEvent();
-  if (currentEvent?.next == null) return { command: 'wait' };
-  const nextEvent = selectEvent(currentEvent.next);
-  if (nextEvent == null) return { command: 'wait' };
+const getRetWithType = (nextEvent: SceneEvent): { command: ResponseEventType; payload?: any } | null => {
   if (nextEvent.type === 'addTag') {
     setTag(nextEvent.data.name);
     return next();
   }
   if (nextEvent.type === 'branch') {
-    if (nextEvent.data.condition == null)
-      throw new Error('branch event must have conditions');
-    if (
-      nextEvent.data.condition === 'hasTag' &&
-      getTags().includes(nextEvent.data.tag)
-    ) {
+    if (nextEvent.data.condition == null) throw new Error('branch event must have conditions');
+    if (nextEvent.data.condition === 'hasTag' && getTags().includes(nextEvent.data.tag)) {
       return trigger(nextEvent.data.next);
     }
     return next();
@@ -53,6 +37,16 @@ export const next = (): { command: ResponseEventType; payload?: any } => {
     const payload = { scenarioId };
     return { command: 'endScenario', payload };
   }
+  return null;
+};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const next = (): { command: ResponseEventType; payload?: any } => {
+  const currentEvent = getCurrentEvent();
+  if (currentEvent?.next == null) return { command: 'wait' };
+  const nextEvent = selectEvent(currentEvent.next);
+  if (nextEvent == null) return { command: 'wait' };
+  const ret = getRetWithType(nextEvent);
+  if (ret != null) return ret;
 
   return { command: nextEvent.type, payload: nextEvent.data };
 };

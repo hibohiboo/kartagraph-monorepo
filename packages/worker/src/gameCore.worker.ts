@@ -1,13 +1,16 @@
+import init, { console_log } from '../pkg/test_wasm';
 import { createResult } from './domain/createResult';
 import { GameCoreWorkerMessage } from './types';
 
-self.addEventListener(
-  'message',
-  (event: MessageEvent<GameCoreWorkerMessage>) => {
-    const ret = createResult(event.data);
+await init();
+console_log('hello from rust worker');
 
-    self.postMessage(ret);
-  },
-);
+self.addEventListener('message', (event: MessageEvent<GameCoreWorkerMessage>) => {
+  const ret = createResult(event.data);
+  console.log('test web worker');
+  console_log('test from rust worker');
+
+  self.postMessage(ret);
+});
 
 export default {};
