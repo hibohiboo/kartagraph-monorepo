@@ -22,7 +22,7 @@ pub struct Monster {
 #[wasm_bindgen]
 pub fn return_new_monster(val: &JsValue) -> JsValue {
   let mut m: Monster = val.into_serde().unwrap();
-  m.value = "new value".to_string();
+  m.value = "new value!!!".to_string();
   JsValue::from_serde(&m).unwrap()
 }
 

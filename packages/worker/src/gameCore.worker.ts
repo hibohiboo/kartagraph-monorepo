@@ -1,9 +1,10 @@
 import init, { console_log, return_js_value, return_new_monster } from '../pkg/test_wasm';
 import { createResult } from './domain/createResult';
 import { GameCoreWorkerMessage } from './types';
-
-await init();
-console_log('hello from rust worker');
+(async () => {
+  await init();
+  console_log('hello from rust worker');
+})();
 
 self.addEventListener('message', (event: MessageEvent<GameCoreWorkerMessage>) => {
   const ret = createResult(event.data);
