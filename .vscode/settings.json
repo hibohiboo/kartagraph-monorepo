@@ -32,5 +32,6 @@
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
     "editor.formatOnSave": true,
     "editor.inlayHints.enabled": "offUnlessPressed" // ctrl + alt を押すとヒントが表示される
-  }
+  },
+  "rust-analyzer.linkedProjects": ["./packages/worker/Cargo.toml"],
 }
