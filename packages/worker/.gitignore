@@ -1,0 +1,8 @@
+/dist
+/target
+/pkg
+/wasm-pack.log
+
+# rust
+main.exe
+main.pdb
