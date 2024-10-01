@@ -12,29 +12,29 @@
     "postncu": "msw init"
   },
   "dependencies": {
-    "@tanstack/query-core": "^5.45.0",
-    "firebase": "^10.12.2",
-    "jotai": "^2.8.3",
-    "jotai-tanstack-query": "^0.8.5",
+    "@tanstack/query-core": "^5.59.0",
+    "firebase": "^10.14.0",
+    "jotai": "^2.10.0",
+    "jotai-tanstack-query": "^0.9.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.23.1",
+    "react-router-dom": "^6.26.2",
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
-    "web-vitals": "^4.1.1",
+    "web-vitals": "^4.2.3",
     "wonka": "^6.3.4"
   },
   "devDependencies": {
     "@kartagraph/eslint-config-custom": "*",
     "@kartagraph/tsconfig": "*",
     "@kartagraph/ui": "*",
-    "@types/react": "^18.3.3",
+    "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@types/react-slick": "^0.23.13",
-    "@vitejs/plugin-react-swc": "^3.7.0",
+    "@vitejs/plugin-react-swc": "^3.7.1",
     "dotenv": "^16.4.5",
-    "msw": "^2.3.1",
-    "vite": "^5.3.1"
+    "msw": "^2.4.9",
+    "vite": "^5.4.8"
   },
   "msw": {
     "workerDirectory": "public"
