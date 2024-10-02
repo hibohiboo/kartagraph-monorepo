@@ -1,0 +1,14 @@
+{
+  "name": "@kartagraph/graphdb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "neo4j-driver": "^5.25.0"
+  }
+}

@@ -18,6 +18,7 @@
   "packageManager": "npm@10.8.3",
   "workspaces": [
     "packages/*",
+    "apps/*",
     "app",
     "editor",
     "types"
