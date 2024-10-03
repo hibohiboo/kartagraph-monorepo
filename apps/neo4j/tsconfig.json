@@ -1,0 +1,5 @@
+{
+  "extends": ["@kartagraph/tsconfig/react"],
+  "include": ["src", "tests"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
