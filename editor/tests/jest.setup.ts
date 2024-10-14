@@ -10,6 +10,11 @@ jest.mock('@kartagraph-worker/gameCore.worker?worker', () => {
   });
 });
 
+//  ReferenceError: ReadableStream is not defined      が出るため、以下のコードを追加
+// https://github.com/nodejs/undici/issues/2512
+import { ReadableStream } from 'node:stream/web';
+Object.defineProperties(globalThis, { ReadableStream: { value: ReadableStream } });
+
 // MSWのコンパイルでエラーが出るため、以下のコードを追加
 // https://mswjs.io/docs/migrations/1.x-to-2.x#requestresponsetextencoder-is-not-defined-jest
 import { TextEncoder, TextDecoder } from 'util';
