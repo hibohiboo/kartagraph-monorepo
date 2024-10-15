@@ -3,18 +3,20 @@ import { InteractiveNvlWrapper } from '@neo4j-nvl/react';
 import { useEffect, useState } from 'react';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [nodes, setNodes] = useState([]);
+  const [rels, setRels] = useState([]);
+
   useEffect(() => {
     (async () => {
       const kuzu = await kuzu_wasm();
       const db = await kuzu.Database();
       const conn = await kuzu.Connection(db);
-      await conn.execute(`
-        CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name));
-        CREATE (u:User {name: 'Alice', age: 35});`);
-      const res = await conn.execute(`MATCH (a:User) RETURN a.*;`);
-      const res_json = JSON.parse(res.table.toString());
-      console.log(res_json);
+      // await conn.execute(`
+      //   CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name));
+      //   CREATE (u:User {name: 'Alice', age: 35});`);
+      // const res = await conn.execute(`MATCH (a:User) RETURN a.*;`);
+      // const res_json = JSON.parse(res.table.toString());
+      // console.log(res_json);
       // get remote csv to wasm filesystem
       kuzu.FS.writeFile('/follows.csv', await (await fetch('/data/follows.csv')).text());
       kuzu.FS.writeFile('/city.csv', await (await fetch('/data/city.csv')).text());
@@ -40,25 +42,44 @@ function App() {
          RETURN *;
          `,
       );
-      console.log('response', JSON.parse(response.table.toString()));
+      const users = JSON.parse(response.table.toString());
+      type ID = { offset: string; table: string };
+      const getId = (id: ID): string => `id_${id.table}_${id.offset}`;
+      const nodes = users.map(({ a }: { a: { _ID: ID; name: string } }) => ({ id: getId(a._ID), caption: a.name }));
+      setNodes(nodes);
+
+      const relsResponse = await conn.execute(
+        `
+         MATCH (a:User)-[r:Follows]->(b:User)
+         RETURN *;
+         `,
+      );
+      const rels = JSON.parse(relsResponse.table.toString());
+
+      const relsData = rels.map(
+        ({ r }: { a: { _ID: ID; name: string }; r: { _ID: ID; _SRC: ID; _DST: ID; since: string }; b: { _ID: ID; name: string } }) => ({
+          from: getId(r._SRC),
+          to: getId(r._DST),
+          id: getId(r._ID),
+          caption: r.since,
+        }),
+      );
+      setRels(relsData);
     })();
   }, []);
 
   return (
-    <>
+    <div style={{ width: '100%', height: 500 }}>
       <InteractiveNvlWrapper
         nvlOptions={{ useWebGL: false, initialZoom: 2.6 }}
-        nodes={[
-          { id: '0', caption: 'graphs' },
-          { id: '1', caption: 'everywhere' },
-        ]}
-        rels={[{ from: '0', to: '1', id: '10', caption: 'are' }]}
+        nodes={nodes}
+        rels={rels}
         mouseEventCallbacks={{
           onZoom: true,
           onPan: true,
         }}
       />
-    </>
+    </div>
   );
 }
 

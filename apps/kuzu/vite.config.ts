@@ -13,6 +13,9 @@ export default defineConfig({
       '@neo4j-nvl/layout-workers > @neo4j-bloom/dagre',
       '@neo4j-nvl/layout-workers > bin-pack',
       '@neo4j-nvl/layout-workers > graphlib',
+      '@segment/analytics-next',
+      'concaveman',
+      'layout-base',
     ],
     esbuildOptions: {
       target: 'es2020',
