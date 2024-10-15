@@ -11,11 +11,55 @@ function App() {
       const kuzu = await kuzu_wasm();
       const db = await kuzu.Database();
       const conn = await kuzu.Connection(db);
-      await conn.execute(`CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name))`);
-      await conn.execute(`CREATE (u:User {name: 'Alice', age: 35});`);
+      await conn.execute(`
+        CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name));
+        CREATE (u:User {name: 'Alice', age: 35});`);
       const res = await conn.execute(`MATCH (a:User) RETURN a.*;`);
       const res_json = JSON.parse(res.table.toString());
       console.log(res_json);
+      // get remote csv to wasm filesystem
+      kuzu.FS.writeFile(
+        '/follows.csv',
+        await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/follows.csv')).text(),
+      );
+      kuzu.FS.writeFile('/city.csv', await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/city.csv')).text());
+      kuzu.FS.writeFile(
+        '/lives-in.csv',
+        await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/lives-in.csv')).text(),
+      );
+      kuzu.FS.writeFile('/user.csv', await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/user.csv')).text());
+
+      // Create schema
+      await conn.execute('CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name))');
+      await conn.execute('CREATE NODE TABLE City(name STRING, population INT64, PRIMARY KEY (name))');
+      await conn.execute('CREATE REL TABLE Follows(FROM User TO User, since INT64)');
+      await conn.execute('CREATE REL TABLE LivesIn(FROM User TO City)');
+
+      // Insert data
+      await conn.execute('COPY User FROM "/user.csv"');
+      await conn.execute('COPY City FROM "/city.csv"');
+      await conn.execute('COPY Follows FROM "/follows.csv"');
+      await conn.execute('COPY LivesIn FROM "/lives-in.csv"');
+
+      // Execute Cypher query
+      const response = await conn.execute(
+        `
+         MATCH (a:User)-[f:Follows]->(b:User)
+         RETURN a.name, b.name, f.since;
+         `,
+      );
+      // // const resObj = JSON.parse(response.table.toString());
+      console.log('response', JSON.parse(response.table.toString()));
+
+      // // httpfs
+      // // https://docs.kuzudb.com/extensions/httpfs/
+      // const resExt = await conn.execute(`INSTALL httpfs;LOAD EXTENSION httpfs;
+      //   LOAD FROM "https://extension.kuzudb.com/dataset/test/city.csv"
+      //   RETURN *;`);
+      // // const resExt = await conn.execute(``);
+      // if (resExt) {
+      //   console.log('resExt', JSON.parse(resExt.table.toString()));
+      // }
     })();
   }, []);
 
