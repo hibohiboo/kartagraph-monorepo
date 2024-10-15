@@ -18,16 +18,10 @@ function App() {
       const res_json = JSON.parse(res.table.toString());
       console.log(res_json);
       // get remote csv to wasm filesystem
-      kuzu.FS.writeFile(
-        '/follows.csv',
-        await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/follows.csv')).text(),
-      );
-      kuzu.FS.writeFile('/city.csv', await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/city.csv')).text());
-      kuzu.FS.writeFile(
-        '/lives-in.csv',
-        await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/lives-in.csv')).text(),
-      );
-      kuzu.FS.writeFile('/user.csv', await (await fetch('https://raw.githubusercontent.com/kuzudb/kuzu/master/dataset/demo-db/csv/user.csv')).text());
+      kuzu.FS.writeFile('/follows.csv', await (await fetch('/data/follows.csv')).text());
+      kuzu.FS.writeFile('/city.csv', await (await fetch('/data/city.csv')).text());
+      kuzu.FS.writeFile('/lives-in.csv', await (await fetch('/data/lives-in.csv')).text());
+      kuzu.FS.writeFile('/user.csv', await (await fetch('/data/user.csv')).text());
 
       // Create schema
       await conn.execute('CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name))');
