@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
 import kuzu_wasm from '@kuzu/kuzu-wasm';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { InteractiveNvlWrapper } from '@neo4j-nvl/react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -38,43 +36,28 @@ function App() {
       // Execute Cypher query
       const response = await conn.execute(
         `
-         MATCH (a:User)-[f:Follows]->(b:User)
-         RETURN a.name, b.name, f.since;
+         MATCH (a:User)
+         RETURN *;
          `,
       );
-      // // const resObj = JSON.parse(response.table.toString());
       console.log('response', JSON.parse(response.table.toString()));
-
-      // // httpfs
-      // // https://docs.kuzudb.com/extensions/httpfs/
-      // const resExt = await conn.execute(`INSTALL httpfs;LOAD EXTENSION httpfs;
-      //   LOAD FROM "https://extension.kuzudb.com/dataset/test/city.csv"
-      //   RETURN *;`);
-      // // const resExt = await conn.execute(``);
-      // if (resExt) {
-      //   console.log('resExt', JSON.parse(resExt.table.toString()));
-      // }
     })();
   }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <InteractiveNvlWrapper
+        nvlOptions={{ useWebGL: false, initialZoom: 2.6 }}
+        nodes={[
+          { id: '0', caption: 'graphs' },
+          { id: '1', caption: 'everywhere' },
+        ]}
+        rels={[{ from: '0', to: '1', id: '10', caption: 'are' }]}
+        mouseEventCallbacks={{
+          onZoom: true,
+          onPan: true,
+        }}
+      />
     </>
   );
 }
