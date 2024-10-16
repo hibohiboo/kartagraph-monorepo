@@ -1,5 +1,4 @@
 import kuzu_wasm from '@kuzu/kuzu-wasm';
-import { InteractiveNvlWrapper } from '@neo4j-nvl/react';
 import { useEffect, useState } from 'react';
 
 function App() {
@@ -11,13 +10,7 @@ function App() {
       const kuzu = await kuzu_wasm();
       const db = await kuzu.Database();
       const conn = await kuzu.Connection(db);
-      // await conn.execute(`
-      //   CREATE NODE TABLE User(name STRING, age INT64, PRIMARY KEY (name));
-      //   CREATE (u:User {name: 'Alice', age: 35});`);
-      // const res = await conn.execute(`MATCH (a:User) RETURN a.*;`);
-      // const res_json = JSON.parse(res.table.toString());
-      // console.log(res_json);
-      // get remote csv to wasm filesystem
+
       kuzu.FS.writeFile('/follows.csv', await (await fetch('/data/follows.csv')).text());
       kuzu.FS.writeFile('/city.csv', await (await fetch('/data/city.csv')).text());
       kuzu.FS.writeFile('/lives-in.csv', await (await fetch('/data/lives-in.csv')).text());
@@ -47,6 +40,7 @@ function App() {
       const getId = (id: ID): string => `id_${id.table}_${id.offset}`;
       const nodes = users.map(({ a }: { a: { _ID: ID; name: string } }) => ({ id: getId(a._ID), caption: a.name }));
       setNodes(nodes);
+      console.log(users);
 
       const relsResponse = await conn.execute(
         `
@@ -65,22 +59,11 @@ function App() {
         }),
       );
       setRels(relsData);
+      console.log(rels);
     })();
   }, []);
 
-  return (
-    <div style={{ width: '100%', height: 500 }}>
-      <InteractiveNvlWrapper
-        nvlOptions={{ useWebGL: false, initialZoom: 2.6 }}
-        nodes={nodes}
-        rels={rels}
-        mouseEventCallbacks={{
-          onZoom: true,
-          onPan: true,
-        }}
-      />
-    </div>
-  );
+  return <div style={{ width: '100%', height: 500 }}></div>;
 }
 
 export default App;
