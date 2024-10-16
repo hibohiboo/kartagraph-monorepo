@@ -1,2 +1,5 @@
-[FSD](https://zenn.dev/kyuki/articles/d736b0957e6336)
+[FSD](https://feature-sliced.design/ja/)
+[zenn - FSD](https://zenn.dev/kyuki/articles/d736b0957e6336)
 [FSDガイド](https://feature-sliced.design/ja/docs/guides)
+[RealWorld example app](https://github.com/yurisldk/realworld-react-fsd/blob/master/README.md)
+[Feature-Sliced DesignのドキュメントをCursorで和訳してみたところ、正式な日本語版として採用された](https://zenn.dev/ratomiru/articles/6e13b5daef045b)
