@@ -1,7 +1,7 @@
 import kuzu_wasm from '@kuzu/kuzu-wasm';
 import Cytoscape from 'cytoscape';
 import { useEffect, useRef, useState } from 'react';
-import { CytoscapeComponent } from './shared/graph';
+import { CytoscapeComponent } from './shared/ui';
 function App() {
   const [elements, setNElements] = useState<{ data: { id?: string; source?: string; target?: string; label?: string } }[]>([]);
   const cyref = useRef<Cytoscape.CoreLayout | null>(null);
