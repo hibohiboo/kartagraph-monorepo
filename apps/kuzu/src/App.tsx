@@ -71,6 +71,7 @@ function App() {
         cyref.current = cy;
       }}
       layout={{ name: 'grid' }}
+      wheelSensitivity={0.1}
       style={{ width: '600px', height: '600px' }}
     />
   );

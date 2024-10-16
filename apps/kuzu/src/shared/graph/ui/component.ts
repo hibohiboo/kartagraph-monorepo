@@ -5,6 +5,8 @@ import { defaults } from '../model/defaults';
 import { patch } from '../model/patch';
 import { types } from '../model/types';
 
+type Props = typeof types & { global?: string };
+
 /**
  * The `CytoscapeComponent` is a React component that allows for the declarative creation
  * and modification of a Cytoscape instance, a graph visualisation.
@@ -12,7 +14,7 @@ import { types } from '../model/types';
 export default class CytoscapeComponent extends React.Component {
   containerRef: React.RefObject<unknown>;
   displayName: string;
-  private _cy: any;
+  private _cy: Cytoscape.Core | undefined;
   static get propTypes() {
     return types;
   }
@@ -41,7 +43,7 @@ export default class CytoscapeComponent extends React.Component {
     }
   }
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props);
     this.displayName = 'CytoscapeComponent';
     this.containerRef = React.createRef();
@@ -51,7 +53,7 @@ export default class CytoscapeComponent extends React.Component {
     const container = this.containerRef.current;
 
     const { global, headless, styleEnabled, hideEdgesOnViewport, textureOnViewport, motionBlur, motionBlurOpacity, wheelSensitivity, pixelRatio } =
-      this.props as any;
+      this.props as Props;
 
     const cy = new (Cytoscape as any)({
       container,
@@ -67,7 +69,7 @@ export default class CytoscapeComponent extends React.Component {
     this._cy = cy;
 
     if (global) {
-      window[global] = cy;
+      window[global as any] = cy;
     }
 
     this.updateCytoscape(null, this.props);
@@ -89,7 +91,7 @@ export default class CytoscapeComponent extends React.Component {
   }
 
   componentWillUnmount() {
-    this._cy.destroy();
+    this._cy?.destroy();
   }
 
   render() {
