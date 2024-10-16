@@ -1,10 +1,10 @@
 import kuzu_wasm from '@kuzu/kuzu-wasm';
-import { useEffect, useState } from 'react';
-
+import Cytoscape from 'cytoscape';
+import { useEffect, useRef, useState } from 'react';
+import { CytoscapeComponent } from './shared/graph';
 function App() {
-  const [nodes, setNodes] = useState([]);
-  const [rels, setRels] = useState([]);
-
+  const [elements, setNElements] = useState<{ data: { id?: string; source?: string; target?: string; label?: string } }[]>([]);
+  const cyref = useRef<Cytoscape.CoreLayout | null>(null);
   useEffect(() => {
     (async () => {
       const kuzu = await kuzu_wasm();
@@ -38,9 +38,7 @@ function App() {
       const users = JSON.parse(response.table.toString());
       type ID = { offset: string; table: string };
       const getId = (id: ID): string => `id_${id.table}_${id.offset}`;
-      const nodes = users.map(({ a }: { a: { _ID: ID; name: string } }) => ({ id: getId(a._ID), caption: a.name }));
-      setNodes(nodes);
-      console.log(users);
+      const nodes = users.map(({ a }: { a: { _ID: ID; name: string } }) => ({ data: { id: getId(a._ID), label: a.name } }));
 
       const relsResponse = await conn.execute(
         `
@@ -52,18 +50,30 @@ function App() {
 
       const relsData = rels.map(
         ({ r }: { a: { _ID: ID; name: string }; r: { _ID: ID; _SRC: ID; _DST: ID; since: string }; b: { _ID: ID; name: string } }) => ({
-          from: getId(r._SRC),
-          to: getId(r._DST),
-          id: getId(r._ID),
-          caption: r.since,
+          data: {
+            source: getId(r._SRC),
+            target: getId(r._DST),
+            id: getId(r._ID),
+            label: r.since,
+          },
         }),
       );
-      setRels(relsData);
-      console.log(rels);
+      setNElements([...nodes, ...relsData]);
+      if (cyref.current) {
+        cyref.current.layout({ name: 'grid' }).run();
+      }
     })();
   }, []);
-
-  return <div style={{ width: '100%', height: 500 }}></div>;
+  return (
+    <CytoscapeComponent
+      elements={elements}
+      cy={(cy) => {
+        cyref.current = cy;
+      }}
+      layout={{ name: 'grid' }}
+      style={{ width: '600px', height: '600px' }}
+    />
+  );
 }
 
 export default App;

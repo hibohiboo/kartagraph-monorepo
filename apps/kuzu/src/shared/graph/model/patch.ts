@@ -1,13 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { shallowObjDiff } from './diff';
 import { get as atKey } from './json';
 
-const isDiffAtKey = (json1, json2, diff, key) => diff(atKey(json1, key), atKey(json2, key));
+type DiffFunction = (a: any, b: any) => boolean;
+type ToJsonFunction = (obj: any) => any;
+type GetFunction = (obj: any, key: string) => any;
+type ForEachFunction = (arr: any[], callback: (item: any) => void) => void;
 
-export const patch = (cy, json1, json2, diff, toJson, get, forEach) => {
+const isDiffAtKey = (json1: any, json2: any, diff: DiffFunction, key: string): boolean => diff(atKey(json1, key), atKey(json2, key));
+
+export const patch = (
+  cy: any,
+  json1: any,
+  json2: any,
+  diff: DiffFunction,
+  toJson: ToJsonFunction,
+  get: GetFunction,
+  forEach: ForEachFunction,
+): void => {
   cy.batch(() => {
-    // The shallow object diff() must defer to patchElements() as it must compare the
-    // elements as an unordered set.  A custom diff(), with Immutable for example,
-    // could just use an equality check (===).
     if (diff === shallowObjDiff || isDiffAtKey(json1, json2, diff, 'elements')) {
       patchElements(cy, atKey(json1, 'elements'), atKey(json2, 'elements'), toJson, get, forEach, diff);
     }
@@ -17,7 +28,6 @@ export const patch = (cy, json1, json2, diff, toJson, get, forEach) => {
     }
 
     [
-      // simple keys that can be patched directly (key same as fn name)
       'zoom',
       'minZoom',
       'maxZoom',
@@ -42,11 +52,11 @@ export const patch = (cy, json1, json2, diff, toJson, get, forEach) => {
   }
 };
 
-const patchJson = (cy, key, val1, val2, toJson) => {
+const patchJson = (cy: any, key: string, val1: any, val2: any, toJson: ToJsonFunction): void => {
   cy[key](toJson(val2));
 };
 
-const patchLayout = (cy, layout1, layout2, toJson) => {
+const patchLayout = (cy: any, layout1: any, layout2: any, toJson: ToJsonFunction): void => {
   const layoutOpts = toJson(layout2);
 
   if (layoutOpts != null) {
@@ -54,7 +64,7 @@ const patchLayout = (cy, layout1, layout2, toJson) => {
   }
 };
 
-const patchStyle = (cy, style1, style2, toJson) => {
+const patchStyle = (cy: any, style1: any, style2: any, toJson: ToJsonFunction): void => {
   const style = cy.style();
 
   if (style == null) {
@@ -64,27 +74,33 @@ const patchStyle = (cy, style1, style2, toJson) => {
   style.fromJson(toJson(style2)).update();
 };
 
-const patchElements = (cy, eles1, eles2, toJson, get, forEach, diff) => {
-  const toAdd = [];
+const patchElements = (
+  cy: any,
+  eles1: any[],
+  eles2: any[],
+  toJson: ToJsonFunction,
+  get: GetFunction,
+  forEach: ForEachFunction,
+  diff: DiffFunction,
+): void => {
+  const toAdd: any[] = [];
   const toRm = cy.collection();
-  const toPatch = [];
-  const eles1Map = {};
-  const eles2Map = {};
-  const eles1HasId = (id) => eles1Map[id] != null;
-  const eles2HasId = (id) => eles2Map[id] != null;
-  const getEle1 = (id) => eles1Map[id];
-  const getId = (ele) => get(get(ele, 'data'), 'id');
+  const toPatch: { ele1: any; ele2: any }[] = [];
+  const eles1Map: { [key: string]: any } = {};
+  const eles2Map: { [key: string]: any } = {};
+  const eles1HasId = (id: string) => eles1Map[id] != null;
+  const eles2HasId = (id: string) => eles2Map[id] != null;
+  const getEle1 = (id: string) => eles1Map[id];
+  const getId = (ele: any) => get(get(ele, 'data'), 'id');
 
   forEach(eles2, (ele2) => {
     const id = getId(ele2);
-
     eles2Map[id] = ele2;
   });
 
   if (eles1 != null) {
     forEach(eles1, (ele1) => {
       const id = getId(ele1);
-
       eles1Map[id] = ele1;
 
       if (!eles2HasId(id)) {
@@ -115,10 +131,10 @@ const patchElements = (cy, eles1, eles2, toJson, get, forEach, diff) => {
   toPatch.forEach(({ ele1, ele2 }) => patchElement(cy, ele1, ele2, toJson, get, diff));
 };
 
-const patchElement = (cy, ele1, ele2, toJson, get, diff) => {
+const patchElement = (cy: any, ele1: any, ele2: any, toJson: ToJsonFunction, get: GetFunction, diff: DiffFunction): void => {
   const id = get(get(ele2, 'data'), 'id');
   const cyEle = cy.getElementById(id);
-  const patch = {};
+  const patch: { [key: string]: any } = {};
   const jsonKeys = ['data', 'position', 'selected', 'selectable', 'locked', 'grabbable', 'classes'];
 
   jsonKeys.forEach((key) => {

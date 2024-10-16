@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Cytoscape from 'cytoscape';
 import React from 'react';
 import { defaults } from '../model/defaults';
@@ -9,6 +10,9 @@ import { types } from '../model/types';
  * and modification of a Cytoscape instance, a graph visualisation.
  */
 export default class CytoscapeComponent extends React.Component {
+  containerRef: React.RefObject<unknown>;
+  displayName: string;
+  private _cy: any;
   static get propTypes() {
     return types;
   }
@@ -17,7 +21,7 @@ export default class CytoscapeComponent extends React.Component {
     return defaults;
   }
 
-  static normalizeElements(elements) {
+  static normalizeElements(elements: any) {
     const isArray = elements.length != null;
 
     if (isArray) {
@@ -37,7 +41,7 @@ export default class CytoscapeComponent extends React.Component {
     }
   }
 
-  constructor(props) {
+  constructor(props: any) {
     super(props);
     this.displayName = 'CytoscapeComponent';
     this.containerRef = React.createRef();
@@ -47,9 +51,9 @@ export default class CytoscapeComponent extends React.Component {
     const container = this.containerRef.current;
 
     const { global, headless, styleEnabled, hideEdgesOnViewport, textureOnViewport, motionBlur, motionBlurOpacity, wheelSensitivity, pixelRatio } =
-      this.props;
+      this.props as any;
 
-    const cy = (this._cy = new Cytoscape({
+    const cy = new (Cytoscape as any)({
       container,
       headless,
       styleEnabled,
@@ -59,7 +63,8 @@ export default class CytoscapeComponent extends React.Component {
       motionBlurOpacity,
       wheelSensitivity,
       pixelRatio,
-    }));
+    });
+    this._cy = cy;
 
     if (global) {
       window[global] = cy;
@@ -68,7 +73,7 @@ export default class CytoscapeComponent extends React.Component {
     this.updateCytoscape(null, this.props);
   }
 
-  updateCytoscape(prevProps, newProps) {
+  updateCytoscape(prevProps: any, newProps: any) {
     const cy = this._cy;
     const { diff, toJson, get, forEach } = newProps;
 
@@ -79,7 +84,7 @@ export default class CytoscapeComponent extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: any) {
     this.updateCytoscape(prevProps, this.props);
   }
 
@@ -88,7 +93,7 @@ export default class CytoscapeComponent extends React.Component {
   }
 
   render() {
-    const { id, className, style } = this.props;
+    const { id, className, style } = this.props as any;
 
     return React.createElement('div', {
       ref: this.containerRef,
