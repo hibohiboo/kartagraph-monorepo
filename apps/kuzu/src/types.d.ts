@@ -6,6 +6,7 @@ declare module '@kuzu/kuzu-wasm' {
     Connection: (db: Database) => Promise<Connection>;
     FS: {
       writeFile: (path: string, content: string) => void;
+      readFile: <E extends 'binary' | 'utf8'>(path: string, options: { encoding: E }) => E extends 'utf8' ? string : Uint8Array;
     };
   }
 
