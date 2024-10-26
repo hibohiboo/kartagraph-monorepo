@@ -104,15 +104,30 @@ function App() {
       <button
         onClick={async () => {
           if (!conRef.current || !kuzuRef.current) return;
+          // EXPORT DATABASEは失敗した。
           // await conRef.current.execute(`EXPORT DATABASE '/bakcup.csv' (format="csv", header=true);`);
-          //
-          await conRef.current.execute(`COPY (MATCH (u:User) RETURN u.*) TO '/bakcup.csv' (header=true);`);
+          await conRef.current.execute(`COPY (MATCH (u:User) RETURN u.*) TO '/bakcup.csv' (header=false);`);
 
           const contents = kuzuRef.current.FS.readFile('/bakcup.csv', { encoding: 'utf8' });
           console.log('contents', contents);
+          localStorage.setItem('backup_graphdb_user', contents);
         }}
       >
         保存
+      </button>
+      <button
+        onClick={async () => {
+          if (!conRef.current || !kuzuRef.current) return;
+          console.log('load', localStorage.getItem('backup_graphdb_user'));
+          kuzuRef.current.FS.writeFile('/storage.csv', localStorage.getItem('backup_graphdb_user') || '');
+          // 一度消してからでないとエラーになる
+          await conRef.current.execute(`MATCH (u:User) DETACH DELETE u`);
+          await conRef.current.execute('COPY User FROM "/storage.csv"');
+          await conRef.current.execute('COPY Follows FROM "/follows.csv"');
+          await draw();
+        }}
+      >
+        復元
       </button>
     </>
   );
