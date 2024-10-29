@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { expect, test, describe, vi, beforeEach, afterEach } from 'vitest';
+import { expect, test, describe, vi, afterEach, beforeAll } from 'vitest';
 import { createUserNode, initDb } from '../src/feature/user/model/create';
 import { getGraphDbClient } from '../src/shared/lib/graphdb/kuzu';
-import { initializeWebDatabase, initializeWebConnection } from './helper.mjs';
+import { initializeWebDatabase, initializeWebConnection } from './mock/helper.mjs';
 
 // https://qiita.com/Leech/items/5cd1e83253d0179b0cec
 vi.mock('@kuzu/kuzu-wasm', async () => {
@@ -23,7 +23,7 @@ vi.mock('@kuzu/kuzu-wasm', async () => {
 });
 
 describe('createUserNode', () => {
-  beforeEach(async () => {
+  beforeAll(async () => {
     await initDb();
   });
   afterEach(async () => {
