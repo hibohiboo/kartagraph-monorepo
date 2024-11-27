@@ -144,7 +144,7 @@ jobs:
       ########################################
       # ホットスポット作成
       - name: Copy Top Page
-        run: cp ./crime-scene-hotspots ../../dist/public/
+        run: cp -r ./crime-scene-hotspots ../../dist/public/
         working-directory: docs/code-maat
 
         ########################################
