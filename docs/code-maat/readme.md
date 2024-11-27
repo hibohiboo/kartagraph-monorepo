@@ -17,7 +17,7 @@ csv-to-d3-json.sh|revisions.csvとcomplexity.csvからd3へのインプットと
 hotspots.jsonができたら下記で確認できる。
 
 ```
-cd public && python -m http.server 8080
+python -m http.server 8080
 ```
 
 http://localhost:8080/crime-scene-hotspots/index.html
