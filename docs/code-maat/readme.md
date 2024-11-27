@@ -20,4 +20,4 @@ hotspots.jsonができたら下記で確認できる。
 cd public && python -m http.server 8080
 ```
 
-http://localhost:8080/crime-scene-hotspots.html
+http://localhost:8080/crime-scene-hotspots/index.html

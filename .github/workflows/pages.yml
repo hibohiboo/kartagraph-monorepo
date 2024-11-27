@@ -141,6 +141,12 @@ jobs:
         working-directory: backend
 
       ########################################
+      # ホットスポット作成
+      - name: Copy Top Page
+        run: cp ./crime-scene-hotspots ../../dist/public/
+        working-directory: docs/code-maat
+
+        ########################################
       # ドキュメントトップページ作成
       - name: Copy Top Page
         run: cp ./index.html ../../dist/
