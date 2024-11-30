@@ -107,7 +107,7 @@
       .append('text')
       .attr('class', 'label')
       .attr('transform', function (d) {
-        return 'translate(' + d.x + ',' + d.y + ')';
+        return `translate(${d.x}, ${d.y})`;
       })
       .style('fill-opacity', function (d) {
         return d.parent === root ? 1 : 0;
