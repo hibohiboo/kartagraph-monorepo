@@ -1,6 +1,6 @@
 #!/bin/bash
 
 bin_dir=$(cd $(dirname $0) && pwd)
-py_dir=$(cd $bin_dir/../python && pwd)
+parent_dir=$(cd $bin_dir/.. && pwd)
 
-cd $py_dir && python merge_comp_freqs.py ../data/revisions.csv ../data/complexity.csv
+cd $parent_dir && docker run -v $(pwd):/work python:3.12 python /work/python/merge_comp_freqs.py /work/data/revisions.csv /work/data/complexity.csv

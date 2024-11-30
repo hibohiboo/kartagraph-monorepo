@@ -1,6 +1,6 @@
 #!/bin/bash
 
 bin_dir=$(cd $(dirname $0) && pwd)
-py_dir=$(cd $bin_dir/../python && pwd)
+parent_dir=$(cd $bin_dir/.. && pwd)
 
-cd $py_dir && python csv_as_enclosure_json.py --structure ../data/complexity.csv --weights ../data/revisions.csv > ../crime-scene-hotspots/hotspots.json
+cd $parent_dir && docker run -v $(pwd):/work python:3.12 python /work/python/csv_as_enclosure_json.py --structure /work/data/complexity.csv --weights /work/data/revisions.csv > ./crime-scene-hotspots/hotspots.json
