@@ -21,54 +21,8 @@ class MergeError(Exception):
         Exception.__init__(self, message)
 
 
-class Merged(object):
-    def __init__(self):
-        self._all_modules_with_complexity = {}
-        self._merged = {}
-
-    def sorted_result(self):
-        # Sort on descending order:
-        ordered = sorted(
-            list(
-                self._merged.items()),
-            key=lambda item: item[1][0],
-            reverse=True)
-        return ordered
-
-    def extend_with(self, name, freqs):
-        if name in self._all_modules_with_complexity:
-            complexity = self._all_modules_with_complexity[name]
-            self._merged[name] = freqs, complexity
-
-    def record_detected(self, name, complexity):
-        self._all_modules_with_complexity[name] = complexity
 
 
-def write_csv(stats):
-    print('module,revisions,code')
-    for s in stats:
-        name, (f, c) = s
-        print(name + ',' + f + ',' + c)
-
-
-def parse_complexity(merged, row):
-    name = row[1][2:]
-    complexity = row[4]
-    merged.record_detected(name, complexity)
-
-
-def parse_freqs(merged, row):
-    name = row[0]
-    freqs = row[1]
-    merged.extend_with(name, freqs)
-
-
-def merge(revs_file, comp_file):
-    merged = Merged()
-    parse_csv(merged, comp_file, parse_complexity,
-              expected_format='language,filename,blank,comment,code')
-    parse_csv(merged, revs_file, parse_freqs, expected_format='entity,n-revs')
-    write_csv(merged.sorted_result())
 
 ######################################################################
 # Parse input
@@ -107,11 +61,11 @@ class StructuralElement(object):
         self.complexity = complexity
 
     def parts(self):
-        res = [x for x in self.pathParts()]
+        res = [x for x in self.path_parts()]
         res.reverse()
         return res
 
-    def pathParts(self):
+    def path_parts(self):
         (hd, tl) = os.path.split(self.name)
         while tl != '':
             yield tl
@@ -172,7 +126,6 @@ def _ensure_branch_exists(hierarchy, branch):
 
 
 def _add_leaf(hierarchy, module, weight_calculator, name):
-    # TODO: augment with weight here!
     new_leaf = {'name': name, 'children': [],
                 'size': module.complexity,
                 'weight': weight_calculator(module.name)}
@@ -221,11 +174,6 @@ def write_json(result):
 # Main
 ######################################################################
 
-# TODO: turn it around: parse the weights first and add them to individual
-# elements
-# as the raw structure list is built!
-
-
 def run(args):
     raw_weights = parse_csv(
         args.weights,
@@ -259,7 +207,6 @@ if __name__ == "__main__":
         type=int,
         default=1,
         help="The index specifying the column to use in the weight table")
-    # TODO: add arguments to specify which CSV columns to use!
 
     args = parser.parse_args()
     run(args)
